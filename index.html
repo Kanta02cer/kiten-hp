@@ -103,6 +103,96 @@
             animation: pulse-glow 5s ease-in-out infinite;
             z-index: -1; /* ロゴの背面に配置 */
         }
+        
+        /* 企業ロゴ用の9:16比率クラス */
+        .logo-9-16 {
+            width: 72px; /* 9 * 8px = 72px */
+            height: 128px; /* 16 * 8px = 128px */
+        }
+        
+        /* 企業ロゴ用の16:9比率クラス（横型） */
+        .logo-16-9 {
+            width: 144px; /* 16 * 9px = 144px */
+            height: 81px; /* 9 * 9px = 81px */
+        }
+        
+        /* ホバー効果用の浮き上がりクラス */
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* 審査員カード用のホバー効果 */
+        .judge-card-hover {
+            transition: all 0.3s ease;
+        }
+        .judge-card-hover:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* スケジュール項目用のホバー効果 */
+        .schedule-hover {
+            transition: all 0.3s ease;
+        }
+        .schedule-hover:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(79, 70, 229, 0.15);
+            background-color: #fef3c7;
+        }
+        
+        /* 賞品用のホバー効果 */
+        .prize-hover {
+            transition: all 0.3s ease;
+        }
+        .prize-hover:hover {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(250, 204, 21, 0.2);
+            background-color: #fef3c7;
+        }
+        
+        /* 企業ロゴ用の横型スタンダードサイズ */
+        .logo-horizontal-standard {
+            width: 200px;
+            height: 80px;
+        }
+        
+        /* 協力団体ロゴ用の横型スタンダードサイズ */
+        .logo-horizontal-small {
+            width: 160px;
+            height: 64px;
+        }
+        
+        /* 審査員カード用のロゴサイズ */
+        .judge-logo {
+            width: 400px;
+            height: 150px;
+        }
+        
+        /* レスポンシブ対応のロゴサイズ */
+        @media (max-width: 1300px) {
+            .judge-logo {
+                width: 350px;
+                height: 131px;
+            }
+        }
+        
+        @media (max-width: 1100px) {
+            .judge-logo {
+                width: 300px;
+                height: 113px;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .judge-logo {
+                width: 250px;
+                height: 94px;
+            }
+        }
     </style>
     <script>
         document.addEventListener('alpine:init', () => {
@@ -113,36 +203,41 @@
                     timer: null,
                     judges: [
                         {
+                            logo: 'https://i.ibb.co/Hp77CJ5c/image.png',
                             name: '井上 幹太',
                             nameEn: 'Kanta Inoue',
                             photo: 'https://i.ibb.co/SwXdj0v1/WHO-Emergency-Health-Organization-1.webp',
-                            theme: '学生と企業がともに成長する未来へ、学生が社会に出るその一歩を創る', // テーマが不要な場合は空にする
+                            theme: '学生と企業がともに成長する未来へ、学生が社会に出るその一歩を創る',
                             group: '日本学生アンバサダー協会',
-                            title: '代表理事'
+                            title: '代表理事',
                         },
                         {
+                            logo: 'https://placehold.co/400x150/e2e8f0/334155?text=Wellness+Innovations',
                             name: '佐藤 由美',
                             nameEn: 'Yumi Sato',
                             photo: 'https://i.ibb.co/RGzWdj5t/Image-fx-1.webp',
                             theme: 'グローバルな視点で次世代のウェルネスを創造する',
                             group: 'ウェルネス・イノベーションズ',
-                            title: '代表取締役 CEO'
+                            title: '代表取締役 CEO',
                         },
                         {
+                            logo: 'https://placehold.co/400x150/e2e8f0/334155?text=Tech+Ventures',
                             name: '鈴木 一郎',
                             nameEn: 'Ichiro Suzuki',
                             photo: 'https://i.ibb.co/ZRzyCbfT/Image-fx-2.webp',
                             theme: 'テクノロジーと共感を融合させるシリアルアントレプレナー',
                             group: 'Tech Ventures',
-                            title: 'Founder & General Partner'
+                            title: 'Founder & General Partner',
                         },
                         {
+                            logo: 'https://placehold.co/400x150/e2e8f0/334155?text=DeFimans',
                             name: '小野暢思',
                             nameEn: 'Mitsuhi Ono',
                             photo: 'https://i.ibb.co/d4wHgTzr/2.webp',
                             theme: 'SBIグループ傘下、WEB3事業を手掛けるプロフェッショナルチーム',
                             group: '株式会社DeFimans（SBIグループ）',
-                            title: 'Co-Founder / 代表取締役CEO'
+                            title: 'Co-Founder / 代表取締役CEO',
+                            // 他の必要なプロパティがあればここに追加
                         },
                     ],
                     // 次のスライドへ
@@ -181,18 +276,18 @@
                         'https://i.ibb.co/MxXD0nNL/Chat-GPT-Image-2025-8-25-00-47-49.webp',
                         'https://i.ibb.co/MxXD0nNL/Chat-GPT-Image-2025-8-25-00-47-49.webp'
                     ],
+                    timer: null,
                     init() {
-                        const observer = new IntersectionObserver((entries) => {
-                            entries.forEach(entry => {
-                                if (entry.isIntersecting) {
-                                    this.activeStep = Array.from(this.$el.querySelectorAll('.timeline-item')).indexOf(entry.target);
-                                }
-                            });
-                        }, { threshold: 0.5 }); // 閾値を調整して表示を安定させる
-
-                        this.$el.querySelectorAll('.timeline-item').forEach(item => {
-                            observer.observe(item);
-                        });
+                        // 3秒間隔で画像を自動切り替え
+                        this.timer = setInterval(() => {
+                            this.activeStep = (this.activeStep + 1) % this.images.length;
+                        }, 3000);
+                    },
+                    // コンポーネントが破棄される時にタイマーをクリア
+                    destroy() {
+                        if (this.timer) {
+                            clearInterval(this.timer);
+                        }
                     }
                 }
             });
@@ -213,13 +308,14 @@
                     <a href="#values">得られる価値</a>
                     <a href="#judges">審査員</a>
                     <a href="#timeline">当日の流れ</a>
+                    <a href="#venue">会場</a>
                     <a href="#faq">FAQ</a>
                     <a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" class="cta-nav bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 transition-colors shadow-md">無料エントリー</a>
                 </div>
-                <div class="md:hidden"><button @click="openMenu = !openMenu" class="text-gray-700 hover:text-indigo-600 focus:outline-none"><svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg></button></div>
+                        <div class="md:hidden"><button @click="openMenu = !openMenu" class="text-gray-700 hover:text-blue-600 focus:outline-none"><svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg></button></div>
             </div>
         </div>
-        <div x-cloak x-show="openMenu" x-transition class="md:hidden bg-white border-t border-gray-200"><a href="#about" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">イベント概要</a><a href="#values" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">得られる価値</a><a href="#judges" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">審査員</a><a href="#timeline" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">当日の流れ</a><a href="#faq" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">FAQ</a><a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-indigo-600 hover:bg-indigo-50">無料エントリー</a></div>
+        <div x-cloak x-show="openMenu" x-transition class="md:hidden bg-white border-t border-gray-200"><a href="#about" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">イベント概要</a><a href="#values" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">得られる価値</a><a href="#judges" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">審査員</a><a href="#timeline" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">当日の流れ</a><a href="#venue" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">会場</a><a href="#faq" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">FAQ</a><a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-blue-600 hover:bg-blue-50">無料エントリー</a></div>
     </nav>
 
     <!-- Main Content -->
@@ -227,7 +323,7 @@
         <header class="hero-section text-gray-900 text-center py-24 md:py-40 px-4">
             <div class="hero-content max-w-4xl mx-auto">
                 <h1 class="text-4xl md:text-6xl font-black leading-tight tracking-tight"><span class="block">学生が「企業の顔」となる。</span></h1>
-                <p class="mt-6 text-lg md:text-2xl font-bold text-indigo-700">社会のために本気になれる学生アンバサダーの登竜門「KITEN」</p>
+                <p class="mt-6 text-lg md:text-2xl font-bold text-blue-700">社会のために本気になれる学生アンバサダーの登竜門「KITEN」</p>
                 <div class="mt-8 logo-glow-container">
                     <img src="https://i.ibb.co/Jj3Rfft4/2025-08-23-9-20-56.webp" alt="100の KITEN Forum" class="w-full max-w-lg mx-auto">
                 </div>
@@ -237,16 +333,16 @@
 
         <main class="space-y-24 md:space-y-32 py-16 md:py-24">
             <section class="max-w-4xl mx-auto px-4 text-center fade-in-up">
-                <h3 class="font-serif text-3xl md:text-5xl font-bold leading-relaxed">「<span class="text-indigo-600">一人</span>」の限界を、「<span class="text-indigo-600">仲間</span>」と超える。</h3>
+                <h3 class="font-serif text-3xl md:text-5xl font-bold leading-relaxed">「<span class="text-blue-600">一人</span>」の限界を、「<span class="text-blue-600">仲間</span>」と超える。</h3>
                 <p class="mt-8 text-xl font-semibold">その想い、ここで解き放て。<br>社会を変える「起点」がここにある。</p>
             </section>
 
             <section id="values" class="max-w-5xl mx-auto px-4 fade-in-up">
                 <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-12 md:mb-16">このイベントで得られる3つの価値</h2>
                 <div class="grid md:grid-cols-3 gap-8">
-                    <div class="bg-white p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2"><h3 class="text-2xl font-black mb-2 text-indigo-900">最高の仲間との出会い</h3><p class="text-gray-600 mt-4">AIがあなたの情熱を解析し、最高のチームをマッチング。新しい出会いが、あなたの可能性を最大化させる。</p></div>
-                    <div class="bg-white p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2"><h3 class="text-2xl font-black mb-2 text-indigo-900">アイデアを事業へ</h3><p class="text-gray-600 mt-4">アイデアを「絵に描いた餅」で終わらせない。実践的なフレームワークで、実現可能なビジネスプランを構築する。</p></div>
-                    <div class="bg-white p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2"><h3 class="text-2xl font-black mb-2 text-indigo-900">第一線からの本気のFB</h3><p class="text-gray-600 mt-4">第一線で活躍する経営者や投資家があなたのアイデアに本気で向き合う。忖度なしのフィードバックが、あなたを成長させる。</p></div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2"><h3 class="text-2xl font-black mb-2 text-blue-900">最高の仲間との出会い</h3><p class="text-gray-600 mt-4">AIがあなたの情熱を解析し、最高のチームをマッチング。新しい出会いが、あなたの可能性を最大化させる。</p></div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2"><h3 class="text-2xl font-black mb-2 text-blue-900">アイデアを事業へ</h3><p class="text-gray-600 mt-4">アイデアを「絵に描いた餅」で終わらせない。実践的なフレームワークで、実現可能なビジネスプランを構築する。</p></div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2"><h3 class="text-2xl font-black mb-2 text-blue-900">第一線からの本気のFB</h3><p class="text-gray-600 mt-4">第一線で活躍する経営者や投資家があなたのアイデアに本気で向き合う。忖度なしのフィードバックが、あなたを成長させる。</p></div>
                 </div>
             </section>
             
@@ -256,25 +352,37 @@
                     <div class="overflow-hidden relative h-[36rem] md:h-[32rem]">
                         <template x-for="(judge, index) in judges" :key="index">
                             <div x-show="activeJudge === index" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0 w-full h-full">
-                                <div class="w-full h-full md:grid md:grid-cols-2 md:gap-8 bg-white rounded-xl shadow-2xl overflow-hidden">
-                                    <img :src="judge.photo" :alt="judge.name" class="w-full h-64 md:h-full object-cover">
-                                    <div class="p-8 flex flex-col justify-center">
-                                        <p x-show="judge.theme" class="italic text-indigo-600" x-text="`“${judge.theme}”`"></p>
-                                        <p class="font-bold text-gray-800 mt-6" x-text="judge.group"></p>
-                                        <p class="text-gray-600" x-text="judge.title"></p>
-                                        <h3 class="text-4xl font-black text-gray-900 mt-4" x-text="judge.name"></h3>
-                                        <p class="text-gray-500" x-text="judge.nameEn"></p>
+                                <div class="w-full h-full md:grid md:grid-cols-2 md:gap-8 bg-white rounded-xl shadow-2xl overflow-hidden judge-card-hover">
+                                    <div class="relative overflow-hidden">
+                                        <img :src="judge.photo" :alt="judge.name" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="p-8 flex flex-col justify-end relative h-full">
+                                        <div class="text-left w-full">
+                                            <!-- 企業ロゴを最上部に表示 -->
+                                            <div x-show="judge.logo" class="mb-8 flex justify-center">
+                                                <img :src="judge.logo" :alt="judge.group + ' logo'" class="judge-logo object-contain">
+                                            </div>
+                                            <p x-show="judge.theme" class="text-blue-600 font-bold text-lg leading-relaxed mb-8" x-text="judge.theme"></p>
+                                            <div class="mb-8 space-y-3">
+                                                <p class="font-bold text-gray-800 text-xl" x-text="judge.group"></p>
+                                                <p class="text-gray-600 text-lg" x-text="judge.title"></p>
+                                            </div>
+                                            <div>
+                                                <h3 class="text-5xl font-black bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-2" x-text="judge.name"></h3>
+                                                <p class="text-gray-500 text-base" x-text="judge.nameEn"></p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </template>
                     </div>
                     <!-- Previous Button -->
-                    <button @click="prev()" aria-label="Previous Judge" class="absolute z-10 top-1/2 -translate-y-1/2 left-2 md:-left-8 bg-white rounded-full p-3 shadow-lg hover:bg-gray-100 transition-all duration-300 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <button @click="prev()" aria-label="Previous Judge" class="absolute z-10 top-1/2 -translate-y-1/2 left-2 md:-left-8 bg-white rounded-full p-3 shadow-lg hover:bg-gray-100 transition-all duration-300 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                     </button>
                     <!-- Next Button -->
-                    <button @click="next()" aria-label="Next Judge" class="absolute z-10 top-1/2 -translate-y-1/2 right-2 md:-right-8 bg-white rounded-full p-3 shadow-lg hover:bg-gray-100 transition-all duration-300 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <button @click="next()" aria-label="Next Judge" class="absolute z-10 top-1/2 -translate-y-1/2 right-2 md:-right-8 bg-white rounded-full p-3 shadow-lg hover:bg-gray-100 transition-all duration-300 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </button>
                 </div>
@@ -285,14 +393,91 @@
                 <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-12 md:mb-16">当日の流れを体験する</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
                     <div class="space-y-4">
-                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white" :class="{'bg-indigo-50 shadow-xl': activeStep === 0}"><p class="font-bold text-indigo-600">13:40 - 14:00</p><h3 class="font-bold text-xl mt-1">受付・チーム着席</h3><p class="text-gray-600 text-sm mt-2">AIが決定したチームテーブルへ。アイスブレイクシートを記入しながら仲間を待とう！</p></div>
-                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white" :class="{'bg-indigo-50 shadow-xl': activeStep === 1}"><p class="font-bold text-indigo-600">14:00 - 14:20</p><h3 class="font-bold text-xl mt-1">オープニング & アイスブレイク</h3><p class="text-gray-600 text-sm mt-2">イベントの目的を共有後、すぐにチームで自己紹介。意外な共通点が見つかるかも？</p></div>
-                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white" :class="{'bg-indigo-50 shadow-xl': activeStep === 2}"><p class="font-bold text-indigo-600">14:20 - 15:45</p><h3 class="font-bold text-xl mt-1">アイデアソン</h3><p class="text-gray-600 text-sm mt-2">個人ワークとチームでの議論を繰り返し、多様な視点を掛け合わせ、1つの事業案を構築します。</p></div>
-                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white" :class="{'bg-indigo-50 shadow-xl': activeStep === 3}"><p class="font-bold text-indigo-600">15:45 - 16:15</p><h3 class="font-bold text-xl mt-1">1分ピッチ大会</h3><p class="text-gray-600 text-sm mt-2">練り上げた事業案を1分間で熱くプレゼン！会場の熱気は最高潮に。</p></div>
-                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white" :class="{'bg-indigo-50 shadow-xl': activeStep === 4}"><p class="font-bold text-indigo-600">16:40 - 17:00</p><h3 class="font-bold text-xl mt-1">結果発表（優秀賞・特別賞他）</h3><p class="text-gray-600 text-sm mt-2">学生アンバサダー後援企業様による審査を実施。優勝チームには「日本学生アンバサダー協会公認アンバサダー認定権」を交付、副賞として共催企業様が運営する「InnoCom Square」の利用が可能です！</p></div>
-                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white" :class="{'bg-indigo-50 shadow-xl': activeStep === 5}"><p class="font-bold text-indigo-600">17:00 - 17:30</p><h3 class="font-bold text-xl mt-1">交流会</h3><p class="text-gray-600 text-sm mt-2">今日芽生えた想いを「次の一歩」として宣言。100人の仲間と未来の繋がりを創ろう！</p></div>
+                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white schedule-hover" :class="{'bg-blue-50 shadow-xl': activeStep === 0}"><p class="font-bold text-blue-600">13:40 - 14:00</p><h3 class="font-bold text-xl mt-1">受付・チーム着席</h3><p class="text-gray-600 text-sm mt-2">AIが決定したチームテーブルへ。アイスブレイクシートを記入しながら仲間を待とう！</p></div>
+                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white schedule-hover" :class="{'bg-blue-50 shadow-xl': activeStep === 1}"><p class="font-bold text-blue-600">14:00 - 14:20</p><h3 class="font-bold text-xl mt-1">オープニング & アイスブレイク</h3><p class="text-gray-600 text-sm mt-2">イベントの目的を共有後、すぐにチームで自己紹介。意外な共通点が見つかるかも？</p></div>
+                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white schedule-hover" :class="{'bg-blue-50 shadow-xl': activeStep === 2}"><p class="font-bold text-blue-600">14:20 - 15:45</p><h3 class="font-bold text-xl mt-1">アイデアソン</h3><p class="text-gray-600 text-sm mt-2">個人ワークとチームでの議論を繰り返し、多様な視点を掛け合わせ、1つの事業案を構築します。</p></div>
+                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white schedule-hover" :class="{'bg-blue-50 shadow-xl': activeStep === 3}"><p class="font-bold text-blue-600">15:45 - 16:15</p><h3 class="font-bold text-xl mt-1">1分ピッチ大会</h3><p class="text-gray-600 text-sm mt-2">練り上げた事業案を1分間で熱くプレゼン！会場の熱気は最高潮に。</p></div>
+                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white schedule-hover" :class="{'bg-blue-50 shadow-xl': activeStep === 4}"><p class="font-bold text-blue-600">16:40 - 17:00</p><h3 class="font-bold text-xl mt-1">結果発表（優秀賞・特別賞他）</h3><p class="text-gray-600 text-sm mt-2">学生アンバサダー後援企業様による審査を実施。優勝チームには「日本学生アンバサダー協会公認アンバサダー認定権」を交付、副賞として共催企業様が運営する「InnoCom Square」の利用が可能です！</p>
+                            <div class="mt-4 space-y-2">
+                                <div class="prize-hover p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                                    <p class="font-bold text-yellow-800 text-sm">🏆 優秀賞</p>
+                                    <p class="text-yellow-700 text-xs">日本学生アンバサダー協会公認アンバサダー認定権</p>
+                                </div>
+                                <div class="prize-hover p-3 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                                    <p class="font-bold text-blue-800 text-sm">🎁 副賞</p>
+                                    <p class="text-blue-700 text-xs">InnoCom Square 3rd Lab. 利用権</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white schedule-hover" :class="{'bg-blue-50 shadow-xl': activeStep === 5}"><p class="font-bold text-blue-600">17:00 - 17:30</p><h3 class="font-bold text-xl mt-1">交流会</h3><p class="text-gray-600 text-sm mt-2">今日芽生えた想いを「次の一歩」として宣言。100人の仲間と未来の繋がりを創ろう！</p></div>
                     </div>
                     <div class="hidden md:block sticky top-24 h-[32rem]"><template x-for="(image, index) in images"><img :src="image" alt="Event Scene" class="absolute w-full h-full object-cover rounded-xl shadow-2xl" x-show="activeStep === index" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"></template></div>
+                </div>
+            </section>
+
+            <!-- 会場セクション -->
+            <section id="venue" class="max-w-5xl mx-auto px-4 fade-in-up">
+                <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-12 md:mb-16">会場</h2>
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                        <!-- Googleマップ埋め込み -->
+                        <div class="h-64 lg:h-full">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.1989798898867!2d139.73811537578734!3d35.67210222259025!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188b007b7e4d9f%3A0x7837daad67729144!2z6LWk5Z2C44Kw44Oq44O844Oz44Kv44Ot44K5!5e0!3m2!1sja!2sjp!4v1756060052515!5m2!1sja!2sjp" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                        <!-- 会場情報 -->
+                        <div class="p-8 lg:p-12">
+                            <div class="space-y-6">
+                                <div class="mb-4">
+                                    <img src="https://i.ibb.co/LzprtR2V/logo-inno-black.png" alt="InnoCom Square ロゴ" class="w-full h-auto">
+                                </div>
+                                <!-- 波打つグラデーション区切り線 -->
+                                <div class="mb-6 relative">
+                                    <div class="h-1 bg-gradient-to-r from-blue-700 via-blue-600 to-blue-800 rounded-full overflow-hidden">
+                                        <div class="h-full w-full bg-gradient-to-r from-transparent via-blue-300/40 to-transparent animate-pulse"></div>
+                                    </div>
+                                    <div class="absolute inset-0 h-1 bg-gradient-to-r from-blue-500 via-blue-400 to-blue-600 rounded-full opacity-70 blur-sm animate-pulse"></div>
+                                    <div class="absolute inset-0 h-1 bg-gradient-to-r from-blue-300 via-blue-200 to-blue-400 rounded-full opacity-50 blur-md animate-pulse" style="animation-delay: 0.5s;"></div>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-900 mb-2">所在地</h3>
+                                    <p class="text-gray-600">〒107-0052 東京都港区赤坂2丁目4-6 赤坂グリーンクロス 23F</p>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-900 mb-2">受付時間</h3>
+                                    <p class="text-gray-600">10:00-18:00</p>
+                                    <p class="text-sm text-gray-500 mt-1">定休日：土日祝・夏季休暇・年末年始</p>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-900 mb-2">アクセス</h3>
+                                    <ul class="text-gray-600 space-y-1">
+                                        <li>• 東京メトロ銀座線・南北線「溜池山王駅」直結</li>
+                                        <li>• 丸ノ内線・千代田線「国会議事堂前駅」直結</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold mb-2 bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">InnoCom Squareってどんな場所？</h3>
+                                    <p class="text-gray-600 leading-relaxed">
+                                        「InnoCom Square(イノコム・スクエア)」は、積水ハウス イノベーション＆コミュニケーション株式会社のほか、積水ハウス株式会社の研究・開発担当者などが常駐し、産官学が集う「価値創造の場」です。積水ハウスグループが事業や課題を提示し、スタートアップ企業から提案を募るリバースピッチイベントなども行っております。
+                                    </p>
+                                </div>
+                                <div class="pt-4 space-y-3">
+                                    <a href="https://www.square.innocom.co.jp/about" target="_blank" class="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                                        </svg>
+                                        会場ブランドページ
+                                    </a>
+                                    <a href="https://maps.google.com/?q=赤坂グリーンクロス" target="_blank" class="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        Googleマップで見る
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -303,11 +488,12 @@
                         <dl class="divide-y divide-gray-200 text-base">
                             <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4"><dt class="font-bold text-gray-900">イベント名</dt><dd class="text-gray-700 sm:col-span-2">100 KITEN ― 限界は仲間で超えていく ―</dd></div>
                             <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4"><dt class="font-bold text-gray-900">主催</dt><dd class="text-gray-700 sm:col-span-2">日本学生アンバサダー協会</dd></div>
-                            <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4"><dt class="font-bold text-gray-900">開催日時</dt><dd class="text-gray-700 sm:col-span-2">2025年9月20日（土）14:00〜17:30（受付13:40）</dd></div>
+                            <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4"><dt class="font-bold text-gray-900">開催日時</dt><dd class="text-gray-700 sm:col-span-2">2025年9月20日（土）14:00〜17:30（<span class="font-bold text-blue-600">受付13:40</span>）</dd></div>
                             <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4"><dt class="font-bold text-gray-900">場所</dt><dd class="text-gray-700 sm:col-span-2">InnoCom Square（東京都港区赤坂2-4-6 赤坂グリーンクロス 23F）</dd></div>
                             <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4"><dt class="font-bold text-gray-900">対象</dt><dd class="text-gray-700 sm:col-span-2">大学生（起業／仲間探し／人脈形成に意欲のある方）</dd></div>
-                            <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4"><dt class="font-bold text-gray-900">募集人数</dt><dd class="text-gray-700 sm:col-span-2">100名</dd></div>
-                            <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4"><dt class="font-bold text-gray-900">参加費</dt><dd class="text-gray-700 sm:col-span-2 font-bold text-indigo-600">無料</dd></div>
+                            <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4"><dt class="font-bold text-gray-900">募集定員</dt><dd class="text-gray-700 sm:col-span-2">100名（採用定員：10名程度）</dd></div>
+                            <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4"><dt class="font-bold text-gray-900">参加費</dt><dd class="text-gray-700 sm:col-span-2 font-bold text-blue-600">無料</dd></div>
+                            <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4"><dt class="font-bold text-gray-900">集合場所</dt><dd class="text-gray-700 sm:col-span-2">赤坂グリーンクロス23階</dd></div>
                         </dl>
                     </div>
                 </div>
@@ -324,20 +510,20 @@
             </section>
             
             <section id="sponsors" class="max-w-5xl mx-auto px-4 text-center fade-in-up">
-                <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-16 md:mb-20">主催・共催・後援</h2>
+                <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-16 md:mb-20">運営パートナー</h2>
                 <div class="space-y-16">
                     <!-- 主催・共催 (Side-by-side) -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                         <div>
                             <h3 class="text-xl font-bold text-gray-600 mb-4">主催</h3>
-                            <div class="inline-block">
-                                <img src="https://i.ibb.co/ks5ncT7B/image.webp" alt="日本学生アンバサダー協会 ロゴ" style="height: 80px;">
+                            <div class="hover-lift inline-block">
+                                <img src="https://i.ibb.co/NdzBsBxd/Photoroom.png" alt="日本学生アンバサダー協会 ロゴ" class="judge-logo object-contain">
                             </div>
                         </div>
                         <div>
                             <h3 class="text-xl font-bold text-gray-600 mb-4">共催</h3>
-                            <div class="inline-block bg-white p-4 rounded-lg shadow">
-                                <p class="text-2xl font-black text-gray-800">InnoCom Square 3rd Lab.</p>
+                            <div class="hover-lift inline-block">
+                                <img src="https://i.ibb.co/Dg1p0cLm/3rd-Lab-logo-enhanced.webp" alt="3rd Lab ロゴ" class="judge-logo object-contain">
                             </div>
                         </div>
                     </div>
@@ -347,9 +533,15 @@
                         <h3 class="text-xl font-bold text-gray-600 mb-4">学生アンバサダー後援</h3>
                         <p class="text-sm text-gray-500 max-w-2xl mx-auto mb-8">審査協力企業様はこちらにロゴを掲載</p>
                         <div class="flex justify-center items-center flex-wrap gap-10">
-                            <img src="https://placehold.co/240x100/e2e8f0/334155?text=Sponsor+Company+1" alt="後援企業ロゴ 1" style="height: 80px;">
-                            <img src="https://placehold.co/240x100/e2e8f0/334155?text=Sponsor+Company+2" alt="後援企業ロゴ 2" style="height: 80px;">
-                            <img src="https://placehold.co/240x100/e2e8f0/334155?text=Sponsor+Company+3" alt="後援企業ロゴ 3" style="height: 80px;">
+                            <div class="hover-lift">
+                                <img src="https://placehold.co/200x80/e2e8f0/334155?text=Sponsor+Company+1" alt="後援企業ロゴ 1" class="logo-horizontal-standard">
+                            </div>
+                            <div class="hover-lift">
+                                <img src="https://placehold.co/200x80/e2e8f0/334155?text=Sponsor+Company+2" alt="後援企業ロゴ 2" class="logo-horizontal-standard">
+                            </div>
+                            <div class="hover-lift">
+                                <img src="https://placehold.co/200x80/e2e8f0/334155?text=Sponsor+Company+3" alt="後援企業ロゴ 3" class="logo-horizontal-standard">
+                            </div>
                         </div>
                     </div>
             
@@ -358,9 +550,15 @@
                         <h3 class="text-xl font-bold text-gray-600 mb-4">協力</h3>
                         <p class="text-sm text-gray-500 max-w-2xl mx-auto mb-8">学生団体を中心に集客支援団体はこちらにロゴを掲載</p>
                         <div class="flex justify-center items-center flex-wrap gap-8">
-                            <img src="https://placehold.co/200x80/e2e8f0/334155?text=Student+Group+A" alt="協力団体ロゴ A" style="height: 64px;">
-                            <img src="https://placehold.co/200x80/e2e8f0/334155?text=Student+Group+B" alt="協力団体ロゴ B" style="height: 64px;">
-                            <img src="https://placehold.co/200x80/e2e8f0/334155?text=Student+Group+C" alt="協力団体ロゴ C" style="height: 64px;">
+                            <div class="hover-lift">
+                                <img src="https://placehold.co/160x64/e2e8f0/334155?text=Student+Group+A" alt="協力団体ロゴ A" class="logo-horizontal-small">
+                            </div>
+                            <div class="hover-lift">
+                                <img src="https://placehold.co/160x64/e2e8f0/334155?text=Student+Group+B" alt="協力団体ロゴ B" class="logo-horizontal-small">
+                            </div>
+                            <div class="hover-lift">
+                                <img src="https://placehold.co/160x64/e2e8f0/334155?text=Student+Group+C" alt="協力団体ロゴ C" class="logo-horizontal-small">
+                            </div>
                         </div>
                     </div>
                 </div>
