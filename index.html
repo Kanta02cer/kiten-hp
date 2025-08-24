@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100の -KITEN- Forum | 公式サイト</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Alpine.js for interactivity -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .hero-section {
+            position: relative;
+            background-image: url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(255, 255, 255, 0.8), rgba(240, 242, 245, 0.7));
+            z-index: 1;
+        }
+        .hero-content { position: relative; z-index: 2; }
+        .cta-button {
+            transition: all 0.3s ease;
+            background-image: linear-gradient(to right, #4f46e5 0%, #818cf8 50%, #4f46e5 100%);
+            background-size: 200% auto;
+        }
+        .cta-button:hover {
+            background-position: right center;
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4);
+        }
+        .section-title {
+            border-bottom: 4px solid #facc15; /* Yellow accent */
+            padding-bottom: 0.75rem;
+            display: inline-block;
+        }
+        [x-cloak] { display: none !important; }
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-up.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        nav a:not(.cta-nav) { 
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        nav a:not(.cta-nav)::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #facc15;
+            transition: width 0.3s ease;
+        }
+        nav a:not(.cta-nav):hover::after {
+            width: 100%;
+        }
+        
+        @keyframes float-in {
+            0% { transform: translateY(50px) scale(0.9); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        .hero-logo {
+            animation: float-in 1s ease-out 0.5s forwards;
+            opacity: 0;
+        }
+    </style>
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('timeline', function () {
+                return {
+                    activeStep: 0,
+                    images: [
+                        'https://images.unsplash.com/photo-1556742044-538253a6c97c?q=80&w=2070&auto=format&fit=crop',
+                        'https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=2070&auto=format&fit=crop',
+                        'https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop',
+                        'https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=2070&auto=format&fit=crop',
+                        'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop'
+                    ],
+                    init() {
+                        const observer = new IntersectionObserver((entries) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    this.activeStep = Array.from(this.$el.querySelectorAll('.timeline-item')).indexOf(entry.target);
+                                }
+                            });
+                        }, { threshold: 0.8 });
+
+                        this.$el.querySelectorAll('.timeline-item').forEach(item => {
+                            observer.observe(item);
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+<body class="bg-slate-50 text-gray-800" x-data="{ openMenu: false }">
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-50 bg-white shadow-md" @click.away="openMenu = false">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0">
+                    <a href="#"><img src="https://i.ibb.co/C540m7Lm/2025-08-23-9-20-56.png" alt="KITEN Logo" class="h-10 w-auto"></a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8 font-semibold text-gray-600">
+                    <a href="#about">イベント概要</a>
+                    <a href="#values">得られる価値</a>
+                    <a href="#judges">審査員</a>
+                    <a href="#timeline">当日の流れ</a>
+                    <a href="#faq">FAQ</a>
+                    <a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" class="cta-nav bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 transition-colors shadow-md">無料エントリー</a>
+                </div>
+                <div class="md:hidden"><button @click="openMenu = !openMenu" class="text-gray-700 hover:text-indigo-600 focus:outline-none"><svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg></button></div>
+            </div>
+        </div>
+        <div x-cloak x-show="openMenu" x-transition class="md:hidden bg-white border-t border-gray-200"><a href="#about" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">イベント概要</a><a href="#values" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">得られる価値</a><a href="#judges" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">審査員</a><a href="#timeline" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">当日の流れ</a><a href="#faq" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">FAQ</a><a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-indigo-600 hover:bg-indigo-50">無料エントリー</a></div>
+    </nav>
+
+    <!-- Main Content -->
+    <div x-data="{}" x-init="const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); } }); }, { threshold: 0.1 }); document.querySelectorAll('.fade-in-up').forEach(el => { observer.observe(el); });">
+        <header class="hero-section text-gray-900 text-center py-24 md:py-40 px-4">
+            <div class="hero-content max-w-4xl mx-auto">
+                <h1 class="text-4xl md:text-6xl font-black leading-tight tracking-tight"><span class="block">学生が「企業の顔」となる。</span></h1>
+                <p class="mt-6 text-lg md:text-2xl font-bold text-indigo-700">社会のために本気になれる学生アンバサダーの登竜門「KITEN」</p>
+                <img src="https://i.ibb.co/nNzMYmcs/2025-08-23-9-20-56.png" alt="100の KITEN Forum" class="hero-logo mt-8 w-full max-w-lg mx-auto">
+                <div class="mt-12"><a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" class="cta-button inline-block text-white font-bold text-xl py-4 px-12 rounded-full"><span class="flex items-center justify-center">無料でエントリーする <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></span></a><p class="mt-4 text-sm text-gray-600">参加費無料 | 2025.9.20 (Sat) 開催</p></div>
+            </div>
+        </header>
+
+        <main class="space-y-24 md:space-y-32 py-16 md:py-24">
+            <section class="max-w-4xl mx-auto px-4 text-center fade-in-up">
+                <h3 class="font-serif text-3xl md:text-5xl font-bold leading-relaxed">「<span class="text-indigo-600">一人</span>」の限界を、「<span class="text-indigo-600">仲間</span>」と超える。</h3>
+                <p class="mt-8 text-xl font-semibold">その想い、ここで解き放て。<br>社会を変える「起点」がここにある。</p>
+            </section>
+
+            <section id="values" class="max-w-5xl mx-auto px-4 fade-in-up">
+                <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-12 md:mb-16">このイベントで得られる3つの価値</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2"><h3 class="text-2xl font-black mb-2 text-indigo-900">最高の仲間との出会い</h3><p class="text-gray-600 mt-4">AIがあなたの情熱を解析し、最高のチームをマッチング。新しい出会いが、あなたの可能性を最大化させる。</p></div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2"><h3 class="text-2xl font-black mb-2 text-indigo-900">アイデアを事業へ</h3><p class="text-gray-600 mt-4">アイデアを「絵に描いた餅」で終わらせない。実践的なフレームワークで、実現可能なビジネスプランを構築する。</p></div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2"><h3 class="text-2xl font-black mb-2 text-indigo-900">第一線からの本気のFB</h3><p class="text-gray-600 mt-4">第一線で活躍する経営者や投資家があなたのアイデアに本気で向き合う。忖度なしのフィードバックが、あなたを成長させる。</p></div>
+                </div>
+            </section>
+            
+            <section id="judges" class="max-w-5xl mx-auto px-4 fade-in-up">
+                <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-12 md:mb-16">本気で向き合う豪華審査員</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 max-w-4xl mx-auto">
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center group"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop" alt="審査員A" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover transition-transform duration-300 group-hover:scale-110"><h4 class="font-bold text-lg">審査員 A</h4><p class="text-sm text-indigo-600 font-semibold">「令和の虎」出演社長</p><p class="text-xs text-gray-500 mt-2">株式会社〇〇 代表取締役</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center group"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=800&auto=format&fit=crop" alt="審査員B" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover transition-transform duration-300 group-hover:scale-110"><h4 class="font-bold text-lg">審査員 B</h4><p class="text-sm text-indigo-600 font-semibold">連続起業家</p><p class="text-xs text-gray-500 mt-2">〇〇 Founder & CEO</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center group"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop" alt="審査員C" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover transition-transform duration-300 group-hover:scale-110"><h4 class="font-bold text-lg">審査員 C</h4><p class="text-sm text-indigo-600 font-semibold">VC / 投資家</p><p class="text-xs text-gray-500 mt-2">〇〇キャピタル パートナー</p></div>
+                </div>
+                 <p class="text-center text-sm text-gray-600 mt-6">他、多数の経営者・専門家が参加予定！</p>
+            </section>
+
+            <section id="timeline" class="max-w-7xl mx-auto px-4 fade-in-up" x-data="timeline">
+                <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-12 md:mb-16">当日の流れを体験する</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
+                    <div class="space-y-4">
+                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white" :class="{'bg-indigo-50 shadow-xl': activeStep === 0}"><p class="font-bold text-indigo-600">13:40 - 14:00</p><h3 class="font-bold text-xl mt-1">受付・チーム着席</h3><p class="text-gray-600 text-sm mt-2">AIが決定したチームテーブルへ。アイスブレイクシートを記入しながら仲間を待とう！</p></div>
+                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white" :class="{'bg-indigo-50 shadow-xl': activeStep === 1}"><p class="font-bold text-indigo-600">14:00 - 14:20</p><h3 class="font-bold text-xl mt-1">オープニング & アイスブレイク</h3><p class="text-gray-600 text-sm mt-2">イベントの目的を共有後、すぐにチームで自己紹介。意外な共通点が見つかるかも？</p></div>
+                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white" :class="{'bg-indigo-50 shadow-xl': activeStep === 2}"><p class="font-bold text-indigo-600">14:20 - 15:45</p><h3 class="font-bold text-xl mt-1">アイデアソン</h3><p class="text-gray-600 text-sm mt-2">個人ワークとチームでの議論を繰り返し、多様な視点を掛け合わせ、1つの事業案を構築します。</p></div>
+                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white" :class="{'bg-indigo-50 shadow-xl': activeStep === 3}"><p class="font-bold text-indigo-600">15:45 - 16:15</p><h3 class="font-bold text-xl mt-1">1分ピッチ大会</h3><p class="text-gray-600 text-sm mt-2">練り上げた事業案を1分間で熱くプレゼン！会場の熱気は最高潮に。</p></div>
+                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white" :class="{'bg-indigo-50 shadow-xl': activeStep === 4}"><p class="font-bold text-indigo-600">16:40 - 17:30</p><h3 class="font-bold text-xl mt-1">交流会 & 次の一歩へ</h3><p class="text-gray-600 text-sm mt-2">今日芽生えた想いを「次の一歩」として宣言。100人の仲間と未来の繋がりを創ろう！</p></div>
+                    </div>
+                    <div class="hidden md:block sticky top-24 h-[32rem]"><template x-for="(image, index) in images"><img :src="image" alt="Event Scene" class="absolute w-full h-full object-cover rounded-xl shadow-2xl" x-show="activeStep === index" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"></template></div>
+                </div>
+            </section>
+
+            <section id="about" class="bg-white py-16 md:py-20 fade-in-up">
+                <div class="max-w-5xl mx-auto px-4">
+                    <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-8 md:mb-12">イベント概要</h2>
+                    <div class="max-w-2xl mx-auto bg-slate-50 p-8 rounded-lg">
+                        <dl class="divide-y divide-gray-200 text-base">
+                            <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4"><dt class="font-bold text-gray-900">イベント名</dt><dd class="text-gray-700 sm:col-span-2">100 KITEN ― 限界は仲間で超えていく ―</dd></div>
+                            <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4"><dt class="font-bold text-gray-900">主催</dt><dd class="text-gray-700 sm:col-span-2">日本学生アンバサダー協会</dd></div>
+                            <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4"><dt class="font-bold text-gray-900">開催日時</dt><dd class="text-gray-700 sm:col-span-2">2025年9月20日（土）14:00〜17:30（受付13:40）</dd></div>
+                            <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4"><dt class="font-bold text-gray-900">場所</dt><dd class="text-gray-700 sm:col-span-2">InnoCom Square（東京都港区赤坂2-4-6 赤坂グリーンクロス 23F）</dd></div>
+                            <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4"><dt class="font-bold text-gray-900">対象</dt><dd class="text-gray-700 sm:col-span-2">大学生（起業／仲間探し／人脈形成に意欲のある方）</dd></div>
+                            <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4"><dt class="font-bold text-gray-900">募集人数</dt><dd class="text-gray-700 sm:col-span-2">100名</dd></div>
+                            <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4"><dt class="font-bold text-gray-900">参加費</dt><dd class="text-gray-700 sm:col-span-2 font-bold text-indigo-600">無料</dd></div>
+                        </dl>
+                    </div>
+                </div>
+            </section>
+
+            <section id="faq" class="max-w-4xl mx-auto px-4 fade-in-up">
+                <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-12 md:mb-16">よくある質問</h2>
+                <div class="space-y-4" x-data="{ selected: 1 }">
+                    <div class="bg-white rounded-lg shadow-md faq-item"><button type="button" class="flex items-center justify-between w-full p-6 text-left" @click="selected = (selected === 1 ? null : 1)"><span class="text-lg font-semibold">起業アイデアがなくても参加できますか？</span><svg class="w-5 h-5 text-gray-500 transition-transform flex-shrink-0" :class="{ 'transform rotate-180': selected === 1 }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button><div class="px-6 pb-6" x-show="selected === 1" x-transition><p>はい、もちろんです。社会課題への関心や「何かを始めたい」という熱意があれば大歓迎です。当日はアイデア出しのヒントも提供しますし、チームで協力する中でアイデアは生まれます。</p></div></div>
+                    <div class="bg-white rounded-lg shadow-md faq-item"><button type="button" class="flex items-center justify-between w-full p-6 text-left" @click="selected = (selected === 2 ? null : 2)"><span class="text-lg font-semibold">事前にチームを組む必要はありますか？</span><svg class="w-5 h-5 text-gray-500 transition-transform flex-shrink-0" :class="{ 'transform rotate-180': selected === 2 }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button><div class="px-6 pb-6" x-show="selected === 2" x-transition><p>いいえ、チームは当日、事前アンケートを元にAIが自動でマッチングします。新しい出会いと化学反応をお楽しみください。</p></div></div>
+                    <div class="bg-white rounded-lg shadow-md faq-item"><button type="button" class="flex items-center justify-between w-full p-6 text-left" @click="selected = (selected === 3 ? null : 3)"><span class="text-lg font-semibold">持ち物は何が必要ですか？</span><svg class="w-5 h-5 text-gray-500 transition-transform flex-shrink-0" :class="{ 'transform rotate-180': selected === 3 }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button><div class="px-6 pb-6" x-show="selected === 3" x-transition><p>特別な持ち物は必要ありませんが、アイデアを書き留めるためのノートや筆記用具、名刺（持っている方）などがあると交流がスムーズです。</p></div></div>
+                    <div class="bg-white rounded-lg shadow-md faq-item"><button type="button" class="flex items-center justify-between w-full p-6 text-left" @click="selected = (selected === 4 ? null : 4)"><span class="text-lg font-semibold">アイデアソンやオーディションは初めてで不安です…</span><svg class="w-5 h-5 text-gray-500 transition-transform flex-shrink-0" :class="{ 'transform rotate-180': selected === 4 }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button><div class="px-6 pb-6" x-show="selected === 4" x-transition><p>大丈夫ですよ！当イベントは、学生の「何かを変えないといけない」という漠然とした想いをカタチにする場所です。また当日はメンターや審査企業様からのアドバイスも受けられるように、実際に発表するまでにサポートがあるのでご安心ください。</p></div></div>
+                </div>
+            </section>
+            
+            <section class="max-w-5xl mx-auto px-4 text-center fade-in-up">
+                 <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-12 md:mb-16">共催・協力</h2>
+                 <div class="flex justify-center items-center gap-12">
+                    <div class="text-center">
+                        <p class="font-semibold text-gray-500 mb-2">共催</p>
+                        <img src="https://placehold.co/200x80/e2e8f0/334155?text=InnoCom" alt="InnoCom Logo" class="h-12">
+                    </div>
+                 </div>
+            </section>
+
+            <section id="cta" class="text-center bg-indigo-700 py-16 md:py-20 fade-in-up">
+                <div class="max-w-5xl mx-auto px-4">
+                    <h2 class="text-3xl md:text-4xl font-black text-white">未来を創る挑戦者からのご応募を、<br class="sm:hidden">心よりお待ちしております。</h2>
+                    <div class="mt-8"><a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" class="cta-button inline-block text-white font-bold text-xl py-4 px-12 rounded-full"><span class="flex items-center justify-center">無料でエントリーする <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></span></a><p class="mt-4 text-sm text-indigo-200">定員100名 | 先着順</p></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white text-center py-10 px-4">
+        <p class="font-bold">【主催・お問い合わせ】</p>
+        <p class="mt-2">日本学生アンバサダー協会 KITENフォーラム運営事務局</p>
+        <p class="mt-1 text-sm text-gray-400">イベント責任者: 堀内文翔、内藤瑛人、井上幹太</p>
+        <p class="mt-2 text-sm">連絡先: japan.ambassador.association@gmail.com</p>
+        <p class="mt-6 text-xs text-gray-500">&copy; 2025 Japan Student Ambassador Association. All Rights Reserved.</p>
+    </footer>
+    
+</body>
+</html>
+
