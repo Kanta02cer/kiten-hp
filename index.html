@@ -26,12 +26,22 @@
     <style>
         body { font-family: 'Noto Sans JP', sans-serif; }
         .font-serif { font-family: 'Playfair Display', serif; }
+        
+        /* モバイルファーストのレスポンシブ対応 */
         .hero-section {
             position: relative;
             background-image: url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
+            min-height: 60vh; /* モバイルでの最小高さ */
         }
+        
+        @media (min-width: 768px) {
+            .hero-section {
+                min-height: 80vh; /* デスクトップでの高さ */
+            }
+        }
+        
         .hero-section::before {
             content: '';
             position: absolute;
@@ -40,31 +50,49 @@
             z-index: 1;
         }
         .hero-content { position: relative; z-index: 2; }
+        
+        /* モバイル対応のCTAボタン */
         .cta-button {
             transition: all 0.3s ease;
             background-image: linear-gradient(to right, #4f46e5 0%, #818cf8 50%, #4f46e5 100%);
             background-size: 200% auto;
+            width: 100%; /* モバイルでは全幅 */
+            max-width: 400px; /* 最大幅を設定 */
         }
+        
+        @media (min-width: 768px) {
+            .cta-button {
+                width: auto; /* デスクトップでは自動幅 */
+            }
+        }
+        
         .cta-button:hover {
             background-position: right center;
             transform: translateY(-4px) scale(1.05);
             box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4);
         }
+        
         .section-title {
-            border-bottom: 4px solid #facc15; /* Yellow accent */
+            border-bottom: 4px solid #facc15;
             padding-bottom: 0.75rem;
             display: inline-block;
         }
+        
         [x-cloak] { display: none !important; }
+        
+        /* モバイル対応のフェードインアニメーション */
         .fade-in-up {
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
+        
         .fade-in-up.is-visible {
             opacity: 1;
             transform: translateY(0);
         }
+        
+        /* ナビゲーションの改善 */
         nav a:not(.cta-nav) { 
             position: relative;
             transition: color 0.3s ease;
@@ -91,32 +119,116 @@
         }
         .logo-glow-container {
             position: relative;
-            display: inline-block; /* ロゴのサイズにコンテナを合わせる */
+            display: inline-block;
         }
         .logo-glow-container::before {
             content: '';
             position: absolute;
-            /* ロゴの周囲に-20pxのマージンを設定して、グロー効果の範囲を広げる */
             inset: -20px; 
             background: radial-gradient(circle, rgba(255, 255, 255, 0.6), transparent 70%);
             border-radius: 50%;
             animation: pulse-glow 5s ease-in-out infinite;
-            z-index: -1; /* ロゴの背面に配置 */
+            z-index: -1;
         }
         
-        /* 企業ロゴ用の9:16比率クラス */
+        /* レスポンシブ対応のロゴサイズ */
         .logo-9-16 {
-            width: 72px; /* 9 * 8px = 72px */
-            height: 128px; /* 16 * 8px = 128px */
+            width: 72px;
+            height: 128px;
         }
         
-        /* 企業ロゴ用の16:9比率クラス（横型） */
         .logo-16-9 {
-            width: 144px; /* 16 * 9px = 144px */
-            height: 81px; /* 9 * 9px = 81px */
+            width: 144px;
+            height: 81px;
         }
         
-        /* ホバー効果用の浮き上がりクラス */
+        /* モバイル対応の企業ロゴサイズ */
+        .logo-horizontal-standard {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            aspect-ratio: 5/2;
+        }
+        
+        .logo-horizontal-small {
+            width: 100%;
+            max-width: 160px;
+            height: auto;
+            aspect-ratio: 5/2;
+        }
+        
+        /* 審査員カード用のロゴサイズ - レスポンシブ対応 */
+        .judge-logo {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            aspect-ratio: 8/3;
+        }
+        
+        /* モバイル限定カルーセル用スタイル */
+        .mobile-carousel {
+            display: block;
+        }
+        
+        .desktop-grid {
+            display: none;
+        }
+        
+        @media (min-width: 768px) {
+            .mobile-carousel {
+                display: none;
+            }
+            
+            .desktop-grid {
+                display: block;
+            }
+        }
+        
+        /* カルーセル用のスライドスタイル */
+        .carousel-slide {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            text-align: center;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin: 0 0.5rem;
+            min-height: 500px; /* モバイル版での最小高さを設定 */
+        }
+        
+        @media (max-width: 640px) {
+            .carousel-slide {
+                padding: 1.5rem 0.75rem;
+                min-height: 450px; /* 小さい画面での高さ調整 */
+            }
+        }
+        
+        /* インジケーター用スタイル */
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .carousel-indicator {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            background-color: #d1d5db;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .carousel-indicator.active {
+            background-color: #3b82f6;
+            transform: scale(1.2);
+        }
+        
+        /* ホバー効果の改善 */
         .hover-lift {
             transition: all 0.3s ease;
         }
@@ -125,7 +237,6 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
         
-        /* 審査員カード用のホバー効果 */
         .judge-card-hover {
             transition: all 0.3s ease;
         }
@@ -134,7 +245,6 @@
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
         }
         
-        /* スケジュール項目用のホバー効果 */
         .schedule-hover {
             transition: all 0.3s ease;
         }
@@ -144,7 +254,6 @@
             background-color: #fef3c7;
         }
         
-        /* 賞品用のホバー効果 */
         .prize-hover {
             transition: all 0.3s ease;
         }
@@ -154,43 +263,73 @@
             background-color: #fef3c7;
         }
         
-        /* 企業ロゴ用の横型スタンダードサイズ */
-        .logo-horizontal-standard {
-            width: 200px;
-            height: 80px;
+        /* モバイル対応のグリッドレイアウト */
+        .responsive-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
         }
         
-        /* 協力団体ロゴ用の横型スタンダードサイズ */
-        .logo-horizontal-small {
-            width: 160px;
-            height: 64px;
-        }
-        
-        /* 審査員カード用のロゴサイズ */
-        .judge-logo {
-            width: 400px;
-            height: 150px;
-        }
-        
-        /* レスポンシブ対応のロゴサイズ */
-        @media (max-width: 1300px) {
-            .judge-logo {
-                width: 350px;
-                height: 131px;
+        @media (min-width: 640px) {
+            .responsive-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
             }
         }
         
-        @media (max-width: 1100px) {
-            .judge-logo {
-                width: 300px;
-                height: 113px;
+        @media (min-width: 1024px) {
+            .responsive-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2.5rem;
             }
         }
         
-        @media (max-width: 900px) {
-            .judge-logo {
-                width: 250px;
-                height: 94px;
+        /* モバイル対応のスペーシング */
+        .mobile-spacing {
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        @media (min-width: 768px) {
+            .mobile-spacing {
+                padding: 2rem;
+                margin: 2rem 0;
+            }
+        }
+        
+        /* モバイル対応のフォントサイズ */
+        .mobile-text {
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        
+        @media (min-width: 768px) {
+            .mobile-text {
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+        }
+        
+        /* モバイル対応の画像サイズ */
+        .mobile-image {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            object-fit: cover;
+        }
+        
+        /* モバイル対応のボタンサイズ */
+        .mobile-button {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+        }
+        
+        @media (min-width: 768px) {
+            .mobile-button {
+                width: auto;
+                padding: 1rem 2rem;
+                font-size: 1rem;
             }
         }
     </style>
@@ -237,7 +376,6 @@
                             theme: 'SBIグループ傘下、WEB3事業を手掛けるプロフェッショナルチーム',
                             group: '株式会社DeFimans（SBIグループ）',
                             title: 'Co-Founder / 代表取締役CEO',
-                            // 他の必要なプロパティがあればここに追加
                         },
                     ],
                     // 次のスライドへ
@@ -257,6 +395,86 @@
                             this.activeJudge = (this.activeJudge + 1) % this.judges.length;
                         }, 4000);
                     },
+                    // コンポーネント初期化時にタイマーを開始
+                    init() {
+                        this.resetTimer();
+                    }
+                }
+            });
+
+            // 運営パートナーカルーセルのロジック
+            Alpine.data('sponsorsCarousel', function () {
+                return {
+                    activeSlide: 0,
+                    totalSlides: 3,
+                    timer: null,
+                    
+                    // 次のスライドへ
+                    nextSlide() {
+                        this.activeSlide = (this.activeSlide + 1) % this.totalSlides;
+                        this.resetTimer();
+                    },
+                    
+                    // 前のスライドへ
+                    prevSlide() {
+                        this.activeSlide = (this.activeSlide - 1 + this.totalSlides) % this.totalSlides;
+                        this.resetTimer();
+                    },
+                    
+                    // 特定のスライドへ移動
+                    goToSlide(index) {
+                        this.activeSlide = index;
+                        this.resetTimer();
+                    },
+                    
+                    // タイマーをリセットして再開する
+                    resetTimer() {
+                        clearInterval(this.timer);
+                        this.timer = setInterval(() => {
+                            this.activeSlide = (this.activeSlide + 1) % this.totalSlides;
+                        }, 5000); // 5秒間隔で自動切り替え
+                    },
+                    
+                    // コンポーネント初期化時にタイマーを開始
+                    init() {
+                        this.resetTimer();
+                    }
+                }
+            });
+
+            // 審査員ロゴカルーセルのロジック
+            Alpine.data('judgeLogosCarousel', function () {
+                return {
+                    activeLogoSlide: 0,
+                    totalLogoSlides: 4, // 審査員の数
+                    timer: null,
+                    
+                    // 次のスライドへ
+                    nextLogoSlide() {
+                        this.activeLogoSlide = (this.activeLogoSlide + 1) % this.totalLogoSlides;
+                        this.resetTimer();
+                    },
+                    
+                    // 前のスライドへ
+                    prevLogoSlide() {
+                        this.activeLogoSlide = (this.activeLogoSlide - 1 + this.totalLogoSlides) % this.totalLogoSlides;
+                        this.resetTimer();
+                    },
+                    
+                    // 特定のスライドへ移動
+                    goToLogoSlide(index) {
+                        this.activeLogoSlide = index;
+                        this.resetTimer();
+                    },
+                    
+                    // タイマーをリセットして再開する
+                    resetTimer() {
+                        clearInterval(this.timer);
+                        this.timer = setInterval(() => {
+                            this.activeLogoSlide = (this.activeLogoSlide + 1) % this.totalLogoSlides;
+                        }, 4000); // 4秒間隔で自動切り替え
+                    },
+                    
                     // コンポーネント初期化時にタイマーを開始
                     init() {
                         this.resetTimer();
@@ -299,77 +517,189 @@
     <!-- Navigation Bar -->
     <nav class="sticky top-0 z-50 bg-white shadow-md" @click.away="openMenu = false">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
+            <div class="flex justify-between items-center h-16 md:h-20">
                 <div class="flex-shrink-0">
-                    <a href="#"><img src="https://i.ibb.co/Jj3Rfft4/2025-08-23-9-20-56.webp" alt="KITEN Logo" class="h-10 w-auto"></a>
+                    <a href="#">
+                        <img src="https://i.ibb.co/Jj3Rfft4/2025-08-23-9-20-56.webp" alt="KITEN Logo" class="h-8 md:h-10 w-auto">
+                    </a>
                 </div>
-                <div class="hidden md:flex items-center space-x-8 font-semibold text-gray-600">
+                <div class="hidden md:flex items-center space-x-6 lg:space-x-8 font-semibold text-gray-600">
                     <a href="#about">イベント概要</a>
                     <a href="#values">得られる価値</a>
                     <a href="#judges">審査員</a>
                     <a href="#timeline">当日の流れ</a>
                     <a href="#venue">会場</a>
                     <a href="#faq">FAQ</a>
-                    <a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" class="cta-nav bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 transition-colors shadow-md">無料エントリー</a>
+                    <a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" class="cta-nav bg-indigo-600 text-white px-4 lg:px-5 py-2 rounded-lg hover:bg-indigo-700 transition-colors shadow-md">無料エントリー</a>
                 </div>
-                        <div class="md:hidden"><button @click="openMenu = !openMenu" class="text-gray-700 hover:text-blue-600 focus:outline-none"><svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg></button></div>
+                <div class="md:hidden">
+                    <button @click="openMenu = !openMenu" class="text-gray-700 hover:text-blue-600 focus:outline-none p-2">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
-        <div x-cloak x-show="openMenu" x-transition class="md:hidden bg-white border-t border-gray-200"><a href="#about" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">イベント概要</a><a href="#values" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">得られる価値</a><a href="#judges" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">審査員</a><a href="#timeline" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">当日の流れ</a><a href="#venue" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">会場</a><a href="#faq" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-gray-100">FAQ</a><a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" @click="openMenu = false" class="block py-3 px-4 text-base font-medium text-blue-600 hover:bg-blue-50">無料エントリー</a></div>
+        <!-- モバイルメニュー -->
+        <div x-cloak x-show="openMenu" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform -translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform translate-y-0" x-transition:leave-end="opacity-0 transform -translate-y-2" class="md:hidden bg-white border-t border-gray-200 shadow-lg">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#about" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">イベント概要</a>
+                <a href="#values" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">得られる価値</a>
+                <a href="#judges" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">審査員</a>
+                <a href="#timeline" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">当日の流れ</a>
+                <a href="#venue" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">会場</a>
+                <a href="#faq" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">FAQ</a>
+                <a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-md transition-colors">無料エントリー</a>
+            </div>
+        </div>
     </nav>
 
     <!-- Main Content -->
     <div x-data="{}" x-init="const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); } }); }, { threshold: 0.1 }); document.querySelectorAll('.fade-in-up').forEach(el => { observer.observe(el); });">
-        <header class="hero-section text-gray-900 text-center py-24 md:py-40 px-4">
+        <header class="hero-section text-gray-900 text-center py-16 md:py-24 lg:py-40 px-4">
             <div class="hero-content max-w-4xl mx-auto">
-                <h1 class="text-4xl md:text-6xl font-black leading-tight tracking-tight"><span class="block">学生が「企業の顔」となる。</span></h1>
-                <p class="mt-6 text-lg md:text-2xl font-bold text-blue-700">社会のために本気になれる学生アンバサダーの登竜門「KITEN」</p>
-                <div class="mt-8 logo-glow-container">
-                    <img src="https://i.ibb.co/Jj3Rfft4/2025-08-23-9-20-56.webp" alt="100の KITEN Forum" class="w-full max-w-lg mx-auto">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight">
+                    <span class="block">学生が「企業の顔」となる。</span>
+                </h1>
+                <p class="mt-4 md:mt-6 text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-blue-700">
+                    社会のために本気になれる学生アンバサダーの登竜門「KITEN」
+                </p>
+                <div class="mt-6 md:mt-8 logo-glow-container">
+                    <img src="https://i.ibb.co/Jj3Rfft4/2025-08-23-9-20-56.webp" alt="100の KITEN Forum" class="w-full max-w-sm sm:max-w-md md:max-w-lg mx-auto">
                 </div>
-                <div class="mt-12"><a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" class="cta-button inline-block text-white font-bold text-xl py-4 px-12 rounded-full"><span class="flex items-center justify-center">無料でエントリーする <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></span></a><p class="mt-4 text-sm text-gray-600">参加費無料 | 2025.9.20 (Sat) 開催</p></div>
+                <div class="mt-8 md:mt-12">
+                    <a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" class="cta-button inline-block text-white font-bold text-lg md:text-xl py-3 md:py-4 px-8 md:px-12 rounded-full">
+                        <span class="flex items-center justify-center">
+                            無料でエントリーする 
+                            <svg class="w-5 h-5 md:w-6 md:h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </span>
+                    </a>
+                    <p class="mt-3 md:mt-4 text-xs md:text-sm text-gray-600">参加費無料 | 2025.9.20 (Sat) 開催</p>
+                </div>
             </div>
         </header>
 
-        <main class="space-y-24 md:space-y-32 py-16 md:py-24">
+        <main class="space-y-16 md:space-y-20 lg:space-y-24 py-12 md:py-16 lg:py-24">
             <section class="max-w-4xl mx-auto px-4 text-center fade-in-up">
-                <h3 class="font-serif text-3xl md:text-5xl font-bold leading-relaxed">「<span class="text-blue-600">一人</span>」の限界を、「<span class="text-blue-600">仲間</span>」と超える。</h3>
-                <p class="mt-8 text-xl font-semibold">その想い、ここで解き放て。<br>社会を変える「起点」がここにある。</p>
+                <h3 class="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-relaxed">
+                    「<span class="text-blue-600">一人</span>」の限界を、「<span class="text-blue-600">仲間</span>」と超える。
+                </h3>
+                <p class="mt-6 md:mt-8 text-lg md:text-xl font-semibold">
+                    その想い、ここで解き放て。<br class="hidden sm:block">社会を変える「起点」がここにある。
+                </p>
             </section>
 
             <section id="values" class="max-w-5xl mx-auto px-4 fade-in-up">
-                <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-12 md:mb-16">このイベントで得られる3つの価値</h2>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="bg-white p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2"><h3 class="text-2xl font-black mb-2 text-blue-900">最高の仲間との出会い</h3><p class="text-gray-600 mt-4">AIがあなたの情熱を解析し、最高のチームをマッチング。新しい出会いが、あなたの可能性を最大化させる。</p></div>
-                    <div class="bg-white p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2"><h3 class="text-2xl font-black mb-2 text-blue-900">アイデアを事業へ</h3><p class="text-gray-600 mt-4">アイデアを「絵に描いた餅」で終わらせない。実践的なフレームワークで、実現可能なビジネスプランを構築する。</p></div>
-                    <div class="bg-white p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2"><h3 class="text-2xl font-black mb-2 text-blue-900">第一線からの本気のFB</h3><p class="text-gray-600 mt-4">第一線で活躍する経営者や投資家があなたのアイデアに本気で向き合う。忖度なしのフィードバックが、あなたを成長させる。</p></div>
+                <h2 class="section-title text-2xl sm:text-3xl md:text-4xl font-black text-center mb-8 md:mb-12 lg:mb-16">このイベントで得られる3つの価値</h2>
+                <div class="responsive-grid">
+                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2">
+                        <h3 class="text-xl md:text-2xl font-black mb-2 text-blue-900">最高の仲間との出会い</h3>
+                        <p class="text-gray-600 mt-4 mobile-text">AIがあなたの情熱を解析し、最高のチームをマッチング。新しい出会いが、あなたの可能性を最大化させる。</p>
+                    </div>
+                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2">
+                        <h3 class="text-xl md:text-2xl font-black mb-2 text-blue-900">アイデアを事業へ</h3>
+                        <p class="text-gray-600 mt-4 mobile-text">アイデアを「絵に描いた餅」で終わらせない。実践的なフレームワークで、実現可能なビジネスプランを構築する。</p>
+                    </div>
+                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2">
+                        <h3 class="text-xl md:text-2xl font-black mb-2 text-blue-900">第一線からの本気のFB</h3>
+                        <p class="text-gray-600 mt-4 mobile-text">第一線で活躍する経営者や投資家があなたのアイデアに本気で向き合う。忖度なしのフィードバックが、あなたを成長させる。</p>
+                    </div>
                 </div>
             </section>
             
             <section id="judges" class="max-w-5xl mx-auto px-4 fade-in-up" x-data="judgesCarousel">
                 <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-12 md:mb-16">本気で向き合う豪華審査員</h2>
+                
+                <!-- モバイル限定企業ロゴカルーセル -->
+                <div class="mobile-carousel md:hidden mb-8" x-data="judgeLogosCarousel()">
+                    <div class="relative overflow-hidden">
+                        <div class="flex transition-transform duration-500 ease-in-out" :style="`transform: translateX(-${activeLogoSlide * 100}%)`">
+                            <template x-for="(judge, index) in judges" :key="index">
+                                <div class="carousel-slide w-full flex-shrink-0">
+                                    <div class="text-center space-y-4">
+                                        <!-- 顔写真 -->
+                                        <div class="relative w-32 h-32 mx-auto rounded-full overflow-hidden shadow-lg">
+                                            <img :src="judge.photo" :alt="judge.name" class="w-full h-full object-cover">
+                                        </div>
+                                        
+                                        <!-- 企業ロゴ -->
+                                        <div x-show="judge.logo" class="mb-4">
+                                            <img :src="judge.logo" :alt="judge.group + ' logo'" class="logo-horizontal-standard mx-auto">
+                                        </div>
+                                        
+                                        <!-- テーマ -->
+                                        <p x-show="judge.theme" class="text-blue-600 font-bold text-sm leading-relaxed px-4" x-text="judge.theme"></p>
+                                        
+                                        <!-- 氏名 -->
+                                        <h3 class="text-xl font-black bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent" x-text="judge.name"></h3>
+                                        
+                                        <!-- 英語名 -->
+                                        <p class="text-sm text-gray-500" x-text="judge.nameEn"></p>
+                                        
+                                        <!-- 所属・役職 -->
+                                        <div class="space-y-2">
+                                            <p class="font-bold text-gray-800 text-base" x-text="judge.group"></p>
+                                            <p class="text-gray-600 text-sm" x-text="judge.title"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                        
+                        <!-- ナビゲーションボタン -->
+                        <button @click="prevLogoSlide()" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-all duration-300 z-10">
+                            <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                        <button @click="nextLogoSlide()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-all duration-300 z-10">
+                            <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <!-- インジケーター -->
+                    <div class="carousel-indicators mt-4">
+                        <template x-for="(judge, index) in judges" :key="index">
+                            <button @click="goToLogoSlide(index)" class="carousel-indicator" :class="{ 'active': activeLogoSlide === index }"></button>
+                        </template>
+                    </div>
+                </div>
+                
                 <div class="relative">
                     <div class="overflow-hidden relative h-[36rem] md:h-[32rem]">
                         <template x-for="(judge, index) in judges" :key="index">
                             <div x-show="activeJudge === index" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0 w-full h-full">
                                 <div class="w-full h-full md:grid md:grid-cols-2 md:gap-8 bg-white rounded-xl shadow-2xl overflow-hidden judge-card-hover">
-                                    <div class="relative overflow-hidden">
+                                    <!-- 顔写真エリア -->
+                                    <div class="relative overflow-hidden h-64 md:h-full">
                                         <img :src="judge.photo" :alt="judge.name" class="w-full h-full object-cover">
                                     </div>
-                                    <div class="p-8 flex flex-col justify-end relative h-full">
-                                        <div class="text-left w-full">
-                                            <!-- 企業ロゴを最上部に表示 -->
-                                            <div x-show="judge.logo" class="mb-8 flex justify-center">
+                                    <!-- 情報エリア -->
+                                    <div class="p-6 md:p-8 flex flex-col justify-center relative h-auto md:h-full">
+                                        <div class="text-left w-full space-y-4 md:space-y-6">
+                                            <!-- 企業ロゴを最上部に表示（デスクトップのみ） -->
+                                            <div x-show="judge.logo" class="mb-6 md:mb-8 flex justify-center hidden md:block">
                                                 <img :src="judge.logo" :alt="judge.group + ' logo'" class="judge-logo object-contain">
                                             </div>
-                                            <p x-show="judge.theme" class="text-blue-600 font-bold text-lg leading-relaxed mb-8" x-text="judge.theme"></p>
-                                            <div class="mb-8 space-y-3">
-                                                <p class="font-bold text-gray-800 text-xl" x-text="judge.group"></p>
-                                                <p class="text-gray-600 text-lg" x-text="judge.title"></p>
+                                            
+                                            <!-- テーマ -->
+                                            <p x-show="judge.theme" class="text-blue-600 font-bold text-base md:text-lg leading-relaxed" x-text="judge.theme"></p>
+                                            
+                                            <!-- 所属・役職 -->
+                                            <div class="space-y-2 md:space-y-3">
+                                                <p class="font-bold text-gray-800 text-lg md:text-xl" x-text="judge.group"></p>
+                                                <p class="text-gray-600 text-base md:text-lg" x-text="judge.title"></p>
                                             </div>
+                                            
+                                            <!-- 氏名・英語名 -->
                                             <div>
-                                                <h3 class="text-5xl font-black bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-2" x-text="judge.name"></h3>
-                                                <p class="text-gray-500 text-base" x-text="judge.nameEn"></p>
+                                                <h3 class="text-3xl md:text-5xl font-black bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-2" x-text="judge.name"></h3>
+                                                <p class="text-gray-500 text-sm md:text-base" x-text="judge.nameEn"></p>
                                             </div>
                                         </div>
                                     </div>
@@ -511,75 +841,174 @@
             
             <section id="sponsors" class="max-w-5xl mx-auto px-4 text-center fade-in-up">
                 <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-16 md:mb-20">運営パートナー</h2>
-                <div class="space-y-16">
-                    <!-- 主催・共催 (Side-by-side) -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                        <div>
-                            <h3 class="text-xl font-bold text-gray-600 mb-4">主催</h3>
-                            <div class="hover-lift inline-block">
-                                <img src="https://i.ibb.co/NdzBsBxd/Photoroom.png" alt="日本学生アンバサダー協会 ロゴ" class="judge-logo object-contain">
+                
+                <!-- モバイル限定カルーセル -->
+                <div class="mobile-carousel md:hidden" x-data="sponsorsCarousel()">
+                    <div class="relative overflow-hidden">
+                        <div class="flex transition-transform duration-500 ease-in-out" :style="`transform: translateX(-${activeSlide * 100}%)`">
+                            <!-- 主催・共催スライド -->
+                            <div class="carousel-slide w-full flex-shrink-0">
+                                <div class="space-y-8">
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-600 mb-6">主催・共催</h3>
+                                        <div class="grid grid-cols-1 gap-8">
+                                            <div class="hover-lift">
+                                                <h4 class="text-lg font-semibold text-gray-700 mb-3">主催</h4>
+                                                <img src="https://i.ibb.co/NdzBsBxd/Photoroom.png" alt="日本学生アンバサダー協会 ロゴ" class="logo-horizontal-standard mx-auto">
+                                            </div>
+                                            <div class="hover-lift">
+                                                <h4 class="text-lg font-semibold text-gray-700 mb-3">共催</h4>
+                                                <img src="https://i.ibb.co/Dg1p0cLm/3rd-Lab-logo-enhanced.webp" alt="3rd Lab ロゴ" class="logo-horizontal-standard mx-auto">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 学生アンバサダー後援スライド -->
+                            <div class="carousel-slide w-full flex-shrink-0">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-600 mb-6">学生アンバサダー後援</h3>
+                                    <p class="text-sm text-gray-500 mb-6">審査協力企業様はこちらにロゴを掲載</p>
+                                    <div class="space-y-6">
+                                        <div class="hover-lift">
+                                            <img src="https://placehold.co/200x80/e2e8f0/334155?text=Sponsor+Company+1" alt="後援企業ロゴ 1" class="logo-horizontal-standard mx-auto">
+                                        </div>
+                                        <div class="hover-lift">
+                                            <img src="https://placehold.co/200x80/e2e8f0/334155?text=Sponsor+Company+2" alt="後援企業ロゴ 2" class="logo-horizontal-standard mx-auto">
+                                        </div>
+                                        <div class="hover-lift">
+                                            <img src="https://placehold.co/200x80/e2e8f0/334155?text=Sponsor+Company+3" alt="後援企業ロゴ 3" class="logo-horizontal-standard mx-auto">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 協力団体スライド -->
+                            <div class="carousel-slide w-full flex-shrink-0">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-600 mb-6">協力</h3>
+                                    <p class="text-sm text-gray-500 mb-6">学生団体を中心に集客支援団体はこちらにロゴを掲載</p>
+                                    <div class="space-y-6">
+                                        <div class="hover-lift">
+                                            <img src="https://placehold.co/160x64/e2e8f0/334155?text=Student+Group+A" alt="協力団体ロゴ A" class="logo-horizontal-small mx-auto">
+                                        </div>
+                                        <div class="hover-lift">
+                                            <img src="https://placehold.co/160x64/e2e8f0/334155?text=Student+Group+B" alt="協力団体ロゴ B" class="logo-horizontal-small mx-auto">
+                                        </div>
+                                        <div class="hover-lift">
+                                            <img src="https://placehold.co/160x64/e2e8f0/334155?text=Student+Group+C" alt="協力団体ロゴ C" class="logo-horizontal-small mx-auto">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <h3 class="text-xl font-bold text-gray-600 mb-4">共催</h3>
-                            <div class="hover-lift inline-block">
-                                <img src="https://i.ibb.co/Dg1p0cLm/3rd-Lab-logo-enhanced.webp" alt="3rd Lab ロゴ" class="judge-logo object-contain">
-                            </div>
-                        </div>
+                        
+                        <!-- ナビゲーションボタン -->
+                        <button @click="prevSlide()" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-all duration-300 z-10">
+                            <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                        <button @click="nextSlide()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-all duration-300 z-10">
+                            <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
                     </div>
-            
-                    <!-- 学生アンバサダー後援 -->
-                    <div>
-                        <h3 class="text-xl font-bold text-gray-600 mb-4">学生アンバサダー後援</h3>
-                        <p class="text-sm text-gray-500 max-w-2xl mx-auto mb-8">審査協力企業様はこちらにロゴを掲載</p>
-                        <div class="flex justify-center items-center flex-wrap gap-10">
-                            <div class="hover-lift">
-                                <img src="https://placehold.co/200x80/e2e8f0/334155?text=Sponsor+Company+1" alt="後援企業ロゴ 1" class="logo-horizontal-standard">
+                    
+                    <!-- インジケーター -->
+                    <div class="carousel-indicators mt-6">
+                        <template x-for="(slide, index) in 3" :key="index">
+                            <button @click="goToSlide(index)" class="carousel-indicator" :class="{ 'active': activeSlide === index }"></button>
+                        </template>
+                    </div>
+                </div>
+                
+                <!-- デスクトップ表示（既存のグリッド） -->
+                <div class="desktop-grid hidden md:block">
+                    <div class="space-y-16">
+                        <!-- 主催・共催 (Side-by-side) -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-600 mb-4">主催</h3>
+                                <div class="hover-lift inline-block">
+                                    <img src="https://i.ibb.co/NdzBsBxd/Photoroom.png" alt="日本学生アンバサダー協会 ロゴ" class="judge-logo object-contain">
+                                </div>
                             </div>
-                            <div class="hover-lift">
-                                <img src="https://placehold.co/200x80/e2e8f0/334155?text=Sponsor+Company+2" alt="後援企業ロゴ 2" class="logo-horizontal-standard">
-                            </div>
-                            <div class="hover-lift">
-                                <img src="https://placehold.co/200x80/e2e8f0/334155?text=Sponsor+Company+3" alt="後援企業ロゴ 3" class="logo-horizontal-standard">
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-600 mb-4">共催</h3>
+                                <div class="hover-lift inline-block">
+                                    <img src="https://i.ibb.co/Dg1p0cLm/3rd-Lab-logo-enhanced.webp" alt="3rd Lab ロゴ" class="judge-logo object-contain">
+                                </div>
                             </div>
                         </div>
-                    </div>
-            
-                    <!-- 協力 -->
-                    <div>
-                        <h3 class="text-xl font-bold text-gray-600 mb-4">協力</h3>
-                        <p class="text-sm text-gray-500 max-w-2xl mx-auto mb-8">学生団体を中心に集客支援団体はこちらにロゴを掲載</p>
-                        <div class="flex justify-center items-center flex-wrap gap-8">
-                            <div class="hover-lift">
-                                <img src="https://placehold.co/160x64/e2e8f0/334155?text=Student+Group+A" alt="協力団体ロゴ A" class="logo-horizontal-small">
+                
+                        <!-- 学生アンバサダー後援 -->
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-600 mb-4">学生アンバサダー後援</h3>
+                            <p class="text-sm text-gray-500 max-w-2xl mx-auto mb-8">審査協力企業様はこちらにロゴを掲載</p>
+                            <div class="flex justify-center items-center flex-wrap gap-10">
+                                <div class="hover-lift">
+                                    <img src="https://placehold.co/200x80/e2e8f0/334155?text=Sponsor+Company+1" alt="後援企業ロゴ 1" class="logo-horizontal-standard">
+                                </div>
+                                <div class="hover-lift">
+                                    <img src="https://placehold.co/200x80/e2e8f0/334155?text=Sponsor+Company+2" alt="後援企業ロゴ 2" class="logo-horizontal-standard">
+                                </div>
+                                <div class="hover-lift">
+                                    <img src="https://placehold.co/200x80/e2e8f0/334155?text=Sponsor+Company+3" alt="後援企業ロゴ 3" class="logo-horizontal-standard">
+                                </div>
                             </div>
-                            <div class="hover-lift">
-                                <img src="https://placehold.co/160x64/e2e8f0/334155?text=Student+Group+B" alt="協力団体ロゴ B" class="logo-horizontal-small">
-                            </div>
-                            <div class="hover-lift">
-                                <img src="https://placehold.co/160x64/e2e8f0/334155?text=Student+Group+C" alt="協力団体ロゴ C" class="logo-horizontal-small">
+                        </div>
+                
+                        <!-- 協力 -->
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-600 mb-4">協力</h3>
+                            <p class="text-sm text-gray-500 max-w-2xl mx-auto mb-8">学生団体を中心に集客支援団体はこちらにロゴを掲載</p>
+                            <div class="flex justify-center items-center flex-wrap gap-8">
+                                <div class="hover-lift">
+                                    <img src="https://placehold.co/160x64/e2e8f0/334155?text=Student+Group+A" alt="協力団体ロゴ A" class="logo-horizontal-small">
+                                </div>
+                                <div class="hover-lift">
+                                    <img src="https://placehold.co/160x64/e2e8f0/334155?text=Student+Group+B" alt="協力団体ロゴ B" class="logo-horizontal-small">
+                                </div>
+                                <div class="hover-lift">
+                                    <img src="https://placehold.co/160x64/e2e8f0/334155?text=Student+Group+C" alt="協力団体ロゴ C" class="logo-horizontal-small">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section id="cta" class="text-center bg-indigo-700 py-16 md:py-20 fade-in-up">
+            <section id="cta" class="text-center bg-indigo-700 py-12 md:py-16 lg:py-20 fade-in-up">
                 <div class="max-w-5xl mx-auto px-4">
-                    <h2 class="text-3xl md:text-4xl font-black text-white">未来を創る挑戦者からのご応募を、<br class="sm-hidden">心よりお待ちしております。</h2>
-                    <div class="mt-8"><a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" class="cta-button inline-block text-white font-bold text-xl py-4 px-12 rounded-full"><span class="flex items-center justify-center">無料でエントリーする <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></span></a><p class="mt-4 text-sm text-indigo-200">定員100名 | 先着順</p></div>
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-white">
+                        未来を創る挑戦者からのご応募を、<br class="hidden sm:block">心よりお待ちしております。
+                    </h2>
+                    <div class="mt-6 md:mt-8">
+                        <a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" class="cta-button inline-block text-white font-bold text-lg md:text-xl py-3 md:py-4 px-8 md:px-12 rounded-full">
+                            <span class="flex items-center justify-center">
+                                無料でエントリーする 
+                                <svg class="w-5 h-5 md:w-6 md:h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                                </svg>
+                            </span>
+                        </a>
+                        <p class="mt-3 md:mt-4 text-sm md:text-base text-indigo-200">定員100名 | 先着順</p>
+                    </div>
                 </div>
             </section>
         </main>
     </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white text-center py-10 px-4">
-        <p class="font-bold">【主催・お問い合わせ】</p>
-        <p class="mt-2">日本学生アンバサダー協会 KITENフォーラム運営事務局</p>
-        <p class="mt-1 text-sm text-gray-400">イベント責任者: 堀内文翔、内藤瑛人、井上幹太</p>
-        <p class="mt-2 text-sm">連絡先: japan.ambassador.association@gmail.com</p>
-        <p class="mt-6 text-xs text-gray-500">&copy; 2025 Japan Student Ambassador Association. All Rights Reserved.</p>
+    <footer class="bg-gray-900 text-white text-center py-8 md:py-10 px-4">
+        <p class="font-bold text-sm md:text-base">【主催・お問い合わせ】</p>
+        <p class="mt-2 text-sm md:text-base">日本学生アンバサダー協会 KITENフォーラム運営事務局</p>
+        <p class="mt-1 text-xs md:text-sm text-gray-400">イベント責任者: 堀内文翔、内藤瑛人、井上幹太</p>
+        <p class="mt-2 text-xs md:text-sm">連絡先: japan.ambassador.association@gmail.com</p>
+        <p class="mt-4 md:mt-6 text-xs text-gray-500">&copy; 2025 Japan Student Ambassador Association. All Rights Reserved.</p>
     </footer>
     
 </body>
