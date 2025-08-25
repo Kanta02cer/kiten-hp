@@ -153,15 +153,15 @@
         /* モバイル版審査員カルーセル用の柔軟なロゴサイズ */
         .mobile-judge-logo {
             width: 100%;
-            max-width: 180px;
+            max-width: 240px; /* 横幅を拡大 */
             height: auto;
-            aspect-ratio: auto;
+            aspect-ratio: 16/9; /* 16:9の比率に変更 */
             object-fit: contain;
         }
         
         @media (max-width: 480px) {
             .mobile-judge-logo {
-                max-width: 160px;
+                max-width: 200px; /* 小画面でも横幅を拡大 */
             }
         }
         
@@ -290,19 +290,19 @@
             border-radius: 1rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             margin: 0 0.5rem;
-            min-height: 500px; /* コンパクト化に合わせて高さを調整 */
+            min-height: 520px; /* 拡大されたロゴに合わせて高さを調整 */
         }
         
         @media (max-width: 640px) {
             .carousel-slide {
                 padding: 1.5rem 0.75rem;
-                min-height: 450px; /* 小さい画面での高さ調整 */
+                min-height: 470px; /* 小さい画面での高さ調整 */
             }
         }
         
         @media (max-width: 480px) {
             .carousel-slide {
-                min-height: 400px; /* さらに小さい画面での高さ調整 */
+                min-height: 420px; /* さらに小さい画面での高さ調整 */
                 padding: 1rem 0.5rem;
             }
         }
