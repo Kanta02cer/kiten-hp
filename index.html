@@ -150,6 +150,21 @@
             aspect-ratio: 5/2;
         }
         
+        /* モバイル版審査員カルーセル用の柔軟なロゴサイズ */
+        .mobile-judge-logo {
+            width: 100%;
+            max-width: 180px;
+            height: auto;
+            aspect-ratio: auto;
+            object-fit: contain;
+        }
+        
+        @media (max-width: 480px) {
+            .mobile-judge-logo {
+                max-width: 160px;
+            }
+        }
+        
         .logo-horizontal-small {
             width: 100%;
             max-width: 160px;
@@ -275,19 +290,19 @@
             border-radius: 1rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             margin: 0 0.5rem;
-            min-height: 600px; /* モバイル版での最小高さを増加 */
+            min-height: 500px; /* コンパクト化に合わせて高さを調整 */
         }
         
         @media (max-width: 640px) {
             .carousel-slide {
                 padding: 1.5rem 0.75rem;
-                min-height: 550px; /* 小さい画面での高さ調整 */
+                min-height: 450px; /* 小さい画面での高さ調整 */
             }
         }
         
         @media (max-width: 480px) {
             .carousel-slide {
-                min-height: 500px; /* さらに小さい画面での高さ調整 */
+                min-height: 400px; /* さらに小さい画面での高さ調整 */
                 padding: 1rem 0.5rem;
             }
         }
@@ -381,6 +396,30 @@
                 padding: 2rem;
                 margin: 2rem 0;
             }
+        }
+        
+        /* テーマ表示の最適化 */
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* モバイル版カルーセルの最適化 */
+        .mobile-judge-carousel {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 1rem;
+            padding: 1rem;
+        }
+        
+        .mobile-judge-photo {
+            transition: transform 0.3s ease;
+        }
+        
+        .mobile-judge-photo:hover {
+            transform: scale(1.05);
         }
     </style>
     <script>
@@ -522,7 +561,7 @@
                         clearInterval(this.timer);
                         this.timer = setInterval(() => {
                             this.activeLogoSlide = (this.activeLogoSlide + 1) % this.totalLogoSlides;
-                        }, 4000); // 4秒間隔で自動切り替え
+                        }, 3500); // 3.5秒間隔で自動切り替え（より快適な速度）
                     },
                     
                     // コンポーネント初期化時にタイマーを開始
@@ -665,51 +704,41 @@
                 
                 <!-- モバイル限定企業ロゴカルーセル -->
                 <div class="mobile-carousel md:hidden mb-8" x-data="judgeLogosCarousel()">
-                    <div class="relative overflow-hidden">
+                    <div class="relative overflow-hidden mobile-judge-carousel">
                         <div class="flex transition-transform duration-500 ease-in-out" :style="`transform: translateX(-${activeLogoSlide * 100}%)`">
                             <template x-for="(judge, index) in judges" :key="index">
                                 <div class="carousel-slide w-full flex-shrink-0">
-                                    <div class="text-center space-y-4">
-                                        <!-- 顔写真 -->
-                                        <div class="relative w-32 h-32 mx-auto rounded-full overflow-hidden shadow-lg">
+                                    <div class="text-center space-y-3">
+                                        <!-- 顔写真（コンパクト化） -->
+                                        <div class="relative w-24 h-24 mx-auto rounded-full overflow-hidden shadow-lg border-2 border-blue-100 mobile-judge-photo">
                                             <img :src="judge.photo" :alt="judge.name" class="w-full h-full object-cover">
                                         </div>
                                         
-                                        <!-- 企業ロゴ -->
-                                        <div x-show="judge.logo" class="mb-4">
-                                            <img :src="judge.logo" :alt="judge.group + ' logo'" class="logo-horizontal-standard mx-auto">
+                                        <!-- 企業ロゴ（柔軟な横幅） -->
+                                        <div x-show="judge.logo" class="mb-2">
+                                            <img :src="judge.logo" :alt="judge.group + ' logo'" class="mobile-judge-logo mx-auto">
                                         </div>
                                         
-                                        <!-- テーマ -->
-                                        <p x-show="judge.theme" class="text-blue-600 font-bold text-sm leading-relaxed px-4" x-text="judge.theme"></p>
-                                        
-                                        <!-- 氏名 -->
-                                        <h3 class="text-xl font-black bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent" x-text="judge.name"></h3>
+                                        <!-- 氏名（強調表示） -->
+                                        <h3 class="text-lg font-black bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent" x-text="judge.name"></h3>
                                         
                                         <!-- 英語名 -->
-                                        <p class="text-sm text-gray-500" x-text="judge.nameEn"></p>
+                                        <p class="text-xs text-gray-500" x-text="judge.nameEn"></p>
                                         
-                                        <!-- 所属・役職 -->
-                                        <div class="space-y-2">
-                                            <p class="font-bold text-gray-800 text-base" x-text="judge.group"></p>
-                                            <p class="text-gray-600 text-sm" x-text="judge.title"></p>
+                                        <!-- 所属・役職（詳細表示） -->
+                                        <div class="space-y-1 px-2">
+                                            <p class="font-bold text-gray-800 text-sm" x-text="judge.group"></p>
+                                            <p class="text-gray-600 text-xs" x-text="judge.title"></p>
+                                        </div>
+                                        
+                                        <!-- テーマ（要約版） -->
+                                        <div x-show="judge.theme" class="mt-3 px-3">
+                                            <p class="text-blue-600 font-semibold text-xs leading-tight line-clamp-3" x-text="judge.theme"></p>
                                         </div>
                                     </div>
                                 </div>
                             </template>
                         </div>
-                        
-                        <!-- ナビゲーションボタン -->
-                        <button @click="prevLogoSlide()" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-all duration-300 z-10">
-                            <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                            </svg>
-                        </button>
-                        <button @click="nextLogoSlide()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-all duration-300 z-10">
-                            <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </button>
                     </div>
                     
                     <!-- インジケーター -->
