@@ -165,6 +165,85 @@
             aspect-ratio: 8/3;
         }
         
+        /* 審査員カードの情報エリア最適化 */
+        .judge-info-area {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            height: 100%;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 #f1f5f9;
+        }
+        
+        .judge-info-area::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .judge-info-area::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+        
+        .judge-info-area::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        
+        .judge-info-area::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        /* モバイル版での審査員カード最適化 */
+        @media (max-width: 768px) {
+            .judge-card-mobile {
+                min-height: auto;
+                height: auto;
+                overflow: visible;
+            }
+            
+            .judge-info-mobile {
+                padding: 1rem;
+                space-y: 0.75rem;
+            }
+        }
+        
+        /* モバイル対応のフォントサイズ */
+        .mobile-text {
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        
+        @media (min-width: 768px) {
+            .mobile-text {
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+        }
+        
+        /* モバイル対応の画像サイズ */
+        .mobile-image {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            object-fit: cover;
+        }
+        
+        /* モバイル対応のボタンサイズ */
+        .mobile-button {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+        }
+        
+        @media (min-width: 768px) {
+            .mobile-button {
+                width: auto;
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+        }
+        
         /* モバイル限定カルーセル用スタイル */
         .mobile-carousel {
             display: block;
@@ -196,13 +275,20 @@
             border-radius: 1rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             margin: 0 0.5rem;
-            min-height: 500px; /* モバイル版での最小高さを設定 */
+            min-height: 600px; /* モバイル版での最小高さを増加 */
         }
         
         @media (max-width: 640px) {
             .carousel-slide {
                 padding: 1.5rem 0.75rem;
-                min-height: 450px; /* 小さい画面での高さ調整 */
+                min-height: 550px; /* 小さい画面での高さ調整 */
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .carousel-slide {
+                min-height: 500px; /* さらに小さい画面での高さ調整 */
+                padding: 1rem 0.5rem;
             }
         }
         
@@ -294,42 +380,6 @@
             .mobile-spacing {
                 padding: 2rem;
                 margin: 2rem 0;
-            }
-        }
-        
-        /* モバイル対応のフォントサイズ */
-        .mobile-text {
-            font-size: 0.875rem;
-            line-height: 1.5;
-        }
-        
-        @media (min-width: 768px) {
-            .mobile-text {
-                font-size: 1rem;
-                line-height: 1.6;
-            }
-        }
-        
-        /* モバイル対応の画像サイズ */
-        .mobile-image {
-            width: 100%;
-            height: auto;
-            max-width: 100%;
-            object-fit: cover;
-        }
-        
-        /* モバイル対応のボタンサイズ */
-        .mobile-button {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            font-size: 0.875rem;
-        }
-        
-        @media (min-width: 768px) {
-            .mobile-button {
-                width: auto;
-                padding: 1rem 2rem;
-                font-size: 1rem;
             }
         }
     </style>
@@ -671,7 +721,7 @@
                 </div>
                 
                 <div class="relative">
-                    <div class="overflow-hidden relative h-[36rem] md:h-[32rem]">
+                    <div class="overflow-hidden relative h-auto md:h-[32rem]">
                         <template x-for="(judge, index) in judges" :key="index">
                             <div x-show="activeJudge === index" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0 w-full h-full">
                                 <div class="w-full h-full md:grid md:grid-cols-2 md:gap-8 bg-white rounded-xl shadow-2xl overflow-hidden judge-card-hover">
@@ -680,26 +730,26 @@
                                         <img :src="judge.photo" :alt="judge.name" class="w-full h-full object-cover">
                                     </div>
                                     <!-- 情報エリア -->
-                                    <div class="p-6 md:p-8 flex flex-col justify-center relative h-auto md:h-full">
+                                    <div class="p-6 md:p-8 flex flex-col justify-start md:justify-center relative h-auto md:h-full overflow-y-auto judge-info-area">
                                         <div class="text-left w-full space-y-4 md:space-y-6">
                                             <!-- 企業ロゴを最上部に表示（デスクトップのみ） -->
-                                            <div x-show="judge.logo" class="mb-6 md:mb-8 flex justify-center hidden md:block">
+                                            <div x-show="judge.logo" class="mb-4 md:mb-6 flex justify-center hidden md:block">
                                                 <img :src="judge.logo" :alt="judge.group + ' logo'" class="judge-logo object-contain">
                                             </div>
                                             
                                             <!-- テーマ -->
-                                            <p x-show="judge.theme" class="text-blue-600 font-bold text-base md:text-lg leading-relaxed" x-text="judge.theme"></p>
+                                            <p x-show="judge.theme" class="text-blue-600 font-bold text-sm md:text-lg leading-relaxed" x-text="judge.theme"></p>
                                             
                                             <!-- 所属・役職 -->
                                             <div class="space-y-2 md:space-y-3">
-                                                <p class="font-bold text-gray-800 text-lg md:text-xl" x-text="judge.group"></p>
-                                                <p class="text-gray-600 text-base md:text-lg" x-text="judge.title"></p>
+                                                <p class="font-bold text-gray-800 text-base md:text-xl" x-text="judge.group"></p>
+                                                <p class="text-gray-600 text-sm md:text-lg" x-text="judge.title"></p>
                                             </div>
                                             
                                             <!-- 氏名・英語名 -->
                                             <div>
-                                                <h3 class="text-3xl md:text-5xl font-black bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-2" x-text="judge.name"></h3>
-                                                <p class="text-gray-500 text-sm md:text-base" x-text="judge.nameEn"></p>
+                                                <h3 class="text-2xl md:text-5xl font-black bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-2" x-text="judge.name"></h3>
+                                                <p class="text-gray-500 text-xs md:text-base" x-text="judge.nameEn"></p>
                                             </div>
                                         </div>
                                     </div>
