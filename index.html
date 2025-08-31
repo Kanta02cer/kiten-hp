@@ -27,6 +27,46 @@
         body { font-family: 'Noto Sans JP', sans-serif; }
         .font-serif { font-family: 'Playfair Display', serif; }
         
+        /* パララックススクロール効果 */
+        .parallax-section {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        /* 3Dカード効果 */
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .card-3d:hover {
+            transform: rotateY(10deg) rotateX(5deg) translateZ(20px);
+        }
+        
+        /* マイクロインタラクション */
+        .micro-interaction {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .micro-interaction:hover {
+            transform: scale(1.02);
+            filter: brightness(1.05);
+        }
+        
+        /* グラデーションアニメーション */
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .animated-gradient {
+            background: linear-gradient(-45deg, #1e40af, #3b82f6, #60a5fa, #93c5fd);
+            background-size: 400% 400%;
+            animation: gradient-shift 15s ease infinite;
+        }
+        
         /* モバイルファーストのレスポンシブ対応 */
         .hero-section {
             position: relative;
@@ -220,6 +260,33 @@
                 padding: 1rem;
                 space-y: 0.75rem;
             }
+        }
+        
+        /* カラーパレット最適化 */
+        :root {
+            --primary-blue: #1e40af;
+            --secondary-blue: #3b82f6;
+            --accent-blue: #60a5fa;
+            --light-blue: #93c5fd;
+            --dark-blue: #1e3a8a;
+            --gradient-blue: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue), var(--accent-blue));
+        }
+        
+        /* ダークモード対応 */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #0f172a;
+                --bg-secondary: #1e293b;
+                --text-primary: #f8fafc;
+                --text-secondary: #cbd5e1;
+            }
+        }
+        
+        /* アクセシビリティを考慮したコントラスト調整 */
+        .high-contrast {
+            background: var(--gradient-blue);
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
         
         /* モバイル対応のフォントサイズ */
@@ -422,6 +489,207 @@
         }
     </style>
     <script>
+        // リアルタイムサイトアクセス数カウンター機能
+        let pageViewCount = 0;
+        let isCountingUp = false;
+        
+        // サーバーから現在のサイトアクセス数を取得
+        async function fetchCurrentCount() {
+            try {
+                const response = await fetch('counter.php');
+                const data = await response.json();
+                if (data.success) {
+                    pageViewCount = data.count;
+                    updatePageViewDisplay();
+                }
+            } catch (error) {
+                console.error('サイトアクセス数の取得に失敗しました:', error);
+                // フォールバック: ローカルストレージから取得
+                const stored = localStorage.getItem('kitenPageViews');
+                if (stored) {
+                    pageViewCount = parseInt(stored);
+                } else {
+                    pageViewCount = 67;
+                }
+                updatePageViewDisplay();
+            }
+        }
+        
+        // サーバーにサイトアクセス数を送信
+        async function incrementServerCount() {
+            try {
+                const response = await fetch('counter.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                const data = await response.json();
+                if (data.success) {
+                    pageViewCount = data.count;
+                    updatePageViewDisplay();
+                }
+            } catch (error) {
+                console.error('サイトアクセス数の更新に失敗しました:', error);
+                // フォールバック: ローカルでカウントアップ
+                pageViewCount++;
+                updatePageViewDisplay();
+                localStorage.setItem('kitenPageViews', pageViewCount.toString());
+            }
+        }
+        
+        // 数字が捲られる演出付きでカウントアップ表示
+        function animateCountUp(targetCount, duration = 2000) {
+            if (isCountingUp) return;
+            isCountingUp = true;
+            
+            const startCount = 0;
+            const startTime = Date.now();
+            
+            function updateCount() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // イージング関数（easeOutQuart）
+                const easeProgress = 1 - Math.pow(1 - progress, 4);
+                const currentCount = Math.floor(startCount + (targetCount - startCount) * easeProgress);
+                
+                updateDisplayWithCount(currentCount);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateCount);
+                } else {
+                    updateDisplayWithCount(targetCount);
+                    isCountingUp = false;
+                }
+            }
+            
+            requestAnimationFrame(updateCount);
+        }
+        
+        // リアルタイム更新時のアニメーション効果
+        function animateRealTimeUpdate(newCount) {
+            const viewCountElement = document.getElementById('pageViewCount');
+            if (viewCountElement) {
+                // 現在の数値から新しい数値まで小さなアニメーション
+                const currentCount = parseInt(viewCountElement.textContent);
+                const difference = newCount - currentCount;
+                
+                if (difference > 0) {
+                    // 数値が増加した場合のアニメーション
+                    viewCountElement.style.transform = 'scale(1.1)';
+                    viewCountElement.style.color = '#10b981'; // 緑色に一時変更
+                    
+                    setTimeout(() => {
+                        viewCountElement.style.transform = 'scale(1)';
+                        viewCountElement.style.color = '#2563eb'; // 元の青色に戻す
+                    }, 300);
+                }
+            }
+        }
+        
+        // 指定された数値で表示を更新
+        function updateDisplayWithCount(count) {
+            const viewCountElement = document.getElementById('pageViewCount');
+            if (viewCountElement) {
+                viewCountElement.textContent = count;
+            }
+            
+            const shareViewCountElement = document.getElementById('sharePageViewCount');
+            if (shareViewCountElement) {
+                shareViewCountElement.textContent = count;
+            }
+        }
+        
+        // サイトアクセス数を更新して表示
+        function updatePageViewDisplay() {
+            const viewCountElement = document.getElementById('pageViewCount');
+            if (viewCountElement) {
+                // リアルタイム更新時のアニメーション効果を適用
+                animateRealTimeUpdate(pageViewCount);
+                viewCountElement.textContent = pageViewCount;
+            }
+            
+            // シェア用テキスト例のサイトアクセス数も更新
+            const shareViewCountElement = document.getElementById('sharePageViewCount');
+            if (shareViewCountElement) {
+                shareViewCountElement.textContent = pageViewCount;
+            }
+        }
+        
+        // SNSシェア機能
+        function shareToX() {
+            const text = `🚀 学生が「企業の顔」となる。社会のために本気になれる学生アンバサダーの登竜門「KITEN」に参加しませんか？\n\n📅 2025年9月20日（土）\n📍 InnoCom Square（東京・赤坂）\n💰 参加費無料\n\n現在${pageViewCount}名がサイトにアクセス済み！🔥\n\n#KITEN #学生起業 #アイデアソン #100のKITEN`;
+            const url = 'https://forms.gle/9zSvkXV1htCYJ8h47';
+            const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+            window.open(shareUrl, '_blank', 'width=600,height=400');
+        }
+        
+        function shareToInstagram() {
+            // InstagramのWebシェアは制限があるため、コピー機能を提供
+            const text = `🚀 学生が「企業の顔」となる。社会のために本気になれる学生アンバサダーの登竜門「KITEN」に参加しませんか？
+
+📅 2025年9月20日（土）
+📍 InnoCom Square（東京・赤坂）
+💰 参加費無料
+
+現在${pageViewCount}名がサイトにアクセス済み！🔥
+
+申し込みフォーム: https://forms.gle/9zSvkXV1htCYJ8h47
+
+#KITEN #学生起業 #アイデアソン #100のKITEN`;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Instagram用のテキストをコピーしました！\n\nInstagramアプリでストーリーや投稿に貼り付けてください。');
+            }).catch(() => {
+                // フォールバック
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                textArea.remove();
+                alert('Instagram用のテキストをコピーしました！\n\nInstagramアプリでストーリーや投稿に貼り付けてください。');
+            });
+        }
+        
+        function shareToLINE() {
+            const text = `🚀 学生が「企業の顔」となる。社会のために本気になれる学生アンバサダーの登竜門「KITEN」に参加しませんか？
+
+📅 2025年9月20日（土）14:00-17:30
+📍 InnoCom Square（東京・赤坂）
+💰 参加費無料
+👥 定員100名（現在${pageViewCount}名がサイトにアクセス済み！）
+
+🎯 アイデアソン、1分ピッチ大会、豪華審査員からのフィードバック！
+
+申し込みフォーム: https://forms.gle/9zSvkXV1htCYJ8h47
+
+#KITEN #学生起業 #アイデアソン #100のKITEN`;
+            
+            const lineUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent('https://forms.gle/9zSvkXV1htCYJ8h47')}&text=${encodeURIComponent(text)}`;
+            window.open(lineUrl, '_blank', 'width=600,height=400');
+        }
+        
+        // ページ読み込み時の初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            // サーバーから現在のサイトアクセス数を取得
+            fetchCurrentCount().then(() => {
+                // サイトアクセス数が捲られる演出を開始
+                animateCountUp(pageViewCount, 2500);
+                
+                // サーバーにサイトアクセス数を送信（このページにアクセスしたことを記録）
+                setTimeout(() => {
+                    incrementServerCount();
+                }, 1000);
+            });
+            
+            // リアルタイム更新（15秒ごと）
+            setInterval(() => {
+                fetchCurrentCount();
+            }, 15000);
+        });
+        
         document.addEventListener('alpine:init', () => {
             // 審査員カルーセルのロジック
             Alpine.data('judgesCarousel', function () {
@@ -448,13 +716,13 @@
                             title: '代表取締役 CEO',
                         },
                         {
-                            logo: 'https://placehold.co/400x150/e2e8f0/334155?text=Tech+Ventures',
-                            name: '鈴木 一郎',
-                            nameEn: 'Ichiro Suzuki',
-                            photo: 'https://i.ibb.co/ZRzyCbfT/Image-fx-2.webp',
-                            theme: 'テクノロジーと共感を融合させるシリアルアントレプレナー',
-                            group: 'Tech Ventures',
-                            title: 'Founder & General Partner',
+                            logo: 'https://i.ibb.co/tw8zhx9Z/scd-logo-1.png',
+                            name: '小寺 崇士',
+                            nameEn: 'Takashi Kotera',
+                            photo: 'https://i.ibb.co/ZRYR170L/Beauty-Plus-Image-Enhancer-1756552587673.jpg',
+                            theme: 'デジタル技術で社会課題を解決し、持続可能な未来を創造する',
+                            group: 'SCデジタル株式会社（住友商事）',
+                            title: '営業・コンサルティング本部長 執行役員',
                         },
                         {
                             logo: 'https://i.ibb.co/27CTt3G0/De-Fimans-logo-landscape-black.png',
@@ -580,6 +848,7 @@
                     <a href="#timeline">当日の流れ</a>
                     <a href="#venue">会場</a>
                     <a href="#faq">FAQ</a>
+                    <a href="#share">シェア</a>
                     <a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" class="cta-nav bg-indigo-600 text-white px-4 lg:px-5 py-2 rounded-lg hover:bg-indigo-700 transition-colors shadow-md">無料エントリー</a>
                 </div>
                 <div class="md:hidden">
@@ -600,14 +869,15 @@
                 <a href="#timeline" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">当日の流れ</a>
                 <a href="#venue" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">会場</a>
                 <a href="#faq" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">FAQ</a>
-                <a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-md transition-colors">無料エントリー</a>
+                <a href="#share" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">シェア</a>
+                <a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-blue-600 hover:bg-blue-50 hover:bg-blue-50 hover:text-blue-700 rounded-md transition-colors">無料エントリー</a>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
     <div x-data="{}" x-init="const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); } }); }, { threshold: 0.1 }); document.querySelectorAll('.fade-in-up').forEach(el => { observer.observe(el); });">
-        <header class="hero-section text-gray-900 text-center py-16 md:py-24 lg:py-40 px-4">
+        <header class="hero-section parallax-section text-gray-900 text-center py-16 md:py-24 lg:py-40 px-4">
             <div class="hero-content max-w-4xl mx-auto">
                 <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight">
                     <span class="block">学生が「企業の顔」となる。</span>
@@ -616,7 +886,17 @@
                     社会のために本気になれる学生アンバサダーの登竜門「KITEN」
                 </p>
                 <div class="mt-6 md:mt-8 logo-glow-container">
-                    <img src="https://i.ibb.co/Jj3Rfft4/2025-08-23-9-20-56.webp" alt="100の KITEN Forum" class="w-full max-w-sm sm:max-w-md md:max-w-lg mx-auto">
+                    <div class="relative group cursor-pointer" x-data="{ isHovered: false }" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+                        <img src="https://i.ibb.co/Jj3Rfft4/2025-08-23-9-20-56.webp" alt="100の KITEN Forum" 
+                             class="w-full max-w-sm sm:max-w-md md:max-w-lg mx-auto transition-all duration-700"
+                             :class="isHovered ? 'scale-110 rotate-3' : 'scale-100 rotate-0'">
+                        <!-- 3D効果の影 -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-xl transition-all duration-700"
+                             :class="isHovered ? 'scale-125 opacity-80' : 'scale-100 opacity-40'"></div>
+                        <!-- 光の効果 -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 transition-all duration-1000"
+                             :class="isHovered ? 'translate-x-full' : '-translate-x-full'"></div>
+                    </div>
                 </div>
                 <div class="mt-8 md:mt-12">
                     <a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" class="cta-button inline-block text-white font-bold text-lg md:text-xl py-3 md:py-4 px-8 md:px-12 rounded-full">
@@ -628,6 +908,40 @@
                         </span>
                     </a>
                     <p class="mt-3 md:mt-4 text-xs md:text-sm text-gray-600">参加費無料 | 2025.9.20 (Sat) 開催</p>
+                    
+                    <!-- リアルタイムサイトアクセス数カウンター -->
+                    <div class="mt-6 p-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-blue-200">
+                        <div class="text-center">
+                            <p class="text-sm text-gray-600 mb-2">リアルタイムサイトアクセス数</p>
+                            <div class="text-center">
+                                <div id="pageViewCount" class="text-4xl md:text-5xl font-black text-blue-600 transition-all duration-500 transform hover:scale-110 mb-2">67</div>
+                                <p class="text-sm text-gray-500 mb-4">サイトアクセス数</p>
+                                
+                                <!-- アクセス数増加アニメーション -->
+                                <div class="flex items-center justify-center space-x-2 text-xs text-gray-500">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                    <span>リアルタイム更新中</span>
+                                </div>
+                            </div>
+                        </div>
+                            
+                            <!-- SNSシェアボタン -->
+                            <div class="mt-4 flex justify-center space-x-3">
+                                <button onclick="shareToX()" class="flex items-center px-4 py-2 bg-black text-white rounded-full text-sm font-semibold hover:bg-gray-800 transition-colors">
+                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                    </svg>
+                                    Xでシェア
+                                </button>
+                                <button onclick="shareToInstagram()" class="flex items-center px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full text-sm font-semibold hover:from-purple-600 hover:to-pink-600 transition-colors">
+                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4z"/>
+                                    </svg>
+                                    Instagram
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </header>
@@ -645,17 +959,47 @@
             <section id="values" class="max-w-5xl mx-auto px-4 fade-in-up">
                 <h2 class="section-title text-2xl sm:text-3xl md:text-4xl font-black text-center mb-8 md:mb-12 lg:mb-16">このイベントで得られる3つの価値</h2>
                 <div class="responsive-grid">
-                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2">
-                        <h3 class="text-xl md:text-2xl font-black mb-2 text-blue-900">最高の仲間との出会い</h3>
-                        <p class="text-gray-600 mt-4 mobile-text">AIがあなたの情熱を解析し、最高のチームをマッチング。新しい出会いが、あなたの可能性を最大化させる。</p>
+                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2 card-3d micro-interaction">
+                        <div class="relative">
+                            <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
+                                <span class="text-white text-2xl">🤝</span>
+                            </div>
+                            <h3 class="text-xl md:text-2xl font-black mb-2 text-blue-900">最高の仲間との出会い</h3>
+                            <p class="text-gray-600 mt-4 mobile-text">AIがあなたの情熱を解析し、最高のチームをマッチング。新しい出会いが、あなたの可能性を最大化させる。</p>
+                            <!-- アチーブメントバッジ -->
+                            <div class="mt-4 inline-flex items-center px-3 py-1 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 text-xs font-semibold rounded-full">
+                                <span class="w-2 h-2 bg-blue-500 rounded-full mr-2 animate-pulse"></span>
+                                チームワークマスター
+                            </div>
+                        </div>
                     </div>
-                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2">
-                        <h3 class="text-xl md:text-2xl font-black mb-2 text-blue-900">アイデアを事業へ</h3>
-                        <p class="text-gray-600 mt-4 mobile-text">アイデアを「絵に描いた餅」で終わらせない。実践的なフレームワークで、実現可能なビジネスプランを構築する。</p>
+                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2 card-3d micro-interaction">
+                        <div class="relative">
+                            <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                                <span class="text-white text-2xl">💡</span>
+                            </div>
+                            <h3 class="text-xl md:text-2xl font-black mb-2 text-blue-900">アイデアを事業へ</h3>
+                            <p class="text-gray-600 mt-4 mobile-text">アイデアを「絵に描いた餅」で終わらせない。実践的なフレームワークで、実現可能なビジネスプランを構築する。</p>
+                            <!-- アチーブメントバッジ -->
+                            <div class="mt-4 inline-flex items-center px-3 py-1 bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-800 text-xs font-semibold rounded-full">
+                                <span class="w-2 h-2 bg-indigo-500 rounded-full mr-2 animate-pulse"></span>
+                                イノベーター
+                            </div>
+                        </div>
                     </div>
-                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2">
-                        <h3 class="text-xl md:text-2xl font-black mb-2 text-blue-900">第一線からの本気のFB</h3>
-                        <p class="text-gray-600 mt-4 mobile-text">第一線で活躍する経営者や投資家があなたのアイデアに本気で向き合う。忖度なしのフィードバックが、あなたを成長させる。</p>
+                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg text-center transition-transform duration-300 hover:-translate-y-2 card-3d micro-interaction">
+                        <div class="relative">
+                            <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center shadow-lg">
+                                <span class="text-white text-2xl">🚀</span>
+                            </div>
+                            <h3 class="text-xl md:text-2xl font-black mb-2 text-blue-900">第一線からの本気のFB</h3>
+                            <p class="text-gray-600 mt-4 mobile-text">第一線で活躍する経営者や投資家があなたのアイデアに本気で向き合う。忖度なしのフィードバックが、あなたを成長させる。</p>
+                            <!-- アチーブメントバッジ -->
+                            <div class="mt-4 inline-flex items-center px-3 py-1 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800 text-xs font-semibold rounded-full">
+                                <span class="w-2 h-2 bg-purple-500 rounded-full mr-2 animate-pulse"></span>
+                                フィードバックマスター
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -763,23 +1107,161 @@
                 <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-12 md:mb-16">当日の流れを体験する</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
                     <div class="space-y-4">
-                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white schedule-hover" :class="{'bg-blue-50 shadow-xl': activeStep === 0}"><p class="font-bold text-blue-600">13:40 - 14:00</p><h3 class="font-bold text-xl mt-1">受付・チーム着席</h3><p class="text-gray-600 text-sm mt-2">AIが決定したチームテーブルへ。アイスブレイクシートを記入しながら仲間を待とう！</p></div>
-                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white schedule-hover" :class="{'bg-blue-50 shadow-xl': activeStep === 1}"><p class="font-bold text-blue-600">14:00 - 14:20</p><h3 class="font-bold text-xl mt-1">オープニング & アイスブレイク</h3><p class="text-gray-600 text-sm mt-2">イベントの目的を共有後、すぐにチームで自己紹介。意外な共通点が見つかるかも？</p></div>
-                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white schedule-hover" :class="{'bg-blue-50 shadow-xl': activeStep === 2}"><p class="font-bold text-blue-600">14:20 - 15:45</p><h3 class="font-bold text-xl mt-1">アイデアソン</h3><p class="text-gray-600 text-sm mt-2">個人ワークとチームでの議論を繰り返し、多様な視点を掛け合わせ、1つの事業案を構築します。</p></div>
-                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white schedule-hover" :class="{'bg-blue-50 shadow-xl': activeStep === 3}"><p class="font-bold text-blue-600">15:45 - 16:15</p><h3 class="font-bold text-xl mt-1">1分ピッチ大会</h3><p class="text-gray-600 text-sm mt-2">練り上げた事業案を1分間で熱くプレゼン！会場の熱気は最高潮に。</p></div>
-                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white schedule-hover" :class="{'bg-blue-50 shadow-xl': activeStep === 4}"><p class="font-bold text-blue-600">16:40 - 17:00</p><h3 class="font-bold text-xl mt-1">結果発表（優秀賞・特別賞他）</h3><p class="text-gray-600 text-sm mt-2">学生アンバサダー後援企業様による審査を実施。優勝チームには「日本学生アンバサダー協会公認アンバサダー認定権」を交付、副賞として共催企業様が運営する「InnoCom Square」の利用が可能です！</p>
-                            <div class="mt-4 space-y-2">
-                                <div class="prize-hover p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
-                                    <p class="font-bold text-yellow-800 text-sm">🏆 優秀賞</p>
-                                    <p class="text-yellow-700 text-xs">日本学生アンバサダー協会公認アンバサダー認定権</p>
-                                </div>
-                                <div class="prize-hover p-3 bg-blue-50 rounded-lg border-l-4 border-blue-400">
-                                    <p class="font-bold text-blue-800 text-sm">🎁 副賞</p>
-                                    <p class="text-blue-700 text-xs">InnoCom Square 3rd Lab. 利用権</p>
+                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white schedule-hover card-3d" 
+                             :class="{'bg-gradient-to-r from-blue-50 to-indigo-50 shadow-2xl scale-105': activeStep === 0}"
+                             @click="activeStep = 0">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-lg">1</div>
+                                <div class="flex-1">
+                                    <p class="font-bold text-blue-600">13:40 - 14:00</p>
+                                    <h3 class="font-bold text-xl mt-1">受付・チーム着席</h3>
+                                    <p class="text-gray-600 text-sm mt-2">AIが決定したチームテーブルへ。アイスブレイクシートを記入しながら仲間を待とう！</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white schedule-hover" :class="{'bg-blue-50 shadow-xl': activeStep === 5}"><p class="font-bold text-blue-600">17:00 - 17:30</p><h3 class="font-bold text-xl mt-1">交流会</h3><p class="text-gray-600 text-sm mt-2">今日芽生えた想いを「次の一歩」として宣言。100人の仲間と未来の繋がりを創ろう！</p></div>
+                        
+                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white schedule-hover card-3d" 
+                             :class="{'bg-gradient-to-r from-blue-50 to-indigo-50 shadow-2xl scale-105': activeStep === 1}"
+                             @click="activeStep = 1">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">2</div>
+                                <div class="flex-1">
+                                    <p class="font-bold text-blue-600">14:00 - 14:20</p>
+                                    <h3 class="font-bold text-xl mt-1">オープニング & アイスブレイク</h3>
+                                    <p class="text-gray-600 text-sm mt-2">イベントの目的を共有後、すぐにチームで自己紹介。意外な共通点が見つかるかも？</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white schedule-hover card-3d" 
+                             :class="{'bg-gradient-to-r from-blue-50 to-indigo-50 shadow-2xl scale-105': activeStep === 2}"
+                             @click="activeStep = 2">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-white font-bold text-lg">3</div>
+                                <div class="flex-1">
+                                    <p class="font-bold text-blue-600">14:20 - 15:45</p>
+                                    <h3 class="font-bold text-xl mt-1">アイデアソン</h3>
+                                    <p class="text-gray-600 text-sm mt-2">個人ワークとチームでの議論を繰り返し、多様な視点を掛け合わせ、1つの事業案を構築します。</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white schedule-hover card-3d" 
+                             :class="{'bg-gradient-to-r from-blue-50 to-indigo-50 shadow-2xl scale-105': activeStep === 3}"
+                             @click="activeStep = 3">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-pink-500 to-red-600 rounded-full flex items-center justify-center text-white font-bold text-lg">4</div>
+                                <div class="flex-1">
+                                    <p class="font-bold text-blue-600">15:45 - 16:15</p>
+                                    <h3 class="font-bold text-xl mt-1">1分ピッチ大会</h3>
+                                    <p class="text-gray-600 text-sm mt-2">練り上げた事業案を1分間で熱くプレゼン！会場の熱気は最高潮に。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white schedule-hover card-3d" 
+                             :class="{'bg-gradient-to-r from-blue-50 to-indigo-50 shadow-2xl scale-105': activeStep === 4}"
+                             @click="activeStep = 4">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-red-500 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-lg">5</div>
+                                <div class="flex-1">
+                                    <p class="font-bold text-blue-600">16:40 - 17:00</p>
+                                    <h3 class="font-bold text-xl mt-1">結果発表（優秀賞・特別賞他）</h3>
+                                    <p class="text-gray-600 text-sm mt-2">学生アンバサダー後援企業様による審査を実施。優勝チームには「日本学生アンバサダー協会公認アンバサダー認定権」を交付、副賞として共催企業様が運営する「InnoCom Square」の利用が可能です！</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item p-6 rounded-lg transition-all duration-300 bg-white schedule-hover card-3d" 
+                             :class="{'bg-gradient-to-r from-blue-50 to-indigo-50 shadow-2xl scale-105': activeStep === 5}"
+                             @click="activeStep = 5">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-orange-500 to-yellow-600 rounded-full flex items-center justify-center text-white font-bold text-lg">6</div>
+                                <div class="flex-1">
+                                    <p class="font-bold text-blue-600">17:00 - 17:30</p>
+                                    <h3 class="font-bold text-xl mt-1">交流会</h3>
+                                    <p class="text-gray-600 text-sm mt-2">今日芽生えた想いを「次の一歩」として宣言。100人の仲間と未来の繋がりを創ろう！</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 豪華な賞品セクション -->
+                        <div class="mt-8 p-8 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-2xl border-2 border-blue-200 shadow-2xl relative overflow-hidden">
+                            <!-- 装飾的な背景要素 -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-blue-400/10 via-indigo-400/10 to-purple-400/10"></div>
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 rounded-full blur-2xl"></div>
+                            <div class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-pink-400/20 to-red-400/20 rounded-full blur-xl"></div>
+                            
+                            <div class="relative z-10">
+                                <h3 class="text-2xl md:text-3xl font-black text-center mb-8 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                                    🎉 豪華賞品・特典一覧 🎉
+                                </h3>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <!-- 優秀賞 -->
+                                    <div class="group relative bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border-2 border-yellow-200 hover:border-yellow-400">
+                                        <div class="absolute -top-3 -right-3 w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
+                                            <span class="text-white text-xl font-bold">1</span>
+                                        </div>
+                                        <div class="text-center space-y-4">
+                                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                                <span class="text-white text-2xl">🏆</span>
+                                            </div>
+                                            <h4 class="text-xl font-black text-yellow-800">優秀賞</h4>
+                                            <div class="space-y-2 text-sm text-gray-700">
+                                                <p class="font-semibold">日本学生アンバサダー協会</p>
+                                                <p>公認アンバサダー認定証を付与</p>
+                                                <p>公認アンバサダーコミュニティへの招待</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 副賞 -->
+                                    <div class="group relative bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border-2 border-blue-200 hover:border-blue-400">
+                                        <div class="absolute -top-3 -right-3 w-12 h-12 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center shadow-lg">
+                                            <span class="text-white text-xl font-bold">2</span>
+                                        </div>
+                                        <div class="text-center space-y-4">
+                                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                                <span class="text-white text-2xl">🎁</span>
+                                            </div>
+                                            <h4 class="text-xl font-black text-blue-800">副賞</h4>
+                                            <p class="text-sm text-gray-600">（優秀賞チーム付与）</p>
+                                            <div class="space-y-2 text-sm text-gray-700">
+                                                <p class="font-semibold">InnoCom Square</p>
+                                                <p>3rd Lab. 利用権</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- プレーリー賞 -->
+                                    <div class="group relative bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border-2 border-green-200 hover:border-green-400">
+                                        <div class="absolute -top-3 -right-3 w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-lg">
+                                            <span class="text-white text-xl font-bold">3</span>
+                                        </div>
+                                        <div class="text-center space-y-4">
+                                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                                <span class="text-white text-2xl">🌱</span>
+                                            </div>
+                                            <h4 class="text-xl font-black text-green-800">プレーリー賞</h4>
+                                            <p class="text-sm text-gray-600">（個別チームに付与）</p>
+                                            <div class="space-y-2 text-sm text-gray-700">
+                                                <p class="font-semibold">プレーリーカード</p>
+                                                <p>5名分提供</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 装飾的なフッター -->
+                                <div class="mt-8 text-center">
+                                    <div class="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full shadow-lg">
+                                        <span class="text-lg">✨</span>
+                                        <span class="font-bold">すべての参加者に素晴らしい体験を！</span>
+                                        <span class="text-lg">✨</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="hidden md:block sticky top-24 h-[32rem]"><template x-for="(image, index) in images"><img :src="image" alt="Event Scene" class="absolute w-full h-full object-cover rounded-xl shadow-2xl" x-show="activeStep === index" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"></template></div>
                 </div>
@@ -872,10 +1354,73 @@
             <section id="faq" class="max-w-4xl mx-auto px-4 fade-in-up">
                 <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-12 md:mb-16">よくある質問</h2>
                 <div class="space-y-4" x-data="{ selected: 1 }">
-                    <div class="bg-white rounded-lg shadow-md faq-item"><button type="button" class="flex items-center justify-between w-full p-6 text-left" @click="selected = (selected === 1 ? null : 1)"><span class="text-lg font-semibold">起業アイデアがなくても参加できますか？</span><svg class="w-5 h-5 text-gray-500 transition-transform flex-shrink-0" :class="{ 'transform rotate-180': selected === 1 }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button><div class="px-6 pb-6" x-show="selected === 1" x-transition><p>はい、もちろんです。社会課題への関心や「何かを始めたい」という熱意があれば大歓迎です。当日はアイデア出しのヒントも提供しますし、チームで協力する中でアイデアは生まれます。</p></div></div>
-                    <div class="bg-white rounded-lg shadow-md faq-item"><button type="button" class="flex items-center justify-between w-full p-6 text-left" @click="selected = (selected === 2 ? null : 2)"><span class="text-lg font-semibold">事前にチームを組む必要はありますか？</span><svg class="w-5 h-5 text-gray-500 transition-transform flex-shrink-0" :class="{ 'transform rotate-180': selected === 2 }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button><div class="px-6 pb-6" x-show="selected === 2" x-transition><p>いいえ、チームは当日、事前アンケートを元にAIが自動でマッチングします。新しい出会いと化学反応をお楽しみください。</p></div></div>
-                    <div class="bg-white rounded-lg shadow-md faq-item"><button type="button" class="flex items-center justify-between w-full p-6 text-left" @click="selected = (selected === 3 ? null : 3)"><span class="text-lg font-semibold">持ち物は何が必要ですか？</span><svg class="w-5 h-5 text-gray-500 transition-transform flex-shrink-0" :class="{ 'transform rotate-180': selected === 3 }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button><div class="px-6 pb-6" x-show="selected === 3" x-transition><p>特別な持ち物は必要ありませんが、アイデアを書き留めるためのノートや筆記用具、名刺（持っている方）などがあると交流がスムーズです。</p></div></div>
-                    <div class="bg-white rounded-lg shadow-md faq-item"><button type="button" class="flex items-center justify-between w-full p-6 text-left" @click="selected = (selected === 4 ? null : 4)"><span class="text-lg font-semibold">アイデアソンやオーディションは初めてで不安です…</span><svg class="w-5 h-5 text-gray-500 transition-transform flex-shrink-0" :class="{ 'transform rotate-180': selected === 4 }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button><div class="px-6 pb-6" x-show="selected === 4" x-transition><p>大丈夫ですよ！当イベントは、学生の「何かを変えないといけない」という漠然とした想いをカタチにする場所です。また当日はメンターや審査企業様からのアドバイスも受けられるように、実際に発表するまでにサポートがあるのでご安心ください。</p></div></div>
+                    <div class="bg-white rounded-lg shadow-lg faq-item card-3d micro-interaction" 
+                         :class="{'ring-2 ring-blue-500 shadow-xl': selected === 1}">
+                        <button type="button" class="flex items-center justify-between w-full p-6 text-left group" 
+                                @click="selected = (selected === 1 ? null : 1)">
+                            <span class="text-lg font-semibold group-hover:text-blue-600 transition-colors">起業アイデアがなくても参加できますか？</span>
+                            <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center transition-all duration-300"
+                                 :class="{'rotate-180': selected === 1}">
+                                <svg class="w-4 h-4 text-white transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </button>
+                        <div class="px-6 pb-6 overflow-hidden" x-show="selected === 1" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0">
+                            <p class="text-gray-700 leading-relaxed">はい、もちろんです。社会課題への関心や「何かを始めたい」という熱意があれば大歓迎です。当日はアイデア出しのヒントも提供しますし、チームで協力する中でアイデアは生まれます。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg faq-item card-3d micro-interaction" 
+                         :class="{'ring-2 ring-indigo-500 shadow-xl': selected === 2}">
+                        <button type="button" class="flex items-center justify-between w-full p-6 text-left group" 
+                                @click="selected = (selected === 2 ? null : 2)">
+                            <span class="text-lg font-semibold group-hover:text-indigo-600 transition-colors">事前にチームを組む必要はありますか？</span>
+                            <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center transition-all duration-300"
+                                 :class="{'rotate-180': selected === 2}">
+                                <svg class="w-4 h-4 text-white transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </button>
+                        <div class="px-6 pb-6 overflow-hidden" x-show="selected === 2" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0">
+                            <p class="text-gray-700 leading-relaxed">いいえ、チームは当日、事前アンケートを元にAIが自動でマッチングします。新しい出会いと化学反応をお楽しみください。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg faq-item card-3d micro-interaction" 
+                         :class="{'ring-2 ring-purple-500 shadow-xl': selected === 3}">
+                        <button type="button" class="flex items-center justify-between w-full p-6 text-left group" 
+                                @click="selected = (selected === 3 ? null : 3)">
+                            <span class="text-lg font-semibold group-hover:text-purple-600 transition-colors">持ち物は何が必要ですか？</span>
+                            <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center transition-all duration-300"
+                                 :class="{'rotate-180': selected === 3}">
+                                <svg class="w-4 h-4 text-white transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </button>
+                        <div class="px-6 pb-6 overflow-hidden" x-show="selected === 3" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0">
+                            <p class="text-gray-700 leading-relaxed">特別な持ち物は必要ありませんが、アイデアを書き留めるためのノートや筆記用具、名刺（持っている方）などがあると交流がスムーズです。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg faq-item card-3d micro-interaction" 
+                         :class="{'ring-2 ring-pink-500 shadow-xl': selected === 4}">
+                        <button type="button" class="flex items-center justify-between w-full p-6 text-left group" 
+                                @click="selected = (selected === 4 ? null : 4)">
+                            <span class="text-lg font-semibold group-hover:text-pink-600 transition-colors">アイデアソンやオーディションは初めてで不安です…</span>
+                            <div class="w-8 h-8 bg-gradient-to-br from-pink-500 to-red-600 rounded-full flex items-center justify-center transition-all duration-300"
+                                 :class="{'rotate-180': selected === 4}">
+                                <svg class="w-4 h-4 text-white transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </button>
+                        <div class="px-6 pb-6 overflow-hidden" x-show="selected === 4" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0">
+                            <p class="text-gray-700 leading-relaxed">大丈夫ですよ！当イベントは、学生の「何かを変えないといけない」という漠然とした想いをカタチにする場所です。また当日はメンターや審査企業様からのアドバイスも受けられるように、実際に発表するまでにサポートがあるのでご安心ください。</p>
+                        </div>
+                    </div>
                 </div>
             </section>
             
@@ -885,9 +1430,9 @@
                 <!-- モバイル限定表示 -->
                 <div class="mobile-carousel md:hidden">
                     <div class="space-y-12">
-                        <!-- 主催・共催 -->
+                        <!-- 主催・共催・会場協賛 -->
                         <div>
-                            <h3 class="text-xl font-bold text-gray-600 mb-6">主催・共催</h3>
+                            <h3 class="text-xl font-bold text-gray-600 mb-6">主催・共催・会場協賛</h3>
                             <div class="space-y-8">
                                 <!-- 主催 -->
                                 <div class="flex items-center justify-center space-x-4">
@@ -901,7 +1446,15 @@
                                 <div class="flex items-center justify-center space-x-4">
                                     <div class="text-center">
                                         <h4 class="text-lg font-semibold text-gray-700 mb-3">共催</h4>
-                                        <img src="https://i.ibb.co/nsRZSbh7/5-Inno-Com-Square-1l-color.png" alt="InnoCom Square ロゴ" class="logo-horizontal-standard mx-auto">
+                                        <img src="https://i.ibb.co/GvCMp9gG/3rd-Lab-logo-enhanced-transparent.png" alt="3rd Lab ロゴ" class="logo-horizontal-standard mx-auto">
+                                    </div>
+                                </div>
+                                
+                                <!-- 会場協賛 -->
+                                <div class="flex items-center justify-center space-x-4">
+                                    <div class="text-center">
+                                        <h4 class="text-lg font-semibold text-gray-700 mb-3">会場協賛</h4>
+                                        <img src="https://i.ibb.co/nsRZSbh7/5-Inno-Com-Square-1l-color.png" alt="InnoCom Square by sekisui House ロゴ" class="logo-horizontal-standard mx-auto">
                                     </div>
                                 </div>
                             </div>
@@ -916,7 +1469,7 @@
                                     <img src="https://i.ibb.co/27CTt3G0/De-Fimans-logo-landscape-black.png" alt="株式会社DeFimans ロゴ" class="logo-horizontal-standard mx-auto">
                                 </div>
                                 <div>
-                                    <img src="https://placehold.co/200x80/e2e8f0/334155?text=Sponsor+Company+2" alt="後援企業ロゴ 2" class="logo-horizontal-standard mx-auto">
+                                    <img src="https://i.ibb.co/tw8zhx9Z/scd-logo-1.png" alt="SCデジタル株式会社 ロゴ" class="logo-horizontal-standard mx-auto">
                                 </div>
                                 <div>
                                     <img src="https://placehold.co/200x80/e2e8f0/334155?text=Sponsor+Company+3" alt="後援企業ロゴ 3" class="logo-horizontal-standard mx-auto">
@@ -946,8 +1499,8 @@
                 <!-- デスクトップ表示（既存のグリッド） -->
                 <div class="desktop-grid hidden md:block">
                     <div class="space-y-16">
-                        <!-- 主催・共催 (Side-by-side) -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <!-- 主催・共催・会場協賛 -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
                             <div>
                                 <h3 class="text-xl font-bold text-gray-600 mb-4">主催</h3>
                                 <div class="inline-block">
@@ -957,7 +1510,13 @@
                             <div>
                                 <h3 class="text-xl font-bold text-gray-600 mb-4">共催</h3>
                                 <div class="inline-block">
-                                    <img src="https://i.ibb.co/nsRZSbh7/5-Inno-Com-Square-1l-color.png" alt="InnoCom Square ロゴ" class="judge-logo object-contain">
+                                    <img src="https://i.ibb.co/GvCMp9gG/3rd-Lab-logo-enhanced-transparent.png" alt="3rd Lab ロゴ" class="judge-logo object-contain">
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-600 mb-4">会場協賛</h3>
+                                <div class="inline-block">
+                                    <img src="https://i.ibb.co/nsRZSbh7/5-Inno-Com-Square-1l-color.png" alt="InnoCom Square by sekisui House ロゴ" class="judge-logo object-contain">
                                 </div>
                             </div>
                         </div>
@@ -971,7 +1530,7 @@
                                     <img src="https://i.ibb.co/27CTt3G0/De-Fimans-logo-landscape-black.png" alt="株式会社DeFimans ロゴ" class="logo-horizontal-standard">
                                 </div>
                                 <div>
-                                    <img src="https://placehold.co/200x80/e2e8f0/334155?text=Sponsor+Company+2" alt="後援企業ロゴ 2" class="logo-horizontal-standard">
+                                    <img src="https://i.ibb.co/tw8zhx9Z/scd-logo-1.png" alt="SCデジタル株式会社 ロゴ" class="logo-horizontal-standard">
                                 </div>
                                 <div>
                                     <img src="https://placehold.co/200x80/e2e8f0/334155?text=Sponsor+Company+3" alt="後援企業ロゴ 3" class="logo-horizontal-standard">
@@ -999,6 +1558,81 @@
                 </div>
             </section>
 
+            <!-- SNSシェアセクション -->
+            <section id="share" class="text-center bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 py-16 md:py-20 fade-in-up">
+                <div class="max-w-5xl mx-auto px-4">
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-8">
+                        🚀 このイベントを友達にシェアしよう！
+                    </h2>
+                    <p class="text-lg md:text-xl text-blue-100 mb-12 max-w-3xl mx-auto">
+                        素晴らしい体験を共有することで、より多くの仲間と出会えるチャンスが広がります。
+                    </p>
+                    
+                    <!-- SNSシェアボタン群 -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                        <!-- X（Twitter）シェア -->
+                        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-300 group">
+                            <div class="w-20 h-20 mx-auto mb-6 bg-black rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-4">X（Twitter）でシェア</h3>
+                            <p class="text-blue-100 text-sm mb-6">イベントの魅力をツイートして、フォロワーに広めよう！</p>
+                            <button onclick="shareToX()" class="w-full bg-black text-white py-3 px-6 rounded-full font-semibold hover:bg-gray-800 transition-colors group-hover:shadow-lg">
+                                シェアする
+                            </button>
+                        </div>
+                        
+                        <!-- Instagramシェア -->
+                        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-300 group">
+                            <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-4">Instagramでシェア</h3>
+                            <p class="text-blue-100 text-sm mb-6">ストーリーや投稿で、ビジュアル的にアピール！</p>
+                            <button onclick="shareToInstagram()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-6 rounded-full font-semibold hover:from-purple-600 hover:to-pink-600 transition-colors group-hover:shadow-lg">
+                                テキストをコピー
+                            </button>
+                        </div>
+                        
+                        <!-- LINEシェア -->
+                        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-300 group">
+                            <div class="w-20 h-20 mx-auto mb-6 bg-green-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-4">LINEでシェア</h3>
+                            <p class="text-blue-100 text-sm mb-6">友達やグループに直接送信して、一緒に参加しよう！</p>
+                            <button onclick="shareToLINE()" class="w-full bg-green-500 text-white py-3 px-6 rounded-full font-semibold hover:bg-green-600 transition-colors group-hover:shadow-lg">
+                                シェアする
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- シェア用テキスト -->
+                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                        <h3 class="text-lg font-bold text-white mb-4">📝 シェア用テキスト例</h3>
+                        <div class="bg-white/20 rounded-lg p-4 text-left">
+                            <p class="text-white text-sm leading-relaxed">
+                                🚀 <strong>学生が「企業の顔」となる。</strong><br>
+                                社会のために本気になれる学生アンバサダーの登竜門「KITEN」に参加しませんか？<br><br>
+                                📅 2025年9月20日（土）14:00-17:30<br>
+                                📍 InnoCom Square（東京・赤坂）<br>
+                                💰 参加費無料<br>
+                                👥 定員100名（現在<span id="sharePageViewCount">67</span>名がサイトにアクセス済み！）<br><br>
+                                🎯 アイデアソン、1分ピッチ大会、豪華審査員からのフィードバック！<br><br>
+                                📝 申し込み: <a href="https://forms.gle/9zSvkXV1htCYJ8h47" class="underline">https://forms.gle/9zSvkXV1htCYJ8h47</a><br><br>
+                                #KITEN #学生起業 #アイデアソン #100のKITEN #学生アンバサダー
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
             <section id="cta" class="text-center bg-indigo-700 py-12 md:py-16 lg:py-20 fade-in-up">
                 <div class="max-w-5xl mx-auto px-4">
                     <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-white">
