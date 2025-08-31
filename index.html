@@ -344,6 +344,190 @@
             }
         }
         
+        /* 円グラフ用スタイル */
+        .pie-chart-container {
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(circle, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 0 8px #ffffff,
+                0 0 0 12px #e2e8f0,
+                0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pie-chart-container canvas {
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+        }
+        
+        .pie-chart-container:hover canvas {
+            transform: scale(1.05);
+        }
+        
+        /* 円グラフアニメーション */
+        @keyframes pieChartSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .pie-chart-spin {
+            animation: pieChartSpin 20s linear infinite;
+        }
+        
+        .pie-chart-spin-fast {
+            animation: pieChartSpin 3s ease-out;
+        }
+        
+        /* テーマ領域の境界線スタイル */
+        .theme-boundary {
+            stroke: #ffffff;
+            stroke-width: 3;
+            stroke-linejoin: round;
+        }
+        
+        .theme-separator {
+            stroke: #ffffff;
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+        
+        /* ツールチップの改善 */
+        #themeTooltip {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            border: 2px solid #3b82f6;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        /* テーマ一覧の改善 */
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+        
+        .theme-item {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .theme-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--theme-color);
+        }
+        
+        .theme-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            border-color: var(--theme-color);
+        }
+        
+        .theme-color-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin: 0 auto 0.5rem;
+            border: 3px solid #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* テーマカード用スタイル */
+        .theme-category {
+            margin-bottom: 2rem;
+        }
+        
+        .theme-card {
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            background: white;
+        }
+        
+        .theme-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+        }
+        
+        .theme-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .theme-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+        
+        /* モバイル最適化 */
+        @media (max-width: 768px) {
+            .theme-card {
+                margin-bottom: 0.75rem;
+            }
+            
+            .theme-category h3 {
+                font-size: 1.25rem;
+                padding: 0.75rem;
+                margin-bottom: 1rem;
+            }
+            
+            .theme-card .p-4 {
+                padding: 1rem;
+            }
+            
+            .theme-card h4 {
+                font-size: 0.875rem;
+            }
+            
+            .theme-card p {
+                font-size: 0.75rem;
+            }
+            
+            .theme-icon {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .theme-icon svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+        
+        /* レスポンシブグリッドの最適化 */
+        @media (max-width: 640px) {
+            .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
         /* カルーセル用のスライドスタイル */
         .carousel-slide {
             display: flex;
@@ -671,6 +855,8 @@
             window.open(lineUrl, '_blank', 'width=600,height=400');
         }
         
+
+        
         // ページ読み込み時の初期化
         document.addEventListener('DOMContentLoaded', function() {
             // サーバーから現在のサイトアクセス数を取得
@@ -688,6 +874,8 @@
             setInterval(() => {
                 fetchCurrentCount();
             }, 15000);
+            
+
         });
         
         document.addEventListener('alpine:init', () => {
@@ -707,20 +895,20 @@
                             title: '代表理事',
                         },
                         {
-                            logo: 'https://placehold.co/400x150/e2e8f0/334155?text=Wellness+Innovations',
-                            name: '佐藤 由美',
-                            nameEn: 'Yumi Sato',
-                            photo: 'https://i.ibb.co/RGzWdj5t/Image-fx-1.webp',
-                            theme: 'グローバルな視点で次世代のウェルネスを創造する',
-                            group: 'ウェルネス・イノベーションズ',
-                            title: '代表取締役 CEO',
+                            logo: 'https://i.ibb.co/GvCMp9gG/3rd-Lab-logo-enhanced-transparent.png',
+                            name: '栗栖 崇',
+                            nameEn: 'Kurisu Takashi',
+                            photo: 'https://i.ibb.co/2Y1LXWbh/image.jpg',
+                            theme: '未来社会課題に本気で挑む若者たちとともに、「住まいと暮らし」の枠を超えた、新たな価値を社会へ届ける――。',
+                            group: 'InnoCom Square 3rd Lab.',
+                            title: '責任者',
                         },
                         {
                             logo: 'https://i.ibb.co/tw8zhx9Z/scd-logo-1.png',
                             name: '小寺 崇士',
                             nameEn: 'Takashi Kotera',
                             photo: 'https://i.ibb.co/ZRYR170L/Beauty-Plus-Image-Enhancer-1756552587673.jpg',
-                            theme: 'デジタル技術で社会課題を解決し、持続可能な未来を創造する',
+                            theme: 'CXとDXを融合し、デジタル顧客体験創造の専門家集団として、社会に貢献していく',
                             group: 'SCデジタル株式会社（住友商事）',
                             title: '営業・コンサルティング本部長 執行役員',
                         },
@@ -844,6 +1032,7 @@
                 <div class="hidden md:flex items-center space-x-6 lg:space-x-8 font-semibold text-gray-600">
                     <a href="#about">イベント概要</a>
                     <a href="#values">得られる価値</a>
+                    <a href="#themes">社会課題テーマ</a>
                     <a href="#judges">審査員</a>
                     <a href="#timeline">当日の流れ</a>
                     <a href="#venue">会場</a>
@@ -865,6 +1054,7 @@
             <div class="px-2 pt-2 pb-3 space-y-1">
                 <a href="#about" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">イベント概要</a>
                 <a href="#values" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">得られる価値</a>
+                <a href="#themes" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">社会課題テーマ</a>
                 <a href="#judges" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">審査員</a>
                 <a href="#timeline" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">当日の流れ</a>
                 <a href="#venue" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">会場</a>
@@ -999,6 +1189,388 @@
                                 <span class="w-2 h-2 bg-purple-500 rounded-full mr-2 animate-pulse"></span>
                                 フィードバックマスター
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 社会課題テーマセクション -->
+            <section id="themes" class="max-w-7xl mx-auto px-4 fade-in-up">
+                <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-8 md:mb-12">取り組む社会課題テーマ</h2>
+                <p class="text-center text-lg text-gray-600 mb-12 max-w-4xl mx-auto">
+                    20種類の社会課題テーマから、あなたが解決したい課題を見つけ出そう。<br class="hidden md:block">
+                    多様な視点が交差することで、革新的なソリューションが生まれます。
+                </p>
+                
+                <!-- テーマカテゴリー別表示 -->
+                <div class="space-y-16">
+                    <!-- デジタル・テクノロジー領域 -->
+                    <div class="theme-category">
+                        <h3 class="text-xl md:text-2xl font-bold text-center mb-6 text-blue-800 bg-blue-50 py-3 px-4 rounded-xl">
+                            デジタル・テクノロジー領域
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="theme-card">
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="theme-icon bg-blue-100 text-blue-600">
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-gray-800">生成AI</h4>
+                                            <p class="text-xs text-gray-600">AI技術の社会実装</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700">AIと人間の協働による社会課題解決</p>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-card">
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="theme-icon bg-indigo-100 text-indigo-600">
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.54 8H17c-.8 0-1.54.37-2.01.99L12 13l-2.99-4.01A2.5 2.5 0 0 0 7 8H5.46c-.8 0-1.54.37-2.01.99L1 18.5V22h2v-1h14v1h2z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-gray-800">DX人材</h4>
+                                            <p class="text-xs text-gray-600">デジタル変革推進</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700">新しい働き方とデジタルスキルの提案</p>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-card">
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="theme-icon bg-purple-100 text-purple-600">
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM8 15c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3zm6-8c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3zm6 8c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-gray-800">メディア</h4>
+                                            <p class="text-xs text-gray-600">次世代体験の創造</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700">VR/AR・ブロックチェーン活用</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 社会・コミュニティ領域 -->
+                    <div class="theme-category">
+                        <h3 class="text-xl md:text-2xl font-bold text-center mb-6 text-green-800 bg-green-50 py-3 px-4 rounded-xl">
+                            社会・コミュニティ領域
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="theme-card">
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="theme-icon bg-green-100 text-green-600">
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-gray-800">まちづくり</h4>
+                                            <p class="text-xs text-gray-600">オフィス街の街おこし</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700">若者の街にする食文化・エンターテイメント創造</p>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-card">
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="theme-icon bg-emerald-100 text-emerald-600">
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-gray-800">ビジネスコミュニティ</h4>
+                                            <p class="text-xs text-gray-600">新しいビジネスネットワーク</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700">学生×企業の新しい関係性構築</p>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-card">
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="theme-icon bg-teal-100 text-teal-600">
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-gray-800">アートデザイン</h4>
+                                            <p class="text-xs text-gray-600">クリエイティブな社会貢献</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700">社会課題の可視化と解決</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ライフスタイル・文化領域 -->
+                    <div class="theme-category">
+                        <h3 class="text-xl md:text-2xl font-bold text-center mb-6 text-orange-800 bg-orange-50 py-3 px-4 rounded-xl">
+                            ライフスタイル・文化領域
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="theme-card">
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="theme-icon bg-orange-100 text-orange-600">
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M8.1 13.34l2.83-2.83L3.91 3.5c-1.56 1.56-1.56 4.09 0 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-gray-800">食文化</h4>
+                                            <p class="text-xs text-gray-600">東京大手町の食文化創造</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700">新しい食体験と持続可能な食文化</p>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-card">
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="theme-icon bg-amber-100 text-amber-600">
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-gray-800">観光</h4>
+                                            <p class="text-xs text-gray-600">新しい観光体験の設計</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700">テクノロジー活用と地域活性化</p>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-card">
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="theme-icon bg-yellow-100 text-yellow-600">
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-gray-800">ファッション</h4>
+                                            <p class="text-xs text-gray-600">サステナブルファッション</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700">環境配慮と新しいファッション体験</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 教育・キャリア領域 -->
+                    <div class="theme-category">
+                        <h3 class="text-xl md:text-2xl font-bold text-center mb-6 text-red-800 bg-red-50 py-3 px-4 rounded-xl">
+                            教育・キャリア領域
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="theme-card">
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="theme-icon bg-red-100 text-red-600">
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-gray-800">金融</h4>
+                                            <p class="text-xs text-gray-600">金融教育の課題解決</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700">若者向け金融リテラシー向上</p>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-card">
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="theme-icon bg-pink-100 text-pink-600">
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-gray-800">教育</h4>
+                                            <p class="text-xs text-gray-600">次世代教育の革新</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700">テクノロジー活用の学習体験</p>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-card">
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="theme-icon bg-rose-100 text-rose-600">
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-gray-800">学生のキャリア</h4>
+                                            <p class="text-xs text-gray-600">学生と企業の新しい繋がり</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700">新しい関係性の構築</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- インフラ・生活領域 -->
+                    <div class="theme-category">
+                        <h3 class="text-xl md:text-2xl font-bold text-center mb-6 text-slate-800 bg-slate-50 py-3 px-4 rounded-xl">
+                            インフラ・生活領域
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="theme-card">
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="theme-icon bg-slate-100 text-slate-600">
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M19 9.3V4h-3v2.6L12 3L2 12h3v8h5v-6h4v6h5v-8h3L19 9.3zM10 10c0-1.1.9-2 2-2s2 .9 2 2H10z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-gray-800">建物（戸建て住宅）</h4>
+                                            <p class="text-xs text-gray-600">持続可能な住宅の設計</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700">環境配慮と新しい住まい方</p>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-card">
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="theme-icon bg-gray-100 text-gray-600">
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-gray-800">モビリティ</h4>
+                                            <p class="text-xs text-gray-600">次世代移動手段の提案</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700">環境配慮と新しい移動体験</p>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-card">
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="theme-icon bg-zinc-100 text-zinc-600">
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 15c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-gray-800">流通</h4>
+                                            <p class="text-xs text-gray-600">新しい流通システムの構築</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700">デジタル技術活用の流通</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- その他の重要テーマ -->
+                    <div class="theme-category">
+                        <h3 class="text-xl md:text-2xl font-bold text-center mb-6 text-violet-800 bg-violet-50 py-3 px-4 rounded-xl">
+                            その他の重要テーマ
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="theme-card">
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="theme-icon bg-violet-100 text-violet-600">
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-gray-800">ベビー用品</h4>
+                                            <p class="text-xs text-gray-600">子育て支援の革新</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700">持続可能な育児用品と支援サービス</p>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-card">
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="theme-icon bg-purple-100 text-purple-600">
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-gray-800">留学支援</h4>
+                                            <p class="text-xs text-gray-600">グローバル人材育成</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700">新しい留学体験と語学学習</p>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-card">
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="theme-icon bg-fuchsia-100 text-fuchsia-600">
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-gray-800">コミュニケーション</h4>
+                                            <p class="text-xs text-gray-600">名刺に代わる新たな自己紹介</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700">デジタル時代の自己紹介方法</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- テーマ選択のガイダンス -->
+                <div class="mt-12 text-center">
+                    <div class="bg-blue-50 p-6 rounded-xl border border-blue-200">
+                        <h3 class="text-xl font-bold text-blue-800 mb-3">どのテーマに興味がありますか？</h3>
+                        <p class="text-gray-700 mb-4 max-w-2xl mx-auto text-sm">
+                            上記の20テーマから、あなたが最も解決したいと思う社会課題を選んでください。<br class="hidden md:block">
+                            当日は、同じテーマに興味を持つ仲間とチームを組み、具体的なソリューションを考えていきます。
+                        </p>
+                        <div class="flex flex-wrap justify-center gap-3">
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold">複数選択可能</span>
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">事前アンケートでマッチング</span>
+                            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">当日変更も可能</span>
                         </div>
                     </div>
                 </div>
@@ -1663,5 +2235,13 @@
         <p class="mt-4 md:mt-6 text-xs text-gray-500">&copy; 2025 Japan Student Ambassador Association. All Rights Reserved.</p>
     </footer>
     
-</body>
+  </body>
+  </html>
+
+</html>
+
+</html>
+
+</html>
+
 </html>
