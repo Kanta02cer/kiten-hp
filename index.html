@@ -1021,7 +1021,7 @@
 <body class="bg-slate-50 text-gray-800" x-data="{ openMenu: false }">
 
     <!-- Navigation Bar -->
-    <nav class="sticky top-0 z-50 bg-white shadow-md" @click.away="openMenu = false">
+    <nav class="sticky top-0 z-50 bg-white shadow-md" x-data="{ openMenu: false }" @click.away="openMenu = false">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16 md:h-20">
                 <div class="flex-shrink-0">
@@ -1032,7 +1032,7 @@
                 <div class="hidden">
                 </div>
                 <div>
-                    <button @click="openMenu = !openMenu" class="text-gray-700 hover:text-blue-600 focus:outline-none p-2">
+                    <button @click.stop="openMenu = !openMenu" aria-expanded="openMenu" aria-controls="mobileMenu" class="text-gray-700 hover:text-blue-600 focus:outline-none p-2">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                         </svg>
@@ -1041,8 +1041,11 @@
             </div>
         </div>
         <!-- モバイルメニュー -->
-        <div x-cloak x-show="openMenu" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform -translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform translate-y-0" x-transition:leave-end="opacity-0 transform -translate-y-2" class="md:hidden bg-white border-t border-gray-200 shadow-lg">
-            <div class="px-2 pt-2 pb-3 space-y-1">
+        <!-- オーバーレイ -->
+        <div x-cloak x-show="openMenu" @click="openMenu = false" class="fixed inset-0 bg-black/40 md:hidden" x-transition.opacity></div>
+        <!-- モバイルメニュー -->
+        <div id="mobileMenu" x-cloak x-show="openMenu" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform -translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform translate-y-0" x-transition:leave-end="opacity-0 transform -translate-y-2" class="md:hidden bg-white border-t border-gray-200 shadow-lg fixed top-16 left-0 right-0">
+            <div class="px-2 pt-2 pb-3 space-y-1" @click="openMenu = false">
                 <a href="#about" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">イベント概要</a>
                 <a href="#values" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">得られる価値</a>
                 <a href="#themes" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">オーディションコンセプト</a>
