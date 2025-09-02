@@ -1035,6 +1035,7 @@
                     <a href="#themes">社会課題テーマ</a>
                     <a href="#judges">審査員</a>
                     <a href="#timeline">当日の流れ</a>
+                    <a href="#prizes">豪華賞品</a>
                     <a href="#venue">会場</a>
                     <a href="#faq">FAQ</a>
                     <a href="#share">シェア</a>
@@ -1057,6 +1058,7 @@
                 <a href="#themes" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">社会課題テーマ</a>
                 <a href="#judges" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">審査員</a>
                 <a href="#timeline" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">当日の流れ</a>
+                <a href="#prizes" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">豪華賞品</a>
                 <a href="#venue" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">会場</a>
                 <a href="#faq" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">FAQ</a>
                 <a href="#share" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">シェア</a>
@@ -1756,86 +1758,111 @@
                             </div>
                         </div>
                         
-                        <!-- 豪華な賞品セクション -->
-                        <div class="mt-8 p-8 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-2xl border-2 border-blue-200 shadow-2xl relative overflow-hidden">
-                            <!-- 装飾的な背景要素 -->
-                            <div class="absolute inset-0 bg-gradient-to-r from-blue-400/10 via-indigo-400/10 to-purple-400/10"></div>
-                            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 rounded-full blur-2xl"></div>
-                            <div class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-pink-400/20 to-red-400/20 rounded-full blur-xl"></div>
-                            
-                            <div class="relative z-10">
-                                <h3 class="text-2xl md:text-3xl font-black text-center mb-8 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                                    🎉 豪華賞品・特典一覧 🎉
-                                </h3>
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    <!-- 優秀賞 -->
-                                    <div class="group relative bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border-2 border-yellow-200 hover:border-yellow-400">
-                                        <div class="absolute -top-3 -right-3 w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
-                                            <span class="text-white text-xl font-bold">1</span>
-                                        </div>
-                                        <div class="text-center space-y-4">
-                                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                                <span class="text-white text-2xl">🏆</span>
-                                            </div>
-                                            <h4 class="text-xl font-black text-yellow-800">優秀賞</h4>
-                                            <div class="space-y-2 text-sm text-gray-700">
-                                                <p class="font-semibold">日本学生アンバサダー協会</p>
-                                                <p>公認アンバサダー認定証を付与</p>
-                                                <p>公認アンバサダーコミュニティへの招待</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- 副賞 -->
-                                    <div class="group relative bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border-2 border-blue-200 hover:border-blue-400">
-                                        <div class="absolute -top-3 -right-3 w-12 h-12 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center shadow-lg">
-                                            <span class="text-white text-xl font-bold">2</span>
-                                        </div>
-                                        <div class="text-center space-y-4">
-                                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                                <span class="text-white text-2xl">🎁</span>
-                                            </div>
-                                            <h4 class="text-xl font-black text-blue-800">副賞</h4>
-                                            <p class="text-sm text-gray-600">（優秀賞チーム付与）</p>
-                                            <div class="space-y-2 text-sm text-gray-700">
-                                                <p class="font-semibold">InnoCom Square</p>
-                                                <p>3rd Lab. 利用権</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- プレーリー賞 -->
-                                    <div class="group relative bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border-2 border-green-200 hover:border-green-400">
-                                        <div class="absolute -top-3 -right-3 w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-lg">
-                                            <span class="text-white text-xl font-bold">3</span>
-                                        </div>
-                                        <div class="text-center space-y-4">
-                                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                                <span class="text-white text-2xl">🌱</span>
-                                            </div>
-                                            <h4 class="text-xl font-black text-green-800">プレーリー賞</h4>
-                                            <p class="text-sm text-gray-600">（個別チームに付与）</p>
-                                            <div class="space-y-2 text-sm text-gray-700">
-                                                <p class="font-semibold">プレーリーカード</p>
-                                                <p>5名分提供</p>
-                                            </div>
-                                        </div>
+
+                    </div>
+                    <div class="hidden md:block sticky top-24 h-[32rem]"><template x-for="(image, index) in images"><img :src="image" alt="Event Scene" class="absolute w-full h-full object-cover rounded-xl shadow-2xl" x-show="activeStep === index" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"></template></div>
+                </div>
+            </section>
+
+            <!-- 豪華賞品セクション -->
+            <section id="prizes" class="py-16 md:py-24 bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50 relative overflow-hidden">
+                <!-- 装飾的な背景要素 -->
+                <div class="absolute inset-0 bg-gradient-to-r from-yellow-400/5 via-orange-400/5 to-red-400/5"></div>
+                <div class="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-yellow-400/10 to-orange-400/10 rounded-full blur-3xl"></div>
+                <div class="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-red-400/10 to-pink-400/10 rounded-full blur-3xl"></div>
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-yellow-300/5 to-orange-300/5 rounded-full blur-2xl"></div>
+                
+                <div class="max-w-7xl mx-auto px-4 relative z-10">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-6xl font-black mb-6 bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 bg-clip-text text-transparent">
+                            🏆 豪華賞品・特典一覧 🏆
+                        </h2>
+                        <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">
+                            優秀なアイデアを生み出したチームには、素晴らしい賞品と特典をご用意しています
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                        <!-- 優秀賞 -->
+                        <div class="group relative bg-white rounded-2xl p-8 shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-4 border-4 border-yellow-200 hover:border-yellow-400">
+                            <div class="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-xl">
+                                <span class="text-white text-2xl font-bold">1</span>
+                            </div>
+                            <div class="text-center space-y-6">
+                                <h3 class="text-3xl font-black text-yellow-800 mb-4">優秀賞</h3>
+                                <div class="space-y-4">
+                                    <h4 class="text-2xl md:text-3xl font-black bg-gradient-to-r from-yellow-600 via-orange-500 to-yellow-700 bg-clip-text text-transparent">
+                                        日本学生アンバサダー協会公認権
+                                    </h4>
+                                    <div class="space-y-2 text-base text-gray-700">
+                                        <p>公認アンバサダー認定証を付与</p>
+                                        <p>公認アンバサダーコミュニティへの招待</p>
                                     </div>
                                 </div>
-                                
-                                <!-- 装飾的なフッター -->
-                                <div class="mt-8 text-center">
-                                    <div class="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full shadow-lg">
-                                        <span class="text-lg">✨</span>
-                                        <span class="font-bold">すべての参加者に素晴らしい体験を！</span>
-                                        <span class="text-lg">✨</span>
+                                <div class="pt-4 border-t border-gray-200">
+                                    <p class="text-sm text-gray-500 mb-4">提供企業</p>
+                                    <img src="https://i.ibb.co/Hp77CJ5c/image.png" alt="日本学生アンバサダー協会" class="logo-horizontal-standard mx-auto">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 副賞 -->
+                        <div class="group relative bg-white rounded-2xl p-8 shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-4 border-4 border-blue-200 hover:border-blue-400">
+                            <div class="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center shadow-xl">
+                                <span class="text-white text-2xl font-bold">2</span>
+                            </div>
+                            <div class="text-center space-y-6">
+                                <h3 class="text-3xl font-black text-blue-800 mb-4">副賞</h3>
+                                <p class="text-gray-600 mb-4">（優秀賞チーム付与）</p>
+                                <div class="space-y-4">
+                                    <h4 class="text-2xl md:text-3xl font-black bg-gradient-to-r from-blue-600 via-indigo-500 to-blue-700 bg-clip-text text-transparent">
+                                        InnoCom Square施設利用権
+                                    </h4>
+                                    <div class="space-y-2 text-base text-gray-700">
+                                        <p>3rd Lab. 利用権</p>
+                                    </div>
+                                </div>
+                                <div class="pt-4 border-t border-gray-200">
+                                    <p class="text-sm text-gray-500 mb-4">提供企業</p>
+                                    <img src="https://i.ibb.co/nsRZSbh7/5-Inno-Com-Square-1l-color.png" alt="InnoCom Square by SEKISUI HOUSE" class="logo-horizontal-standard mx-auto">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 特別賞セクション -->
+                    <div class="text-center">
+                        <h3 class="text-3xl font-bold mb-8 text-gray-800">特別賞</h3>
+                        <div class="max-w-lg mx-auto">
+                            <!-- プレーリー賞 -->
+                            <div class="group relative bg-white rounded-2xl p-8 shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-4 border-4 border-green-200 hover:border-green-400">
+                                <div class="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-xl">
+                                    <span class="text-white text-2xl font-bold">★</span>
+                                </div>
+                                <div class="text-center space-y-6">
+                                    <h3 class="text-3xl font-black text-green-800 mb-4">プレーリー賞</h3>
+                                    <p class="text-gray-600 mb-4">（個別チームに付与）</p>
+                                    <div class="space-y-3 text-base text-gray-700">
+                                        <p class="font-bold text-lg">プレーリーカード</p>
+                                        <p>5名分提供</p>
+                                    </div>
+                                    <div class="pt-4 border-t border-gray-200">
+                                        <p class="text-sm text-gray-500 mb-4">提供企業</p>
+                                        <img src="https://i.ibb.co/RkLC1SWX/Prairie-Card-C1-moji.png" alt="プレリーカード" class="logo-horizontal-standard mx-auto">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="hidden md:block sticky top-24 h-[32rem]"><template x-for="(image, index) in images"><img :src="image" alt="Event Scene" class="absolute w-full h-full object-cover rounded-xl shadow-2xl" x-show="activeStep === index" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"></template></div>
+                    
+                    <!-- 装飾的なフッター -->
+                    <div class="mt-16 text-center">
+                        <div class="inline-flex items-center space-x-4 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 text-white px-8 py-4 rounded-full shadow-2xl">
+                            <span class="text-2xl">✨</span>
+                            <span class="text-xl font-bold">すべての参加者に素晴らしい体験を！</span>
+                            <span class="text-2xl">✨</span>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -2044,7 +2071,7 @@
                                     <img src="https://i.ibb.co/tw8zhx9Z/scd-logo-1.png" alt="SCデジタル株式会社 ロゴ" class="logo-horizontal-standard mx-auto">
                                 </div>
                                 <div>
-                                    <img src="https://placehold.co/200x80/e2e8f0/334155?text=Sponsor+Company+3" alt="後援企業ロゴ 3" class="logo-horizontal-standard mx-auto">
+                                    <img src="https://i.ibb.co/RkLC1SWX/Prairie-Card-C1-moji.png" alt="プレリーカード ロゴ" class="logo-horizontal-standard mx-auto">
                                 </div>
                             </div>
                         </div>
@@ -2105,7 +2132,7 @@
                                     <img src="https://i.ibb.co/tw8zhx9Z/scd-logo-1.png" alt="SCデジタル株式会社 ロゴ" class="logo-horizontal-standard">
                                 </div>
                                 <div>
-                                    <img src="https://placehold.co/200x80/e2e8f0/334155?text=Sponsor+Company+3" alt="後援企業ロゴ 3" class="logo-horizontal-standard">
+                                    <img src="https://i.ibb.co/RkLC1SWX/Prairie-Card-C1-moji.png" alt="プレリーカード ロゴ" class="logo-horizontal-standard">
                                 </div>
                             </div>
                         </div>
