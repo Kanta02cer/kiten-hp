@@ -1032,7 +1032,7 @@
                 <div class="hidden md:flex items-center space-x-6 lg:space-x-8 font-semibold text-gray-600">
                     <a href="#about">イベント概要</a>
                     <a href="#values">得られる価値</a>
-                    <a href="#themes">社会課題テーマ</a>
+                    <a href="#themes">オーディションコンセプト</a>
                     <a href="#judges">審査員</a>
                     <a href="#timeline">当日の流れ</a>
                     <a href="#prizes">豪華賞品</a>
@@ -1055,7 +1055,7 @@
             <div class="px-2 pt-2 pb-3 space-y-1">
                 <a href="#about" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">イベント概要</a>
                 <a href="#values" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">得られる価値</a>
-                <a href="#themes" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">社会課題テーマ</a>
+                <a href="#themes" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">オーディションコンセプト</a>
                 <a href="#judges" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">審査員</a>
                 <a href="#timeline" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">当日の流れ</a>
                 <a href="#prizes" @click="openMenu = false" class="block px-3 py-3 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors">豪華賞品</a>
@@ -1196,16 +1196,42 @@
                 </div>
             </section>
             
-            <!-- 社会課題テーマセクション -->
+            <!-- オーディション理念（ハンバーガー見出し＋展開） -->
+            <section id="philosophy" class="max-w-5xl mx-auto px-4 fade-in-up" x-data="{ open: false }">
+                <div class="flex items-center justify-between py-6 border-b border-gray-200">
+                    <h2 class="text-2xl md:text-3xl font-black">オーディション理念</h2>
+                    <button @click="open = !open" class="w-12 h-12 flex items-center justify-center rounded-lg border border-gray-300 hover:bg-gray-50 transition" aria-label="toggle philosophy">
+                        <div class="space-y-1.5">
+                            <span class="block w-6 h-0.5 bg-gray-800"></span>
+                            <span class="block w-6 h-0.5 bg-gray-800"></span>
+                            <span class="block w-6 h-0.5 bg-gray-800"></span>
+                        </div>
+                    </button>
+                </div>
+                <div class="pt-6" x-show="open" x-transition>
+                    <div class="bg-white rounded-2xl shadow-md border border-gray-200 p-6 md:p-8">
+                        <p class="text-lg md:text-xl font-bold text-gray-800 mb-2">「日本の最前線で学生が活躍する場〜100のKITENアンバサダー創出〜」</p>
+                        <p class="text-gray-600">学生が社会課題の最前線で挑戦し続けるための舞台を創出します。KITENは、次代を担う挑戦者の「起点」となることを目指します。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- オーディションコンセプト（公開待ち） -->
             <section id="themes" class="max-w-7xl mx-auto px-4 fade-in-up">
-                <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-8 md:mb-12">取り組む社会課題テーマ</h2>
-                <p class="text-center text-lg text-gray-600 mb-12 max-w-4xl mx-auto">
-                    20種類の社会課題テーマから、あなたが解決したい課題を見つけ出そう。<br class="hidden md:block">
-                    多様な視点が交差することで、革新的なソリューションが生まれます。
-                </p>
+                <h2 class="section-title text-3xl md:text-4xl font-black text-center mb-8 md:mb-12">オーディションコンセプト</h2>
+                <div class="text-center mb-10">
+                    <div class="inline-flex items-center space-x-3 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-5 py-2 rounded-full text-sm font-semibold">
+                        <span>第1回 KITEN のテーマ</span>
+                        <span class="bg-white/20 px-2 py-0.5 rounded">Coming Soon</span>
+                    </div>
+                </div>
+                <div class="text-center bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl p-8 md:p-12 shadow-sm">
+                    <p class="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">本オーディションテーマはまもなく公開予定</p>
+                    <p class="text-gray-600 mt-4">公開まで今しばらくお待ちください。公開後はこのセクションでテーマ内容をご案内します。</p>
+                </div>
                 
-                <!-- テーマカテゴリー別表示 -->
-                <div class="space-y-16">
+                <!-- 旧：テーマカテゴリー別一覧（非表示） -->
+                <div class="space-y-16 hidden">
                     <!-- デジタル・テクノロジー領域 -->
                     <div class="theme-category">
                         <h3 class="text-xl md:text-2xl font-bold text-center mb-6 text-blue-800 bg-blue-50 py-3 px-4 rounded-xl">
