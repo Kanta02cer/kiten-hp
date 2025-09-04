@@ -1322,13 +1322,10 @@
                             <div class="relative w-full h-full transition-transform duration-700 ease-out will-change-transform"
                                  :style="`transform-style: preserve-3d; transform: translateZ(-700px) rotateY(${rotationDeg}deg);`">
                                 <template x-for="(img, idx) in images" :key="idx">
-                                    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl shadow-2xl border border-white/40 bg-white">
+                                    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl shadow-2xl border border-white/40 bg-white"
+                                         :style="itemStyle(idx)">
                                         <img :src="img" alt="JAA Profile" class="block w-[720px] h-[450px] object-contain bg-white">
                                     </div>
-                                </template>
-                                <!-- 各面の配置（間隔を広げる） -->
-                                <template x-for="(img, idx) in images" :key="'pos-'+idx">
-                                    <div class="hidden" :style="itemStyle(idx)"></div>
                                 </template>
                             </div>
                         </div>
