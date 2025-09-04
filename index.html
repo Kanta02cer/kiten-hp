@@ -1298,59 +1298,52 @@
                         </ul>
                     </section>
 
-                    <!-- 3. 先輩アンバサダー -->
-                    <section class="bg-white rounded-2xl border border-purple-200 shadow-sm p-6 md:p-8">
-                        <h3 class="text-2xl md:text-3xl font-black mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">3. 先輩アンバサダーはどんな活動してる？</h3>
-                        <p class="text-gray-700 mb-6">採用が決定した学生アンバサダーの皆さんの活動から、SNS発信と社会実装のヒントを学びましょう。</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- 井上 幹太 -->
-                            <div class="p-5 rounded-xl border border-gray-200 bg-white/90 shadow">
-                                <div class="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-2 border-blue-200">
-                                    <img src="https://i.ibb.co/hRHyg37b/image.jpg" alt="井上 幹太" class="w-full h-full object-cover">
-                                </div>
-                                <h4 class="font-black text-lg">井上 幹太（代表理事）</h4>
-                                <p class="text-sm text-gray-600">所属：ZEN大学 知能情報社会学部 1年</p>
-                                <p class="mt-2 text-sm text-gray-700">人気番組「令和の虎」にて1500万円の資金調達を達成。組織の顔として発信と実行を牽引。</p>
-                                <ul class="mt-2 text-sm text-gray-700 list-disc pl-5">
-                                    <li>日本学生アンバサダー協会 代表理事</li>
-                                    <li>『令和の虎人財版』出演／資金獲得</li>
-                                </ul>
+                    <!-- 3. 先輩アンバサダー（3Dカルーセルに置き換え） -->
+                    <section class="bg-white rounded-2xl border border-purple-200 shadow-sm p-6 md:p-10" x-data="{
+                        images: [
+                            'https://i.ibb.co/VWw2tYQK/JAA.png',
+                            'https://i.ibb.co/SDNwMwYf/JAA.png',
+                            'https://i.ibb.co/RTnN6SMb/JAA.png',
+                            'https://i.ibb.co/gLmpWGrB/JAA.png',
+                            'https://i.ibb.co/S70dF7fM/JAA.png',
+                            'https://i.ibb.co/p6Hx5QNh/JAA.png',
+                        ],
+                        activeIndex: 0,
+                        rotationDeg: 0,
+                        go(i){ this.activeIndex = i; const step = 360/this.images.length; this.rotationDeg = -step * i; },
+                        next(){ this.go((this.activeIndex+1)%this.images.length); },
+                        prev(){ this.go((this.activeIndex-1+this.images.length)%this.images.length); },
+                        itemStyle(i){ const step = 360/this.images.length; const rot = i*step; return `width: 720px; height: 450px; transform: rotateY(${rot}deg) translateZ(700px);`; },
+                        init(){ this.go(0); }
+                    }" x-init="init()">
+                        <h3 class="text-2xl md:text-3xl font-black mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent text-center">3. 先輩アンバサダーはどんな活動してる？</h3>
+                        <div class="text-gray-700 mb-8 text-center">採用が決定した学生アンバサダーの自己紹介画像を3Dカルーセルでご紹介します。</div>
+                        <div class="mx-auto" style="width: 100%; max-width: 1200px; height: 520px; perspective: 1600px;">
+                            <div class="relative w-full h-full transition-transform duration-700 ease-out will-change-transform"
+                                 :style="`transform-style: preserve-3d; transform: translateZ(-700px) rotateY(${rotationDeg}deg);`">
+                                <template x-for="(img, idx) in images" :key="idx">
+                                    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl shadow-2xl border border-white/40 bg-white">
+                                        <img :src="img" alt="JAA Profile" class="block w-[720px] h-[450px] object-contain bg-white">
+                                    </div>
+                                </template>
+                                <!-- 各面の配置（間隔を広げる） -->
+                                <template x-for="(img, idx) in images" :key="'pos-'+idx">
+                                    <div class="hidden" :style="itemStyle(idx)"></div>
+                                </template>
                             </div>
-                            <!-- 小林 陸 -->
-                            <div class="p-5 rounded-xl border border-gray-200 bg-white/90 shadow">
-                                <h4 class="font-black text-lg">小林 陸</h4>
-                                <p class="text-sm text-gray-600">所属：慶應義塾大学 総合政策学部 3年</p>
-                                <p class="mt-2 text-sm text-gray-700">株式会社Shipasip 取締役COO。NewsPicks/クリエイティブ/生成AI領域で実践し、学内外で発信。</p>
-                                <ul class="mt-2 text-sm text-gray-700 list-disc pl-5">
-                                    <li>Shipasip 共同経営／COO</li>
-                                    <li>NewsPicks Student Picker ほか複数メディア実績</li>
-                                </ul>
+                        </div>
+                        <div class="mt-6 flex items-center justify-center space-x-4">
+                            <button @click="prev()" class="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors">
+                                <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                            </button>
+                            <div class="flex items-center space-x-2">
+                                <template x-for="(img, i) in images" :key="'dot-'+i">
+                                    <button @click="go(i)" class="w-2.5 h-2.5 rounded-full" :class="activeIndex === i ? 'bg-indigo-600' : 'bg-gray-300'"></button>
+                                </template>
                             </div>
-                            <!-- 小野 日向汰 -->
-                            <div class="p-5 rounded-xl border border-gray-200 bg-white/90 shadow">
-                                <div class="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-2 border-green-200">
-                                    <img src="https://i.ibb.co/hFbYPtrY/2025-09-04-18-15-52.png" alt="小野 日向汰" class="w-full h-full object-cover">
-                                </div>
-                                <h4 class="font-black text-lg">小野 日向汰</h4>
-                                <p class="text-sm text-gray-600">所属：慶應義塾大学 環境情報学部 2年</p>
-                                <p class="mt-2 text-sm text-gray-700">国連本部「未来サミット」「SDGsハイレベル政治フォーラム」日本代表。環境省・国連大学で委員を歴任。</p>
-                                <ul class="mt-2 text-sm text-gray-700 list-disc pl-5">
-                                    <li>GEOC/EPO 運営委員、環境省関連会議 幹事</li>
-                                </ul>
-                            </div>
-                            <!-- 奥井 ゆうか -->
-                            <div class="p-5 rounded-xl border border-gray-200 bg-white/90 shadow">
-                                <div class="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-2 border-pink-200">
-                                    <img src="https://i.ibb.co/Sw9d7rZj/2025-09-04-18-16-21.png" alt="奥井 ゆうか" class="w-full h-full object-cover">
-                                </div>
-                                <h4 class="font-black text-lg">奥井 ゆうか</h4>
-                                <p class="text-sm text-gray-600">所属：日本大学 法学部 3年</p>
-                                <p class="mt-2 text-sm text-gray-700">「ベビーカー博士」としてTV・雑誌・講演で発信。専門性を社会価値に転換する実践者。</p>
-                                <ul class="mt-2 text-sm text-gray-700 list-disc pl-5">
-                                    <li>テレビ朝日『博士ちゃん』出演／ベネッセ各誌 連載・特集</li>
-                                    <li>日本大学ビジネスプランコンテスト 最優秀賞</li>
-                                </ul>
-                            </div>
+                            <button @click="next()" class="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors">
+                                <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            </button>
                         </div>
                     </section>
                 </div>
