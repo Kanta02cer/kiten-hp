@@ -1310,21 +1310,31 @@
                         ],
                         activeIndex: 0,
                         rotationDeg: 0,
+                        cardW: 720,
+                        cardH: 450,
+                        radius: 700,
                         go(i){ this.activeIndex = i; const step = 360/this.images.length; this.rotationDeg = -step * i; },
                         next(){ this.go((this.activeIndex+1)%this.images.length); },
                         prev(){ this.go((this.activeIndex-1+this.images.length)%this.images.length); },
-                        itemStyle(i){ const step = 360/this.images.length; const rot = i*step; return `width: 720px; height: 450px; transform: rotateY(${rot}deg) translateZ(700px);`; },
-                        init(){ this.go(0); }
+                        itemStyle(i){ const step = 360/this.images.length; const rot = i*step; return `width: ${this.cardW}px; height: ${this.cardH}px; transform: rotateY(${rot}deg) translateZ(${this.radius}px);`; },
+                        updateLayout(){
+                            const vw = this.$refs.viewport ? this.$refs.viewport.clientWidth : 1200;
+                            const w = Math.min(Math.floor(vw * 0.8), 1000);
+                            this.cardW = w;
+                            this.cardH = Math.round(w * 0.625);
+                            this.radius = Math.round(w * 0.95);
+                        },
+                        init(){ this.updateLayout(); this.go(0); window.addEventListener('resize', () => { this.updateLayout(); }); }
                     }" x-init="init()">
                         <h3 class="text-2xl md:text-3xl font-black mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent text-center">3. 先輩アンバサダーはどんな活動してる？</h3>
                         <div class="text-gray-700 mb-8 text-center">採用が決定した学生アンバサダーの自己紹介画像を3Dカルーセルでご紹介します。</div>
-                        <div class="mx-auto" style="width: 100%; max-width: 1200px; height: 520px; perspective: 1600px;">
-                            <div class="relative w-full h-full transition-transform duration-700 ease-out will-change-transform"
-                                 :style="`transform-style: preserve-3d; transform: translateZ(-700px) rotateY(${rotationDeg}deg);`">
+                        <div class="mx-auto" x-ref="viewport" style="width: 100%; max-width: 1200px; height: auto; perspective: 1600px;">
+                            <div class="relative w-full transition-transform duration-700 ease-out will-change-transform"
+                                 :style="`height: ${cardH}px; transform-style: preserve-3d; transform: translateZ(-${radius}px) rotateY(${rotationDeg}deg);`">
                                 <template x-for="(img, idx) in images" :key="idx">
                                     <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl shadow-2xl border border-white/40 bg-white"
                                          :style="itemStyle(idx)">
-                                        <img :src="img" alt="JAA Profile" class="block w-[720px] h-[450px] object-contain bg-white">
+                                        <img :src="img" alt="JAA Profile" class="block object-contain bg-white" :style="`width: ${cardW}px; height: ${cardH}px;`">
                                     </div>
                                 </template>
                             </div>
