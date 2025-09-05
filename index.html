@@ -221,6 +221,162 @@
             object-fit: contain;
         }
         
+        /* 審査員写真の精密な配置 */
+        .judge-photo {
+            object-fit: cover;
+            object-position: center 15%;
+            transition: transform 0.5s ease;
+        }
+        
+        .judge-photo:hover {
+            transform: scale(1.05);
+        }
+        
+        /* モバイル版審査員写真の精密な配置 */
+        .judge-photo-mobile {
+            object-fit: cover;
+            object-position: center 20%;
+        }
+        
+        /* 原さんの顔写真専用の調整 */
+        .judge-photo-hara {
+            object-fit: cover;
+            object-position: center 10%;
+            transform: scale(1.15);
+            transform-origin: center;
+        }
+        
+        .judge-photo-hara-mobile {
+            object-fit: cover;
+            object-position: center 15%;
+            transform: scale(1.12);
+            transform-origin: center;
+        }
+        
+        /* 企業ロゴの精密な配置 */
+        .judge-company-logo {
+            object-fit: contain;
+            object-position: center;
+            max-height: 64px;
+            max-width: 280px;
+        }
+        
+        .judge-company-logo-mobile {
+            object-fit: contain;
+            object-position: center;
+            max-height: 32px;
+            max-width: 120px;
+        }
+        
+        /* レスポンシブ対応の強化 */
+        @media (max-width: 640px) {
+            .judge-photo-mobile {
+                object-position: center 25%;
+            }
+            
+            .judge-photo-hara-mobile {
+                object-position: center 20%;
+            }
+            
+            .judge-company-logo-mobile {
+                max-height: 28px;
+                max-width: 100px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .judge-photo {
+                object-position: center 12%;
+            }
+            
+            .judge-photo-hara {
+                object-position: center 8%;
+            }
+            
+            .judge-company-logo {
+                max-height: 72px;
+                max-width: 320px;
+            }
+        }
+        
+        /* 画像のアスペクト比を統一 */
+        .judge-photo-container {
+            aspect-ratio: 3/4;
+            overflow: hidden;
+        }
+        
+        .judge-photo-container-mobile {
+            aspect-ratio: 2/3;
+            overflow: hidden;
+        }
+        
+        /* 中間サイズでの最適化 */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .judge-photo {
+                object-position: center 18%;
+            }
+            
+            .judge-photo-hara {
+                object-position: center 12%;
+            }
+        }
+        
+        /* 超小画面での最適化 */
+        @media (max-width: 480px) {
+            .judge-photo-mobile {
+                object-position: center 30%;
+            }
+            
+            .judge-photo-hara-mobile {
+                object-position: center 25%;
+            }
+        }
+        
+        /* カルーセルナビゲーションボタンの強化 */
+        .carousel-nav-button {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        
+        .carousel-nav-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .carousel-nav-button:focus {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
+        
+        /* インジケーターの強化 */
+        .carousel-indicator {
+            position: relative;
+        }
+        
+        .carousel-indicator::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            background: rgba(59, 130, 246, 0.3);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-indicator:hover::after {
+            width: 120%;
+            height: 120%;
+        }
+        
+        .carousel-indicator.active::after {
+            width: 140%;
+            height: 140%;
+            background: rgba(59, 130, 246, 0.5);
+        }
+        
         /* 審査員カードの情報エリア最適化 */
         .judge-info-area {
             display: flex;
@@ -1009,8 +1165,8 @@
         });
         
         document.addEventListener('alpine:init', () => {
-            // 審査員カルーセルのロジック
-            Alpine.data('judgesCarousel', function () {
+            // デスクトップ版審査員カルーセルのロジック
+            Alpine.data('judgesCarouselDesktop', function () {
                 return {
                     activeJudge: 0,
                     activeIndex: 0,
@@ -1025,7 +1181,9 @@
                             theme: '学生と企業がともに成長する未来へ、学生が社会に出るその一歩を創る',
                             group: '日本学生アンバサダー協会',
                             title: '代表理事',
-                            description: '学生と企業がともに成長する未来へ、学生が社会に出るその一歩を創る'
+                            description: '学生と企業がともに成長する未来へ、学生が社会に出るその一歩を創る',
+                            photoClass: 'w-full h-full judge-photo',
+                            photoClassMobile: 'w-full h-full judge-photo-mobile'
                         },
                         {
                             logo: 'https://i.ibb.co/GvCMp9gG/3rd-Lab-logo-enhanced-transparent.png',
@@ -1036,57 +1194,62 @@
                             theme: '未来社会課題に本気で挑む若者たちとともに、「住まいと暮らし」の枠を超えた、新たな価値を社会へ届ける――。',
                             group: 'InnoCom Square 3rd Lab.',
                             title: '責任者',
-                            description: '未来社会課題に本気で挑む若者たちとともに、「住まいと暮らし」の枠を超えた、新たな価値を社会へ届ける'
+                            description: '未来社会課題に本気で挑む若者たちとともに、「住まいと暮らし」の枠を超えた、新たな価値を社会へ届ける',
+                            photoClass: 'w-full h-full judge-photo',
+                            photoClassMobile: 'w-full h-full judge-photo-mobile'
                         },
                         {
                             logo: 'https://i.ibb.co/tw8zhx9Z/scd-logo-1.png',
                             name: '小寺 崇士',
                             nameEn: 'Takashi Kotera',
-                            photo: 'https://i.ibb.co/ZRYR170L/Beauty-Plus-Image-Enhancer-1756552587673.jpg',
-                            image: 'https://i.ibb.co/ZRYR170L/Beauty-Plus-Image-Enhancer-1756552587673.jpg',
+                            photo: 'https://i.ibb.co/5xJ3c2v1/Beauty-Plus-Image-Enhancer-1756552587673.jpg',
+                            image: 'https://i.ibb.co/5xJ3c2v1/Beauty-Plus-Image-Enhancer-1756552587673.jpg',
                             theme: 'CXとDXを融合し、デジタル顧客体験創造の専門家集団として、社会に貢献していく',
                             group: 'SCデジタル株式会社（住友商事）',
                             title: '営業・コンサルティング本部長 執行役員',
-                            description: 'CXとDXを融合し、デジタル顧客体験創造の専門家集団として、社会に貢献していく'
+                            description: 'CXとDXを融合し、デジタル顧客体験創造の専門家集団として、社会に貢献していく',
+                            photoClass: 'w-full h-full judge-photo',
+                            photoClassMobile: 'w-full h-full judge-photo-mobile'
                         },
                         {
                             logo: 'https://i.ibb.co/27CTt3G0/De-Fimans-logo-landscape-black.png',
                             name: '小野暢思',
                             nameEn: 'Mitsuhi Ono',
-                            photo: 'https://i.ibb.co/d4wHgTzr/2.webp',
-                            image: 'https://i.ibb.co/d4wHgTzr/2.webp',
+                            photo: 'https://i.ibb.co/hFV7kpkD/2.webp',
+                            image: 'https://i.ibb.co/hFV7kpkD/2.webp',
                             theme: 'SBIグループ傘下、WEB3事業を手掛けるプロフェッショナルチーム',
                             group: '株式会社DeFimans（SBIグループ）',
                             title: 'Co-Founder / 代表取締役CEO',
-                            description: 'SBIグループ傘下、WEB3事業を手掛けるプロフェッショナルチーム'
+                            description: 'SBIグループ傘下、WEB3事業を手掛けるプロフェッショナルチーム',
+                            photoClass: 'w-full h-full judge-photo',
+                            photoClassMobile: 'w-full h-full judge-photo-mobile'
                         },
                         {
                             logo: 'https://i.ibb.co/nsRZSbh7/5-Inno-Com-Square-1l-color.png',
                             name: '原起知',
                             nameEn: 'Hara Yukitomo',
-                            photo: 'https://i.ibb.co/NdvDjfNx/image.jpg',
-                            image: 'https://i.ibb.co/NdvDjfNx/image.jpg',
-                            theme: 'AIビジネスチームTL兼CAIOとして、AI技術を活用した社会課題解決に取り組む',
+                            photo: 'https://i.ibb.co/fV6b6sps/image.jpg',
+                            image: 'https://i.ibb.co/fV6b6sps/image.jpg',
+                            theme: '『我が家』を世界一幸せな場所にするために、「健康・つながり・学び」をAIでアップデートする。',
                             group: '積水ハウスイノベーション&コミュニケーション株式会社',
                             title: 'AIビジネスチームTL兼CAIO',
-                            description: 'AIビジネスチームTL兼CAIOとして、AI技術を活用した社会課題解決に取り組む'
+                            description: '『我が家』を世界一幸せな場所にするために、「健康・つながり・学び」をAIでアップデートする。',
+                            photoClass: 'judge-photo-hara',
+                            photoClassMobile: 'judge-photo-hara-mobile'
                         },
                     ],
                     // 次のスライドへ
                     next() {
-                        this.activeJudge = (this.activeJudge + 1) % this.judges.length;
-                        this.activeIndex = this.activeJudge;
+                        this.activeIndex = (this.activeIndex + 1) % this.judges.length;
                         this.resetTimer();
                     },
                     // 前のスライドへ
                     prev() {
-                        this.activeJudge = (this.activeJudge - 1 + this.judges.length) % this.judges.length;
-                        this.activeIndex = this.activeJudge;
+                        this.activeIndex = (this.activeIndex - 1 + this.judges.length) % this.judges.length;
                         this.resetTimer();
                     },
                     // 特定のスライドへ移動
                     go(index) {
-                        this.activeJudge = index;
                         this.activeIndex = index;
                         this.resetTimer();
                     },
@@ -1094,8 +1257,7 @@
                     resetTimer() {
                         clearInterval(this.timer);
                         this.timer = setInterval(() => {
-                            this.activeJudge = (this.activeJudge + 1) % this.judges.length;
-                            this.activeIndex = this.activeJudge;
+                            this.activeIndex = (this.activeIndex + 1) % this.judges.length;
                         }, 4000);
                     },
                     // コンポーネント初期化時にタイマーを開始
@@ -1105,7 +1267,107 @@
                 }
             });
 
-
+            // モバイル版審査員カルーセルのロジック
+            Alpine.data('judgesCarouselMobile', function () {
+                return {
+                    activeJudge: 0,
+                    activeIndex: 0,
+                    timer: null,
+                    judges: [
+                        {
+                            logo: 'https://i.ibb.co/Hp77CJ5c/image.png',
+                            name: '井上 幹太',
+                            nameEn: 'Kanta Inoue',
+                            photo: 'https://i.ibb.co/hRHyg37b/image.jpg',
+                            image: 'https://i.ibb.co/hRHyg37b/image.jpg',
+                            theme: '学生と企業がともに成長する未来へ、学生が社会に出るその一歩を創る',
+                            group: '日本学生アンバサダー協会',
+                            title: '代表理事',
+                            description: '学生と企業がともに成長する未来へ、学生が社会に出るその一歩を創る',
+                            photoClass: 'w-full h-full judge-photo',
+                            photoClassMobile: 'w-full h-full judge-photo-mobile'
+                        },
+                        {
+                            logo: 'https://i.ibb.co/GvCMp9gG/3rd-Lab-logo-enhanced-transparent.png',
+                            name: '栗栖 崇',
+                            nameEn: 'Kurisu Takashi',
+                            photo: 'https://i.ibb.co/2Y1LXWbh/image.jpg',
+                            image: 'https://i.ibb.co/2Y1LXWbh/image.jpg',
+                            theme: '未来社会課題に本気で挑む若者たちとともに、「住まいと暮らし」の枠を超えた、新たな価値を社会へ届ける――。',
+                            group: 'InnoCom Square 3rd Lab.',
+                            title: '責任者',
+                            description: '未来社会課題に本気で挑む若者たちとともに、「住まいと暮らし」の枠を超えた、新たな価値を社会へ届ける',
+                            photoClass: 'w-full h-full judge-photo',
+                            photoClassMobile: 'w-full h-full judge-photo-mobile'
+                        },
+                        {
+                            logo: 'https://i.ibb.co/tw8zhx9Z/scd-logo-1.png',
+                            name: '小寺 崇士',
+                            nameEn: 'Takashi Kotera',
+                            photo: 'https://i.ibb.co/5xJ3c2v1/Beauty-Plus-Image-Enhancer-1756552587673.jpg',
+                            image: 'https://i.ibb.co/5xJ3c2v1/Beauty-Plus-Image-Enhancer-1756552587673.jpg',
+                            theme: 'CXとDXを融合し、デジタル顧客体験創造の専門家集団として、社会に貢献していく',
+                            group: 'SCデジタル株式会社（住友商事）',
+                            title: '営業・コンサルティング本部長 執行役員',
+                            description: 'CXとDXを融合し、デジタル顧客体験創造の専門家集団として、社会に貢献していく',
+                            photoClass: 'w-full h-full judge-photo',
+                            photoClassMobile: 'w-full h-full judge-photo-mobile'
+                        },
+                        {
+                            logo: 'https://i.ibb.co/27CTt3G0/De-Fimans-logo-landscape-black.png',
+                            name: '小野暢思',
+                            nameEn: 'Mitsuhi Ono',
+                            photo: 'https://i.ibb.co/hFV7kpkD/2.webp',
+                            image: 'https://i.ibb.co/hFV7kpkD/2.webp',
+                            theme: 'SBIグループ傘下、WEB3事業を手掛けるプロフェッショナルチーム',
+                            group: '株式会社DeFimans（SBIグループ）',
+                            title: 'Co-Founder / 代表取締役CEO',
+                            description: 'SBIグループ傘下、WEB3事業を手掛けるプロフェッショナルチーム',
+                            photoClass: 'w-full h-full judge-photo',
+                            photoClassMobile: 'w-full h-full judge-photo-mobile'
+                        },
+                        {
+                            logo: 'https://i.ibb.co/nsRZSbh7/5-Inno-Com-Square-1l-color.png',
+                            name: '原起知',
+                            nameEn: 'Hara Yukitomo',
+                            photo: 'https://i.ibb.co/fV6b6sps/image.jpg',
+                            image: 'https://i.ibb.co/fV6b6sps/image.jpg',
+                            theme: '『我が家』を世界一幸せな場所にするために、「健康・つながり・学び」をAIでアップデートする。',
+                            group: '積水ハウスイノベーション&コミュニケーション株式会社',
+                            title: 'AIビジネスチームTL兼CAIO',
+                            description: '『我が家』を世界一幸せな場所にするために、「健康・つながり・学び」をAIでアップデートする。',
+                            photoClass: 'judge-photo-hara',
+                            photoClassMobile: 'judge-photo-hara-mobile'
+                        },
+                    ],
+                    // 次のスライドへ
+                    next() {
+                        this.activeIndex = (this.activeIndex + 1) % this.judges.length;
+                        this.resetTimer();
+                    },
+                    // 前のスライドへ
+                    prev() {
+                        this.activeIndex = (this.activeIndex - 1 + this.judges.length) % this.judges.length;
+                        this.resetTimer();
+                    },
+                    // 特定のスライドへ移動
+                    go(index) {
+                        this.activeIndex = index;
+                        this.resetTimer();
+                    },
+                    // タイマーをリセットして再開する
+                    resetTimer() {
+                        clearInterval(this.timer);
+                        this.timer = setInterval(() => {
+                            this.activeIndex = (this.activeIndex + 1) % this.judges.length;
+                        }, 3500); // モバイル版は3.5秒間隔
+                    },
+                    // コンポーネント初期化時にタイマーを開始
+                    init() {
+                        this.resetTimer();
+                    }
+                }
+            });
 
             // 審査員ロゴカルーセルのロジック
             Alpine.data('judgeLogosCarousel', function () {
@@ -1124,7 +1386,9 @@
                             theme: '学生と企業がともに成長する未来へ、学生が社会に出るその一歩を創る',
                             group: '日本学生アンバサダー協会',
                             title: '代表理事',
-                            description: '学生と企業がともに成長する未来へ、学生が社会に出るその一歩を創る'
+                            description: '学生と企業がともに成長する未来へ、学生が社会に出るその一歩を創る',
+                            photoClass: 'w-full h-full judge-photo',
+                            photoClassMobile: 'w-full h-full judge-photo-mobile'
                         },
                         {
                             logo: 'https://i.ibb.co/GvCMp9gG/3rd-Lab-logo-enhanced-transparent.png',
@@ -1135,40 +1399,48 @@
                             theme: '未来社会課題に本気で挑む若者たちとともに、「住まいと暮らし」の枠を超えた、新たな価値を社会へ届ける――。',
                             group: 'InnoCom Square 3rd Lab.',
                             title: '責任者',
-                            description: '未来社会課題に本気で挑む若者たちとともに、「住まいと暮らし」の枠を超えた、新たな価値を社会へ届ける'
+                            description: '未来社会課題に本気で挑む若者たちとともに、「住まいと暮らし」の枠を超えた、新たな価値を社会へ届ける',
+                            photoClass: 'w-full h-full judge-photo',
+                            photoClassMobile: 'w-full h-full judge-photo-mobile'
                         },
                         {
                             logo: 'https://i.ibb.co/tw8zhx9Z/scd-logo-1.png',
                             name: '小寺 崇士',
                             nameEn: 'Takashi Kotera',
-                            photo: 'https://i.ibb.co/ZRYR170L/Beauty-Plus-Image-Enhancer-1756552587673.jpg',
-                            image: 'https://i.ibb.co/ZRYR170L/Beauty-Plus-Image-Enhancer-1756552587673.jpg',
+                            photo: 'https://i.ibb.co/5xJ3c2v1/Beauty-Plus-Image-Enhancer-1756552587673.jpg',
+                            image: 'https://i.ibb.co/5xJ3c2v1/Beauty-Plus-Image-Enhancer-1756552587673.jpg',
                             theme: 'CXとDXを融合し、デジタル顧客体験創造の専門家集団として、社会に貢献していく',
                             group: 'SCデジタル株式会社（住友商事）',
                             title: '営業・コンサルティング本部長 執行役員',
-                            description: 'CXとDXを融合し、デジタル顧客体験創造の専門家集団として、社会に貢献していく'
+                            description: 'CXとDXを融合し、デジタル顧客体験創造の専門家集団として、社会に貢献していく',
+                            photoClass: 'w-full h-full judge-photo',
+                            photoClassMobile: 'w-full h-full judge-photo-mobile'
                         },
                         {
                             logo: 'https://i.ibb.co/27CTt3G0/De-Fimans-logo-landscape-black.png',
                             name: '小野暢思',
                             nameEn: 'Mitsuhi Ono',
-                            photo: 'https://i.ibb.co/d4wHgTzr/2.webp',
-                            image: 'https://i.ibb.co/d4wHgTzr/2.webp',
+                            photo: 'https://i.ibb.co/hFV7kpkD/2.webp',
+                            image: 'https://i.ibb.co/hFV7kpkD/2.webp',
                             theme: 'SBIグループ傘下、WEB3事業を手掛けるプロフェッショナルチーム',
                             group: '株式会社DeFimans（SBIグループ）',
                             title: 'Co-Founder / 代表取締役CEO',
-                            description: 'SBIグループ傘下、WEB3事業を手掛けるプロフェッショナルチーム'
+                            description: 'SBIグループ傘下、WEB3事業を手掛けるプロフェッショナルチーム',
+                            photoClass: 'w-full h-full judge-photo',
+                            photoClassMobile: 'w-full h-full judge-photo-mobile'
                         },
                         {
                             logo: 'https://i.ibb.co/nsRZSbh7/5-Inno-Com-Square-1l-color.png',
                             name: '原起知',
                             nameEn: 'Hara Yukitomo',
-                            photo: 'https://i.ibb.co/NdvDjfNx/image.jpg',
-                            image: 'https://i.ibb.co/NdvDjfNx/image.jpg',
-                            theme: 'AIビジネスチームTL兼CAIOとして、AI技術を活用した社会課題解決に取り組む',
+                            photo: 'https://i.ibb.co/fV6b6sps/image.jpg',
+                            image: 'https://i.ibb.co/fV6b6sps/image.jpg',
+                            theme: '『我が家』を世界一幸せな場所にするために、「健康・つながり・学び」をAIでアップデートする。',
                             group: '積水ハウスイノベーション&コミュニケーション株式会社',
                             title: 'AIビジネスチームTL兼CAIO',
-                            description: 'AIビジネスチームTL兼CAIOとして、AI技術を活用した社会課題解決に取り組む'
+                            description: '『我が家』を世界一幸せな場所にするために、「健康・つながり・学び」をAIでアップデートする。',
+                            photoClass: 'judge-photo-hara',
+                            photoClassMobile: 'judge-photo-hara-mobile'
                         },
                     ],
                     
@@ -1337,6 +1609,77 @@
             }))
         })
     </script>
+    <script>
+      // Reorder selected sections per requested order while keeping contents unchanged
+      document.addEventListener('DOMContentLoaded', function () {
+        var orderIds = ['philosophy', 'themes', 'about', 'venue', 'senpai-activities', 'judges', 'prizes'];
+        var first = document.getElementById('philosophy');
+        if (!first) return;
+        var parent = first.parentNode;
+        orderIds.forEach(function(id){
+          var sec = document.getElementById(id);
+          if (sec && sec.parentNode === parent) {
+            parent.appendChild(sec);
+          }
+        });
+        // Move FAQ, Sponsors, CTA as a set to the very bottom in this order
+        ['faq','sponsors','cta'].forEach(function(id){
+          var sec = document.getElementById(id);
+          if (sec && sec.parentNode === parent) {
+            parent.appendChild(sec);
+          }
+        });
+      });
+    </script>
+    <script>
+      // Reorder selected sections per requested order while keeping contents unchanged
+      document.addEventListener('DOMContentLoaded', function () {
+        var orderIds = ['philosophy', 'themes', 'about', 'venue', 'senpai-activities', 'judges', 'prizes'];
+        var first = document.getElementById('philosophy');
+        if (!first) return;
+        var parent = first.parentNode;
+        orderIds.forEach(function(id){
+          var sec = document.getElementById(id);
+          if (sec && sec.parentNode === parent) {
+            parent.appendChild(sec);
+          }
+        });
+        // Move FAQ, Sponsors, CTA as a set to the very bottom in this order
+        ['faq','sponsors','cta'].forEach(function(id){
+          var sec = document.getElementById(id);
+          if (sec && sec.parentNode === parent) {
+            parent.appendChild(sec);
+          }
+        });
+      });
+
+      // SNS share helpers
+      function getShareText() {
+        var el = document.getElementById('sharePageViewCount');
+        var countText = el ? el.textContent : '100';
+        return '🚀 学生が「企業の顔」となる。\n社会のために本気になれる学生アンバサダーの登竜門「KITEN」に参加しませんか？\n\n📅 2025年9月20日（土）14:00-17:30\n📍 InnoCom Square（東京・赤坂）\n💰 参加費無料\n👥 定員100名（現在' + countText + '名がサイトにアクセス済み！）\n\n🎯 アイデアソン、1分ピッチ大会、豪華審査員からのフィードバック！\n\n📝 申し込み: https://forms.gle/9zSvkXV1htCYJ8h47\n\n#KITEN #学生起業 #アイデアソン #100のKITEN #学生アンバサダー';
+      }
+
+      window.shareToTwitter = function() {
+        var text = encodeURIComponent(getShareText());
+        var url = encodeURIComponent(location.href.split('#')[0]);
+        var intent = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + url;
+        window.open(intent, '_blank', 'width=600,height=600');
+      }
+
+      window.copyShareText = function() {
+        var text = getShareText();
+        navigator.clipboard.writeText(text).then(function(){
+          alert('シェア用テキストをコピーしました。Instagramの投稿やストーリーに貼り付けてご利用ください。');
+        });
+      }
+
+      window.shareToLine = function() {
+        var text = encodeURIComponent(getShareText());
+        var url = 'https://social-plugins.line.me/lineit/share?text=' + text;
+        window.open(url, '_blank', 'width=600,height=600');
+      }
+    </script>
 </head>
 <body class="bg-slate-50 text-gray-800" x-data="{ openMenu: false }">
 
@@ -1412,14 +1755,24 @@
                     </div>
                 </div>
                 <div class="mt-8 md:mt-12">
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
                     <a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" class="cta-button inline-block text-white font-bold text-lg md:text-xl py-3 md:py-4 px-8 md:px-12 rounded-full">
                         <span class="flex items-center justify-center">
-                            無料でエントリーする 
+                                個人エントリー 
                             <svg class="w-5 h-5 md:w-6 md:h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
                             </svg>
                         </span>
                     </a>
+                        <a href="https://forms.gle/spwkDS2f1WW2gDFA9" target="_blank" class="cta-button inline-block text-white font-bold text-lg md:text-xl py-3 md:py-4 px-8 md:px-12 rounded-full">
+                            <span class="flex items-center justify-center">
+                                団体エントリー
+                                <svg class="w-5 h-5 md:w-6 md:h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
                     <p class="mt-3 md:mt-4 text-xs md:text-sm text-gray-600">参加費無料 | 2025.9.20 (Sat) 開催</p>
                     
                     <!-- リアルタイムサイトアクセス数カウンター -->
@@ -1478,34 +1831,61 @@
             <!-- 豪華審査員 -->
             <section id="judges" class="py-16 md:py-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-center mb-12">
-                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                            豪華審査員
-                        </h2>
-                        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-                            業界の第一人者たちが直接審査いたします
+                    <div class="text-center mb-16">
+                        <div class="relative inline-block">
+                            <h2 class="text-4xl md:text-6xl font-black bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4 drop-shadow-lg">
+                                豪華審査員
+                            </h2>
+                            <div class="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-pulse"></div>
+                            <div class="absolute -bottom-2 -left-2 w-6 h-6 bg-gradient-to-r from-pink-400 to-red-500 rounded-full animate-pulse delay-1000"></div>
+                        </div>
+                        <p class="text-xl md:text-2xl text-gray-700 max-w-4xl mx-auto font-semibold leading-relaxed">
+                            <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-bold">業界の第一人者たち</span>が直接審査いたします
                         </p>
+                        <div class="mt-6 flex justify-center">
+                            <div class="w-24 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 rounded-full"></div>
+                        </div>
                     </div>
 
                     <!-- デスクトップ版審査員カルーセル -->
                     <div class="hidden md:block">
-                        <div class="relative">
+                        <div class="relative max-w-6xl mx-auto" x-data="judgesCarouselDesktop()" x-init="init()">
                             <div class="overflow-hidden">
                                 <div class="flex transition-transform duration-500 ease-in-out" 
-                                     x-data="judgesCarousel()" 
-                                     x-init="init()"
                                      :style="`transform: translateX(-${activeIndex * 100}%)`">
                                     <template x-for="(judge, index) in judges" :key="index">
                                         <div class="w-full flex-shrink-0 px-4">
-                                            <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-105 max-w-sm mx-auto">
-                                                <div class="aspect-[3/4] overflow-hidden">
-                                                    <img :src="judge.image" :alt="judge.name" 
-                                                         class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
-                                                </div>
-                                                <div class="p-6">
-                                                    <h3 class="text-xl font-bold text-gray-900 mb-2" x-text="judge.name"></h3>
-                                                    <p class="text-blue-600 font-semibold mb-2" x-text="judge.title"></p>
-                                                    <p class="text-gray-600 text-sm leading-relaxed line-clamp-3" x-text="judge.theme"></p>
+                                            <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-105 max-w-4xl mx-auto">
+                                                <div class="flex">
+                                                    <!-- 顔写真（左寄せ、肩から上表示） -->
+                                                    <div class="w-1/3 flex-shrink-0 relative">
+                                                        <div class="h-96 judge-photo-container">
+                                                            <img :src="judge.image" :alt="judge.name" 
+                                                                 :class="judge.photoClass ? judge.photoClass : 'w-full h-full judge-photo'"
+                                                                 class="w-full h-full">
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- 情報エリア（右側） -->
+                                                    <div class="w-2/3 p-8 flex flex-col justify-center">
+                                                        <!-- 企業ロゴ（横長） -->
+                                                        <div class="mb-6 flex justify-center items-center">
+                                                            <img :src="judge.logo" :alt="judge.group" 
+                                                                 class="judge-company-logo">
+                                                        </div>
+                                                        
+                                                        <!-- 企業理念（グラデーション強調） -->
+                                                        <p class="text-center text-base leading-relaxed mb-6 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent font-medium" x-text="judge.theme"></p>
+                                                        
+                                                        <!-- 役職 -->
+                                                        <p class="text-center text-blue-600 font-semibold text-lg mb-3" x-text="judge.title"></p>
+                                                        
+                                                        <!-- 氏名漢字（グラデーション強調・太文字） -->
+                                                        <h3 class="text-center text-3xl font-black bg-gradient-to-r from-blue-800 via-indigo-800 to-purple-800 bg-clip-text text-transparent mb-2 drop-shadow-sm" x-text="judge.name"></h3>
+                                                        
+                                                        <!-- 氏名英字（グラデーション） -->
+                                                        <p class="text-center text-lg bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent font-semibold" x-text="judge.nameEn"></p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1514,49 +1894,77 @@
                             </div>
                             
                             <!-- ナビゲーションボタン -->
-                            <button @click="prev()" 
-                                    class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 hover:text-blue-600 rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            <button @click="activeIndex = (activeIndex - 1 + judges.length) % judges.length; resetTimer()" 
+                                    class="carousel-nav-button absolute left-4 top-1/2 -translate-y-1/2 bg-white/95 hover:bg-white text-gray-700 hover:text-blue-600 rounded-full p-4 shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer z-20 border border-gray-200"
+                                    type="button"
+                                    title="前の審査員">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path>
                                 </svg>
                             </button>
-                            <button @click="next()" 
-                                    class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 hover:text-blue-600 rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            <button @click="activeIndex = (activeIndex + 1) % judges.length; resetTimer()" 
+                                    class="carousel-nav-button absolute right-4 top-1/2 -translate-y-1/2 bg-white/95 hover:bg-white text-gray-700 hover:text-blue-600 rounded-full p-4 shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer z-20 border border-gray-200"
+                                    type="button"
+                                    title="次の審査員">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
                                 </svg>
                             </button>
                         </div>
                         
                         <!-- インジケーター -->
-                        <div class="flex justify-center mt-8 space-x-2">
+                        <div class="flex justify-center mt-8 space-x-3">
                             <template x-for="(judge, index) in judges" :key="index">
-                                <button @click="go(index)" 
-                                        :class="activeIndex === index ? 'bg-blue-600' : 'bg-gray-300'"
-                                        class="w-3 h-3 rounded-full transition-colors duration-300"></button>
+                                <button @click="activeIndex = index; resetTimer()" 
+                                        :aria-current="activeIndex === index ? 'true' : 'false'"
+                                        :class="activeIndex === index ? 'ring-2 ring-blue-600 bg-gray-300 scale-110 shadow-lg active' : 'ring-2 ring-blue-400/60 bg-gray-300 hover:bg-gray-400'"
+                                        class="carousel-indicator w-4 h-4 rounded-full transition-all duration-300 cursor-pointer hover:scale-105"
+                                        type="button"
+                                        :title="`審査員 ${index + 1} を表示`">
+                                </button>
                             </template>
                         </div>
                     </div>
 
                     <!-- モバイル版審査員カルーセル -->
                     <div class="md:hidden">
-                        <div class="relative">
+                        <div class="relative max-w-4xl mx-auto" x-data="judgesCarouselMobile()" x-init="init()">
                             <div class="overflow-hidden">
                                 <div class="flex transition-transform duration-500 ease-in-out" 
-                                     x-data="judgeLogosCarousel()" 
-                                     x-init="init()"
                                      :style="`transform: translateX(-${activeIndex * 100}%)`">
                                     <template x-for="(judge, index) in judges" :key="index">
                                         <div class="w-full flex-shrink-0 px-2">
-                                            <div class="bg-white rounded-xl shadow-lg overflow-hidden max-w-xs mx-auto">
-                                                <div class="aspect-[3/4] overflow-hidden">
-                                                    <img :src="judge.image" :alt="judge.name" 
-                                                         class="w-full h-full object-cover">
-                                                </div>
-                                                <div class="p-4">
-                                                    <h3 class="text-lg font-bold text-gray-900 mb-1" x-text="judge.name"></h3>
-                                                    <p class="text-blue-600 font-semibold text-sm mb-2" x-text="judge.title"></p>
-                                                    <p class="text-gray-600 text-xs leading-relaxed line-clamp-3" x-text="judge.theme"></p>
+                                            <div class="bg-white rounded-xl shadow-lg overflow-hidden max-w-2xl mx-auto">
+                                                <div class="flex">
+                                                    <!-- 顔写真（左寄せ、肩から上表示） -->
+                                                    <div class="w-2/5 flex-shrink-0 relative">
+                                                        <div class="h-56 judge-photo-container-mobile">
+                                                            <img :src="judge.image" :alt="judge.name" 
+                                                                 :class="judge.photoClassMobile ? judge.photoClassMobile : 'w-full h-full judge-photo-mobile'"
+                                                                 class="w-full h-full">
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- 情報エリア（右側） -->
+                                                    <div class="w-3/5 p-4 flex flex-col justify-center">
+                                                        <!-- 企業ロゴ（横長） -->
+                                                        <div class="mb-3 flex justify-center items-center">
+                                                            <img :src="judge.logo" :alt="judge.group" 
+                                                                 class="judge-company-logo-mobile">
+                                                        </div>
+                                                        
+                                                        <!-- 企業理念（グラデーション強調） -->
+                                                        <p class="text-center text-xs leading-relaxed mb-3 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent font-medium" x-text="judge.theme"></p>
+                                                        
+                                                        <!-- 役職 -->
+                                                        <p class="text-center text-blue-600 font-semibold text-xs mb-1" x-text="judge.title"></p>
+                                                        
+                                                        <!-- 氏名漢字（グラデーション強調・太文字） -->
+                                                        <h3 class="text-center text-lg font-black bg-gradient-to-r from-blue-800 via-indigo-800 to-purple-800 bg-clip-text text-transparent mb-1 drop-shadow-sm" x-text="judge.name"></h3>
+                                                        
+                                                        <!-- 氏名英字（グラデーション） -->
+                                                        <p class="text-center text-xs bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent font-semibold" x-text="judge.nameEn"></p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1565,16 +1973,20 @@
                             </div>
                             
                             <!-- ナビゲーションボタン -->
-                            <button @click="prev()" 
-                                    class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 hover:text-blue-600 rounded-full p-2 shadow-lg">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            <button @click="activeIndex = (activeIndex - 1 + judges.length) % judges.length; resetTimer()" 
+                                    class="carousel-nav-button absolute left-2 top-1/2 -translate-y-1/2 bg-white/95 hover:bg-white text-gray-700 hover:text-blue-600 rounded-full p-3 shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer z-20 border border-gray-200"
+                                    type="button"
+                                    title="前の審査員">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path>
                                 </svg>
                             </button>
-                            <button @click="next()" 
-                                    class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 hover:text-blue-600 rounded-full p-2 shadow-lg">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            <button @click="activeIndex = (activeIndex + 1) % judges.length; resetTimer()" 
+                                    class="carousel-nav-button absolute right-2 top-1/2 -translate-y-1/2 bg-white/95 hover:bg-white text-gray-700 hover:text-blue-600 rounded-full p-3 shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer z-20 border border-gray-200"
+                                    type="button"
+                                    title="次の審査員">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
                                 </svg>
                             </button>
                         </div>
@@ -1582,9 +1994,13 @@
                         <!-- インジケーター -->
                         <div class="flex justify-center mt-6 space-x-2">
                             <template x-for="(judge, index) in judges" :key="index">
-                                <button @click="go(index)" 
-                                        :class="activeIndex === index ? 'bg-blue-600' : 'bg-gray-300'"
-                                        class="w-2 h-2 rounded-full transition-colors duration-300"></button>
+                                <button @click="activeIndex = index; resetTimer()" 
+                                        :aria-current="activeIndex === index ? 'true' : 'false'"
+                                        :class="activeIndex === index ? 'ring-2 ring-blue-600 bg-gray-300 scale-125 shadow-md active' : 'ring-2 ring-blue-400/60 bg-gray-300 hover:bg-gray-400'"
+                                        class="carousel-indicator w-3 h-3 rounded-full transition-all duration-300 cursor-pointer hover:scale-110"
+                                        type="button"
+                                        :title="`審査員 ${index + 1} を表示`">
+                                </button>
                             </template>
                         </div>
                     </div>
@@ -2583,96 +2999,65 @@
                 </div>
             </section>
 
-            <!-- SNSシェアセクション -->
-            <section id="share" class="text-center bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 py-16 md:py-20 fade-in-up">
-                <div class="max-w-5xl mx-auto px-4">
-                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-8">
-                        🚀 このイベントを友達にシェアしよう！
-                    </h2>
-                    <p class="text-lg md:text-xl text-blue-100 mb-12 max-w-3xl mx-auto">
-                        素晴らしい体験を共有することで、より多くの仲間と出会えるチャンスが広がります。
-                    </p>
-                    
-                    <!-- SNSシェアボタン群 -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                        <!-- X（Twitter）シェア -->
-                        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-300 group">
-                            <div class="w-20 h-20 mx-auto mb-6 bg-black rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-white mb-4">X（Twitter）でシェア</h3>
-                            <p class="text-blue-100 text-sm mb-6">イベントの魅力をツイートして、フォロワーに広めよう！</p>
-                            <button onclick="shareToX()" class="w-full bg-black text-white py-3 px-6 rounded-full font-semibold hover:bg-gray-800 transition-colors group-hover:shadow-lg">
-                                シェアする
-                            </button>
-                        </div>
-                        
-                        <!-- Instagramシェア -->
-                        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-300 group">
-                            <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4z"/>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-white mb-4">Instagramでシェア</h3>
-                            <p class="text-blue-100 text-sm mb-6">ストーリーや投稿で、ビジュアル的にアピール！</p>
-                            <button onclick="shareToInstagram()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-6 rounded-full font-semibold hover:from-purple-600 hover:to-pink-600 transition-colors group-hover:shadow-lg">
-                                テキストをコピー
-                            </button>
-                        </div>
-                        
-                        <!-- LINEシェア -->
-                        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-300 group">
-                            <div class="w-20 h-20 mx-auto mb-6 bg-green-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-white mb-4">LINEでシェア</h3>
-                            <p class="text-blue-100 text-sm mb-6">友達やグループに直接送信して、一緒に参加しよう！</p>
-                            <button onclick="shareToLINE()" class="w-full bg-green-500 text-white py-3 px-6 rounded-full font-semibold hover:bg-green-600 transition-colors group-hover:shadow-lg">
-                                シェアする
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- シェア用テキスト -->
-                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                        <h3 class="text-lg font-bold text-white mb-4">📝 シェア用テキスト例</h3>
-                        <div class="bg-white/20 rounded-lg p-4 text-left">
-                            <p class="text-white text-sm leading-relaxed">
-                                🚀 <strong>学生が「企業の顔」となる。</strong><br>
-                                社会のために本気になれる学生アンバサダーの登竜門「KITEN」に参加しませんか？<br><br>
-                                📅 2025年9月20日（土）14:00-17:30<br>
-                                📍 InnoCom Square（東京・赤坂）<br>
-                                💰 参加費無料<br>
-                                👥 定員100名（現在<span id="sharePageViewCount">67</span>名がサイトにアクセス済み！）<br><br>
-                                🎯 アイデアソン、1分ピッチ大会、豪華審査員からのフィードバック！<br><br>
-                                📝 申し込み: <a href="https://forms.gle/9zSvkXV1htCYJ8h47" class="underline">https://forms.gle/9zSvkXV1htCYJ8h47</a><br><br>
-                                #KITEN #学生起業 #アイデアソン #100のKITEN #学生アンバサダー
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
             
+
             <section id="cta" class="text-center bg-indigo-700 py-12 md:py-16 lg:py-20 fade-in-up">
                 <div class="max-w-5xl mx-auto px-4">
                     <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-white">
                         未来を創る挑戦者からのご応募を、<br class="hidden sm:block">心よりお待ちしております。
                     </h2>
                     <div class="mt-6 md:mt-8">
-                        <a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" class="cta-button inline-block text-white font-bold text-lg md:text-xl py-3 md:py-4 px-8 md:px-12 rounded-full">
-                            <span class="flex items-center justify-center">
-                                無料でエントリーする 
-                                <svg class="w-5 h-5 md:w-6 md:h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                            <a href="https://forms.gle/9zSvkXV1htCYJ8h47" target="_blank" class="cta-button inline-block text-white font-bold text-lg md:text-xl py-3 md:py-4 px-8 md:px-12 rounded-full">
+                                <span class="flex items-center justify-center">
+                                    無料でエントリーする 
+                                    <svg class="w-5 h-5 md:w-6 md:h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
                                 </svg>
-                            </span>
-                        </a>
+                                </span>
+                            </a>
+                            <a href="https://forms.gle/spwkDS2f1WW2gDFA9" target="_blank" class="cta-button inline-block text-white font-bold text-lg md:text-xl py-3 md:py-4 px-8 md:px-12 rounded-full">
+                                <span class="flex items-center justify-center">
+                                    団体エントリー
+                                    <svg class="w-5 h-5 md:w-6 md:h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                                </svg>
+                                </span>
+                            </a>
+                            </div>
                         <p class="mt-3 md:mt-4 text-sm md:text-base text-indigo-200">定員100名 | 先着順</p>
+                        </div>
+                    <!-- Share block moved here -->
+                    <div class="mt-10 md:mt-12">
+                        <div class="max-w-5xl mx-auto">
+                            <h3 class="text-white text-xl md:text-2xl font-bold mb-3">🚀 このイベントを友達にシェアしよう！</h3>
+                            <p class="text-indigo-100 mb-6">素晴らしい体験を共有することで、より多くの仲間と出会えるチャンスが広がります。</p>
+                            <div class="flex items-center justify-center gap-4">
+                                <button onclick="shareToTwitter()" class="w-12 h-12 rounded-full bg-white text-indigo-700 flex items-center justify-center shadow hover:scale-105 transition">
+                                    <svg viewBox="0 0 24 24" class="w-6 h-6" fill="currentColor" aria-hidden="true"><path d="M22 4.01c-.77.35-1.6.58-2.47.69a4.17 4.17 0 0 0 1.83-2.3 8.36 8.36 0 0 1-2.65 1.01 4.15 4.15 0 0 0-7.07 3.78A11.78 11.78 0 0 1 3.15 3.16a4.15 4.15 0 0 0 1.28 5.54 4.1 4.1 0 0 1-1.88-.52v.05a4.15 4.15 0 0 0 3.33 4.07 4.2 4.2 0 0 1-1.88.07 4.16 4.16 0 0 0 3.88 2.88A8.34 8.34 0 0 1 2 18.4a11.78 11.78 0 0 0 6.36 1.86c7.63 0 11.8-6.32 11.8-11.8 0-.18-.01-.36-.02-.54A8.43 8.43 0 0 0 22 4.01z"/></svg>
+                                </button>
+                                <button onclick="copyShareText()" class="w-12 h-12 rounded-full bg-white text-pink-600 flex items-center justify-center shadow hover:scale-105 transition" aria-label="Instagram">
+                                    <svg viewBox="0 0 24 24" class="w-6 h-6" fill="currentColor"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 .001 10.001A5 5 0 0 0 12 7zm0 2.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zm5.25-.75a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5z"/></svg>
+                                </button>
+                                <button onclick="shareToLine()" class="w-12 h-12 rounded-full bg-white text-green-600 flex items-center justify-center shadow hover:scale-105 transition" aria-label="LINE">
+                                    <svg viewBox="0 0 24 24" class="w-6 h-6" fill="currentColor"><path d="M19.5 3h-15A3.5 3.5 0 0 0 1 6.5v7A3.5 3.5 0 0 0 4.5 17H8l3.5 4 3.5-4h4.5A3.5 3.5 0 0 0 23 13.5v-7A3.5 3.5 0 0 0 19.5 3z"/></svg>
+                                </button>
+                            </div>
+                            <div class="mt-8 text-left bg-white/5 rounded-xl p-4">
+                                <h5 class="text-white font-bold mb-2">📝 シェア用テキスト例</h5>
+                                <p class="text-white text-sm leading-relaxed">
+                                    🚀 学生が「企業の顔」となる。<br>
+                                社会のために本気になれる学生アンバサダーの登竜門「KITEN」に参加しませんか？<br><br>
+                                📅 2025年9月20日（土）14:00-17:30<br>
+                                📍 InnoCom Square（東京・赤坂）<br>
+                                💰 参加費無料<br>
+                                👥 定員100名（現在<span id="sharePageViewCount">67</span>名がサイトにアクセス済み！）<br><br>
+                                🎯 アイデアソン、1分ピッチ大会、豪華審査員からのフィードバック！<br><br>
+                                    📝 申し込み: https://forms.gle/9zSvkXV1htCYJ8h47<br><br>
+                                #KITEN #学生起業 #アイデアソン #100のKITEN #学生アンバサダー
+                            </p>
+                        </div>
+                    </div>
                     </div>
                 </div>
             </section>
@@ -2683,26 +3068,7 @@
         
     </div>
 
-    <!-- エントリーフォーム導線 -->
-    <section id="entry" class="max-w-5xl mx-auto px-4 py-12 fade-in-up">
-        <h2 class="text-2xl md:text-3xl font-black text-center mb-8">エントリーフォーム</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <a href="https://forms.gle/spwkDS2f1WW2gDFA9" target="_blank" class="group block rounded-2xl p-6 border border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 transition shadow">
-                <h3 class="text-xl font-black text-blue-800 mb-2">団体参加</h3>
-                <p class="text-gray-700">学生団体での参加の方はこちら</p>
-                <div class="mt-4 inline-flex items-center text-blue-700 font-semibold">フォームを開く
-                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                </div>
-            </a>
-            <a href="https://forms.gle/spwkDS2f1WW2gDFA9" target="_blank" class="group block rounded-2xl p-6 border border-purple-200 bg-gradient-to-br from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 transition shadow">
-                <h3 class="text-xl font-black text-purple-800 mb-2">個人参加</h3>
-                <p class="text-gray-700">個人参加での参加の方はこちら</p>
-                <div class="mt-4 inline-flex items-center text-purple-700 font-semibold">フォームを開く
-                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                </div>
-            </a>
-        </div>
-    </section>
+    
 
     <!-- Footer -->
     <footer class="bg-gray-900 text-white text-center py-8 md:py-10 px-4">
