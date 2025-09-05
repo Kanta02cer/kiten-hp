@@ -1013,6 +1013,7 @@
             Alpine.data('judgesCarousel', function () {
                 return {
                     activeJudge: 0,
+                    activeIndex: 0,
                     timer: null,
                     judges: [
                         {
@@ -1020,55 +1021,73 @@
                             name: '井上 幹太',
                             nameEn: 'Kanta Inoue',
                             photo: 'https://i.ibb.co/hRHyg37b/image.jpg',
+                            image: 'https://i.ibb.co/hRHyg37b/image.jpg',
                             theme: '学生と企業がともに成長する未来へ、学生が社会に出るその一歩を創る',
                             group: '日本学生アンバサダー協会',
                             title: '代表理事',
+                            description: '学生と企業がともに成長する未来へ、学生が社会に出るその一歩を創る'
                         },
                         {
                             logo: 'https://i.ibb.co/GvCMp9gG/3rd-Lab-logo-enhanced-transparent.png',
                             name: '栗栖 崇',
                             nameEn: 'Kurisu Takashi',
                             photo: 'https://i.ibb.co/2Y1LXWbh/image.jpg',
+                            image: 'https://i.ibb.co/2Y1LXWbh/image.jpg',
                             theme: '未来社会課題に本気で挑む若者たちとともに、「住まいと暮らし」の枠を超えた、新たな価値を社会へ届ける――。',
                             group: 'InnoCom Square 3rd Lab.',
                             title: '責任者',
+                            description: '未来社会課題に本気で挑む若者たちとともに、「住まいと暮らし」の枠を超えた、新たな価値を社会へ届ける'
                         },
                         {
                             logo: 'https://i.ibb.co/tw8zhx9Z/scd-logo-1.png',
                             name: '小寺 崇士',
                             nameEn: 'Takashi Kotera',
                             photo: 'https://i.ibb.co/ZRYR170L/Beauty-Plus-Image-Enhancer-1756552587673.jpg',
+                            image: 'https://i.ibb.co/ZRYR170L/Beauty-Plus-Image-Enhancer-1756552587673.jpg',
                             theme: 'CXとDXを融合し、デジタル顧客体験創造の専門家集団として、社会に貢献していく',
                             group: 'SCデジタル株式会社（住友商事）',
                             title: '営業・コンサルティング本部長 執行役員',
+                            description: 'CXとDXを融合し、デジタル顧客体験創造の専門家集団として、社会に貢献していく'
                         },
                         {
                             logo: 'https://i.ibb.co/27CTt3G0/De-Fimans-logo-landscape-black.png',
                             name: '小野暢思',
                             nameEn: 'Mitsuhi Ono',
                             photo: 'https://i.ibb.co/d4wHgTzr/2.webp',
+                            image: 'https://i.ibb.co/d4wHgTzr/2.webp',
                             theme: 'SBIグループ傘下、WEB3事業を手掛けるプロフェッショナルチーム',
                             group: '株式会社DeFimans（SBIグループ）',
                             title: 'Co-Founder / 代表取締役CEO',
+                            description: 'SBIグループ傘下、WEB3事業を手掛けるプロフェッショナルチーム'
                         },
                         {
                             logo: 'https://i.ibb.co/nsRZSbh7/5-Inno-Com-Square-1l-color.png',
                             name: '原起知',
                             nameEn: 'Hara Yukitomo',
                             photo: 'https://i.ibb.co/NdvDjfNx/image.jpg',
+                            image: 'https://i.ibb.co/NdvDjfNx/image.jpg',
                             theme: 'AIビジネスチームTL兼CAIOとして、AI技術を活用した社会課題解決に取り組む',
                             group: '積水ハウスイノベーション&コミュニケーション株式会社',
                             title: 'AIビジネスチームTL兼CAIO',
+                            description: 'AIビジネスチームTL兼CAIOとして、AI技術を活用した社会課題解決に取り組む'
                         },
                     ],
                     // 次のスライドへ
                     next() {
                         this.activeJudge = (this.activeJudge + 1) % this.judges.length;
+                        this.activeIndex = this.activeJudge;
                         this.resetTimer();
                     },
                     // 前のスライドへ
                     prev() {
                         this.activeJudge = (this.activeJudge - 1 + this.judges.length) % this.judges.length;
+                        this.activeIndex = this.activeJudge;
+                        this.resetTimer();
+                    },
+                    // 特定のスライドへ移動
+                    go(index) {
+                        this.activeJudge = index;
+                        this.activeIndex = index;
                         this.resetTimer();
                     },
                     // タイマーをリセットして再開する
@@ -1076,6 +1095,7 @@
                         clearInterval(this.timer);
                         this.timer = setInterval(() => {
                             this.activeJudge = (this.activeJudge + 1) % this.judges.length;
+                            this.activeIndex = this.activeJudge;
                         }, 4000);
                     },
                     // コンポーネント初期化時にタイマーを開始
@@ -1091,25 +1111,95 @@
             Alpine.data('judgeLogosCarousel', function () {
                 return {
                     activeLogoSlide: 0,
+                    activeIndex: 0,
                     totalLogoSlides: 5, // 審査員の数
                     timer: null,
+                    judges: [
+                        {
+                            logo: 'https://i.ibb.co/Hp77CJ5c/image.png',
+                            name: '井上 幹太',
+                            nameEn: 'Kanta Inoue',
+                            photo: 'https://i.ibb.co/hRHyg37b/image.jpg',
+                            image: 'https://i.ibb.co/hRHyg37b/image.jpg',
+                            theme: '学生と企業がともに成長する未来へ、学生が社会に出るその一歩を創る',
+                            group: '日本学生アンバサダー協会',
+                            title: '代表理事',
+                            description: '学生と企業がともに成長する未来へ、学生が社会に出るその一歩を創る'
+                        },
+                        {
+                            logo: 'https://i.ibb.co/GvCMp9gG/3rd-Lab-logo-enhanced-transparent.png',
+                            name: '栗栖 崇',
+                            nameEn: 'Kurisu Takashi',
+                            photo: 'https://i.ibb.co/2Y1LXWbh/image.jpg',
+                            image: 'https://i.ibb.co/2Y1LXWbh/image.jpg',
+                            theme: '未来社会課題に本気で挑む若者たちとともに、「住まいと暮らし」の枠を超えた、新たな価値を社会へ届ける――。',
+                            group: 'InnoCom Square 3rd Lab.',
+                            title: '責任者',
+                            description: '未来社会課題に本気で挑む若者たちとともに、「住まいと暮らし」の枠を超えた、新たな価値を社会へ届ける'
+                        },
+                        {
+                            logo: 'https://i.ibb.co/tw8zhx9Z/scd-logo-1.png',
+                            name: '小寺 崇士',
+                            nameEn: 'Takashi Kotera',
+                            photo: 'https://i.ibb.co/ZRYR170L/Beauty-Plus-Image-Enhancer-1756552587673.jpg',
+                            image: 'https://i.ibb.co/ZRYR170L/Beauty-Plus-Image-Enhancer-1756552587673.jpg',
+                            theme: 'CXとDXを融合し、デジタル顧客体験創造の専門家集団として、社会に貢献していく',
+                            group: 'SCデジタル株式会社（住友商事）',
+                            title: '営業・コンサルティング本部長 執行役員',
+                            description: 'CXとDXを融合し、デジタル顧客体験創造の専門家集団として、社会に貢献していく'
+                        },
+                        {
+                            logo: 'https://i.ibb.co/27CTt3G0/De-Fimans-logo-landscape-black.png',
+                            name: '小野暢思',
+                            nameEn: 'Mitsuhi Ono',
+                            photo: 'https://i.ibb.co/d4wHgTzr/2.webp',
+                            image: 'https://i.ibb.co/d4wHgTzr/2.webp',
+                            theme: 'SBIグループ傘下、WEB3事業を手掛けるプロフェッショナルチーム',
+                            group: '株式会社DeFimans（SBIグループ）',
+                            title: 'Co-Founder / 代表取締役CEO',
+                            description: 'SBIグループ傘下、WEB3事業を手掛けるプロフェッショナルチーム'
+                        },
+                        {
+                            logo: 'https://i.ibb.co/nsRZSbh7/5-Inno-Com-Square-1l-color.png',
+                            name: '原起知',
+                            nameEn: 'Hara Yukitomo',
+                            photo: 'https://i.ibb.co/NdvDjfNx/image.jpg',
+                            image: 'https://i.ibb.co/NdvDjfNx/image.jpg',
+                            theme: 'AIビジネスチームTL兼CAIOとして、AI技術を活用した社会課題解決に取り組む',
+                            group: '積水ハウスイノベーション&コミュニケーション株式会社',
+                            title: 'AIビジネスチームTL兼CAIO',
+                            description: 'AIビジネスチームTL兼CAIOとして、AI技術を活用した社会課題解決に取り組む'
+                        },
+                    ],
                     
                     // 次のスライドへ
-                    nextLogoSlide() {
+                    next() {
                         this.activeLogoSlide = (this.activeLogoSlide + 1) % this.totalLogoSlides;
+                        this.activeIndex = this.activeLogoSlide;
                         this.resetTimer();
+                    },
+                    nextLogoSlide() {
+                        this.next();
                     },
                     
                     // 前のスライドへ
-                    prevLogoSlide() {
+                    prev() {
                         this.activeLogoSlide = (this.activeLogoSlide - 1 + this.totalLogoSlides) % this.totalLogoSlides;
+                        this.activeIndex = this.activeLogoSlide;
                         this.resetTimer();
+                    },
+                    prevLogoSlide() {
+                        this.prev();
                     },
                     
                     // 特定のスライドへ移動
-                    goToLogoSlide(index) {
+                    go(index) {
                         this.activeLogoSlide = index;
+                        this.activeIndex = index;
                         this.resetTimer();
+                    },
+                    goToLogoSlide(index) {
+                        this.go(index);
                     },
                     
                     // タイマーをリセットして再開する
@@ -1117,6 +1207,7 @@
                         clearInterval(this.timer);
                         this.timer = setInterval(() => {
                             this.activeLogoSlide = (this.activeLogoSlide + 1) % this.totalLogoSlides;
+                            this.activeIndex = this.activeLogoSlide;
                         }, 3500); // 3.5秒間隔で自動切り替え（より快適な速度）
                     },
                     
@@ -1255,7 +1346,8 @@
             <div class="flex justify-between items-center h-16 md:h-20">
                 <div class="flex-shrink-0">
                     <a href="#">
-                        <img src="https://i.ibb.co/Jj3Rfft4/2025-08-23-9-20-56.webp" alt="KITEN Logo" class="h-8 md:h-10 w-auto">
+                        <img src="
+                        https://i.ibb.co/Jj3Rfft4/2025-08-23-9-20-56.webp" alt="KITEN Logo" class="h-8 md:h-10 w-auto">
                     </a>
                 </div>
                 <div class="hidden">
@@ -1382,6 +1474,122 @@
                 <p class="mt-1 font-black emphasis-gradient text-2xl md:text-4xl leading-tight">学生アンバサダーオーディション</p>
             </section>
 
+
+            <!-- 豪華審査員 -->
+            <section id="judges" class="py-16 md:py-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                            豪華審査員
+                        </h2>
+                        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                            業界の第一人者たちが直接審査いたします
+                        </p>
+                    </div>
+
+                    <!-- デスクトップ版審査員カルーセル -->
+                    <div class="hidden md:block">
+                        <div class="relative">
+                            <div class="overflow-hidden">
+                                <div class="flex transition-transform duration-500 ease-in-out" 
+                                     x-data="judgesCarousel()" 
+                                     x-init="init()"
+                                     :style="`transform: translateX(-${activeIndex * 100}%)`">
+                                    <template x-for="(judge, index) in judges" :key="index">
+                                        <div class="w-full flex-shrink-0 px-4">
+                                            <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-105">
+                                                <div class="aspect-[4/3] overflow-hidden">
+                                                    <img :src="judge.image" :alt="judge.name" 
+                                                         class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                                                </div>
+                                                <div class="p-6">
+                                                    <h3 class="text-xl font-bold text-gray-900 mb-2" x-text="judge.name"></h3>
+                                                    <p class="text-blue-600 font-semibold mb-2" x-text="judge.title"></p>
+                                                    <p class="text-gray-600 text-sm leading-relaxed" x-text="judge.description"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                            
+                            <!-- ナビゲーションボタン -->
+                            <button @click="prev()" 
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 hover:text-blue-600 rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <button @click="next()" 
+                                    class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 hover:text-blue-600 rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <!-- インジケーター -->
+                        <div class="flex justify-center mt-8 space-x-2">
+                            <template x-for="(judge, index) in judges" :key="index">
+                                <button @click="go(index)" 
+                                        :class="activeIndex === index ? 'bg-blue-600' : 'bg-gray-300'"
+                                        class="w-3 h-3 rounded-full transition-colors duration-300"></button>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- モバイル版審査員カルーセル -->
+                    <div class="md:hidden">
+                        <div class="relative">
+                            <div class="overflow-hidden">
+                                <div class="flex transition-transform duration-500 ease-in-out" 
+                                     x-data="judgeLogosCarousel()" 
+                                     x-init="init()"
+                                     :style="`transform: translateX(-${activeIndex * 100}%)`">
+                                    <template x-for="(judge, index) in judges" :key="index">
+                                        <div class="w-full flex-shrink-0 px-2">
+                                            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                                                <div class="aspect-square overflow-hidden">
+                                                    <img :src="judge.image" :alt="judge.name" 
+                                                         class="w-full h-full object-cover">
+                                                </div>
+                                                <div class="p-4">
+                                                    <h3 class="text-lg font-bold text-gray-900 mb-1" x-text="judge.name"></h3>
+                                                    <p class="text-blue-600 font-semibold text-sm mb-2" x-text="judge.title"></p>
+                                                    <p class="text-gray-600 text-xs leading-relaxed" x-text="judge.description"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                            
+                            <!-- ナビゲーションボタン -->
+                            <button @click="prev()" 
+                                    class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 hover:text-blue-600 rounded-full p-2 shadow-lg">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <button @click="next()" 
+                                    class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 hover:text-blue-600 rounded-full p-2 shadow-lg">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <!-- インジケーター -->
+                        <div class="flex justify-center mt-6 space-x-2">
+                            <template x-for="(judge, index) in judges" :key="index">
+                                <button @click="go(index)" 
+                                        :class="activeIndex === index ? 'bg-blue-600' : 'bg-gray-300'"
+                                        class="w-2 h-2 rounded-full transition-colors duration-300"></button>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             <!-- 先輩の活動（独自セクション） -->
             <section id="senpai-activities" class="max-w-6xl mx-auto px-4 py-16 md:py-24 fade-in-up">
