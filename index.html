@@ -1497,15 +1497,15 @@
                                      :style="`transform: translateX(-${activeIndex * 100}%)`">
                                     <template x-for="(judge, index) in judges" :key="index">
                                         <div class="w-full flex-shrink-0 px-4">
-                                            <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-105">
-                                                <div class="aspect-[4/3] overflow-hidden">
+                                            <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-105 max-w-sm mx-auto">
+                                                <div class="aspect-[3/4] overflow-hidden">
                                                     <img :src="judge.image" :alt="judge.name" 
                                                          class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                                                 </div>
                                                 <div class="p-6">
                                                     <h3 class="text-xl font-bold text-gray-900 mb-2" x-text="judge.name"></h3>
                                                     <p class="text-blue-600 font-semibold mb-2" x-text="judge.title"></p>
-                                                    <p class="text-gray-600 text-sm leading-relaxed" x-text="judge.description"></p>
+                                                    <p class="text-gray-600 text-sm leading-relaxed line-clamp-3" x-text="judge.theme"></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1548,15 +1548,15 @@
                                      :style="`transform: translateX(-${activeIndex * 100}%)`">
                                     <template x-for="(judge, index) in judges" :key="index">
                                         <div class="w-full flex-shrink-0 px-2">
-                                            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-                                                <div class="aspect-square overflow-hidden">
+                                            <div class="bg-white rounded-xl shadow-lg overflow-hidden max-w-xs mx-auto">
+                                                <div class="aspect-[3/4] overflow-hidden">
                                                     <img :src="judge.image" :alt="judge.name" 
                                                          class="w-full h-full object-cover">
                                                 </div>
                                                 <div class="p-4">
                                                     <h3 class="text-lg font-bold text-gray-900 mb-1" x-text="judge.name"></h3>
                                                     <p class="text-blue-600 font-semibold text-sm mb-2" x-text="judge.title"></p>
-                                                    <p class="text-gray-600 text-xs leading-relaxed" x-text="judge.description"></p>
+                                                    <p class="text-gray-600 text-xs leading-relaxed line-clamp-3" x-text="judge.theme"></p>
                                                 </div>
                                             </div>
                                         </div>
